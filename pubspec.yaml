@@ -36,8 +36,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   material: ^1.0.0+2
-  geolocator: ^9.0.1
   http: ^0.13.5
+  provider: ^6.0.3
+  xml2json: ^5.3.4
+  location: ^4.4.0
+  geolocator: ^9.0.1
   date_format: ^2.0.6
 
 dev_dependencies:

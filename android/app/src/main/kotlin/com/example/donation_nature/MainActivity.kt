@@ -1,4 +1,4 @@
-package com.example.donation_nature
+package com.ItDive.donation_nature
 
 import io.flutter.embedding.android.FlutterActivity
 

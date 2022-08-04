@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "769202510609",
+    "project_id": "donature-it-dive",
+    "storage_bucket": "donature-it-dive.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769202510609:android:bb1f27e18aa7856fcc8ab0",
+        "android_client_info": {
+          "package_name": "com.ItDive.donation_nature"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "769202510609-g8pv2ngq14eemuucmpmemp8dcl65i6cb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhrcxdU0LWwEhjPZ-6h_QYqBw9pPuaRT8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "769202510609-g8pv2ngq14eemuucmpmemp8dcl65i6cb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

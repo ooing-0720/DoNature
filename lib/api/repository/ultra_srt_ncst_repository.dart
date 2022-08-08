@@ -1,5 +1,5 @@
 import 'dart:convert' as convert;
-import 'package:donation_nature/domain/ultra_srt_ncst.dart';
+import 'package:donation_nature/api/domain/ultra_srt_ncst.dart';
 import 'package:donation_nature/secret/api_key.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';

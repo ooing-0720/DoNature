@@ -1,4 +1,4 @@
-import 'package:donation_nature/domain/wthr_wrn_list.dart';
+import 'package:donation_nature/api/domain/wthr_wrn_list.dart';
 import 'package:donation_nature/secret/api_key.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;

@@ -1,3 +1,4 @@
+import 'package:donation_nature/action/action.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,6 +11,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    MainAction _mainAction = MainAction();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("내 위치"),

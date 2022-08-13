@@ -1,12 +1,13 @@
-import 'dart:convert';
+import 'dart:convert' as convert;
 
 import 'package:donation_nature/permission/position_permission.dart';
 import 'package:donation_nature/secret/api_key.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
-class Action {
-  Future<String> getAddress() async {
+class MainAction {
+  void getAddress() async {
+    // original return type is Future<String>
     PositionPermission.determinePosition();
 
     Position position = await Geolocator.getCurrentPosition(
@@ -14,11 +15,15 @@ class Action {
 
     var latitude = position.latitude;
     var longitude = position.longitude;
-
     final url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$geoCodingKey');
-    final response = await http.get(url);
+        'https://maps.googleapis.com/maps/api/geocode/json?sensor=false&language=ko&latlng=$latitude,$longitude&key=$geoCodingKey');
 
-    return jsonDecode(response.body)['results'][0]['formatted_address'];
+    final response = await http.get(url);
+    final body = convert.utf8.decode(response.bodyBytes);
+    Map<String, dynamic> jsonResult = convert.json.decode(body);
+    final address = jsonResult['results'][0]['formatted_address'];
+
+    print(address);
+    //return address;
   }
 }

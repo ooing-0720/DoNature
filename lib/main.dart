@@ -5,7 +5,9 @@ import 'package:donation_nature/screen/board_screen.dart';
 import 'package:donation_nature/screen/mypage_screen.dart';
 import 'package:donation_nature/screen/home_screen.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

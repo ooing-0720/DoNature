@@ -11,14 +11,22 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-      title: Text("내 위치"),
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.notifications),
+      appBar: AppBar(
+        title: Text("내 위치"),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.notifications),
+          ),
+        ],
+      ),
+      body: Center(
+        child: ElevatedButton(
+          //
+          onPressed: _mainAction.getAddress,
+          child: const Text('Get Address'),
         ),
-      ],
-    ));
+      ),
+    );
   }
 }

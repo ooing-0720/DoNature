@@ -91,21 +91,15 @@ class PostService {
     return posts;
   }
 
-/*
-  // Select All Containing Keyword(검색)
-  Future<List<Post>> searchKeyword(String? keyword) async {
-    if (keyword == null) {
-      return getPosts();
-    }
-
-    CollectionReference<Map<String, dynamic>> collectionReference =
-        FirebaseFirestore.instance.collection("bulletin_board");
-    QuerySnapshot<Map<String, dynamic>> querySnapshot;
-
-    for(var snapshot in collectionReference.docu)
-  }
-*/
   // UPDATE
+  Future updatePost(
+      {required DocumentReference reference,
+      required Map<String, dynamic> json}) async {
+    await reference.set(json);
+  }
 
   // DELETE
+  Future<void> deletePost(DocumentReference reference) async {
+    await reference.delete();
+  }
 }

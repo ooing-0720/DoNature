@@ -1,6 +1,6 @@
 import 'dart:convert' as convert;
 
-import 'package:donation_nature/permission/position_permission.dart';
+import 'package:donation_nature/permission/permission_request.dart';
 import 'package:donation_nature/secret/api_key.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 class MainAction {
   void getAddress() async {
     // original return type is Future<String>
-    PositionPermission.determinePosition();
+    PermissionRequest.determinePosition();
 
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);

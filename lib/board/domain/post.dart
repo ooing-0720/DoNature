@@ -7,13 +7,14 @@ class Post {
   Timestamp? date;
   bool isDone = false; // 나눔/받기 완료되었는지
   String? content;
+  List<String>? image; // firestore에 저장될 이미지 url
   String? locationDo; // 도
   String? locationSi; // 시
   String? locationGu; // 구
   String? locationDong; // 동
   String? tagDisaster; // 재난 태그
   String? tagMore; // 그 외 태그
-  DocumentReference? reference; // Firebase에서 document의 위치
+  final DocumentReference? reference; // Firebase에서 document의 위치
 
   Post({
     this.title,

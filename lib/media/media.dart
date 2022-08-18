@@ -1,7 +1,7 @@
 import 'dart:html';
 
 import 'package:donation_nature/board/domain/post.dart';
-import 'package:donation_nature/permission/permission_request.dart';
+// import 'package:donation_nature/permission/permission_request.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io' as io;
 import 'package:image_picker/image_picker.dart';

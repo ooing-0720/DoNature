@@ -6,39 +6,11 @@ import '../chat/chat_detail_screen.dart';
 import 'package:donation_nature/board/domain/post.dart';
 
 class PostDetailScreen extends StatelessWidget {
-  DocumentReference reference;
-  PostDetailScreen(this.reference);
-  //var post = FirebaseFirestore.instance.collection("bulletin_board").doc(reference.id);
-
-  // var _detailPost = Post(
-  //   title: '글 제목ddddddddddddddddddddddddddddddddddddddddd',
-  //   writer: '',
-  //   date: null,
-  //   content: '',
-  //   locationSiDo: '서울', // 시/도
-  //   locationGuGunSi: '', // 구/군/시
-  //   tagDisaster: '지진', // 재난 태그
-  //   tagMore: '', // 그 외 태그
-
-  //   //시도 - 구군시-동읍면 이 낫지 않을까
-  // );
+  Post post;
+  PostDetailScreen(this.post);
 
   @override
   Widget build(BuildContext context) {
-    PostService _postService = PostService();
-    Future<Post> post = _postService.getPost(this.reference.id);
-
-    // String id = this.reference.id;
-
-    // String title = "";
-    // FirebaseFirestore firestore = FirebaseFirestore.instance;
-    // firestore
-    //     .collection("bulletin_board")
-    //     .doc("$reference")
-    //     .get()
-    //     .then((DocumentSnapshot ds) {
-    //   print(ds.data());
-    // });
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -50,7 +22,7 @@ class PostDetailScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  "ddd",
+                  post.title!,
                   maxLines: 3,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                 ),
@@ -60,29 +32,32 @@ class PostDetailScreen extends StatelessWidget {
               height: 20,
               thickness: 1.5,
             ),
-            // Row(
-            //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     InputChip(label: Text(_detailPost.tagDisaster!)),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     Icon(Icons.place),
-            //     InputChip(
-            //       label: Text(_detailPost.locationSiDo!),
-            //     ),
-            //     Spacer(),
-            //     deleteButton(),
-            //     editButton()
-            //   ],
-            // ),
+            Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InputChip(label: Text(post.tagDisaster!)),
+                SizedBox(
+                  width: 10,
+                ),
+                Icon(Icons.place),
+                InputChip(
+                  label: Text(post.locationSiDo! + " " + post.locationGuGunSi!),
+                ),
+                // InputChip(
+                //   label: Text(post.locationGuGunSi!),
+                // ),
+                Spacer(),
+                deleteButton(),
+                editButton()
+              ],
+            ),
             Divider(
               height: 20,
               thickness: 1.5,
             ),
             Expanded(
                 child: SingleChildScrollView(
-              child: Text("글 내용 " * 500),
+              child: Text(post.content!),
             ))
           ],
         ),

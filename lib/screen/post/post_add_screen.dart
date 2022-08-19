@@ -10,6 +10,7 @@ import 'package:donation_nature/board/domain/post.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:donation_nature/screen/location_list.dart';
 
 class PostAddScreen extends StatefulWidget {
   const PostAddScreen({Key? key}) : super(key: key);
@@ -24,72 +25,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
   final GlobalKey<FormState> _formkey = GlobalKey();
   //PickedFile? _image;
   final ImagePicker _picker = ImagePicker();
-  List<String> locationDoList = [
-    "서울특별시",
-    "부산광역시",
-    "대구광역시",
-    "인천광역시",
-    "광주광역시",
-    "대전광역시",
-    "울산광역시",
-    "세종특별자치시",
-    "경기도",
-    "강원도",
-    "충청북도",
-    "충청남도",
-    "전라북도",
-    "전라남도",
-    "경상북도",
-    "경상남도",
-    "제주특별자치도"
-  ];
 
-  List<String> locationGuSeoulList = [
-    "종로구",
-    "중구",
-    "용산구",
-    "성동구",
-    "광진구",
-    "동대문구",
-    "중랑구",
-    "성북구",
-    "강북구",
-    "도봉구",
-    "노원구",
-    "은평구",
-    "서대문구",
-    "마포구",
-    "양천구",
-    "강서구",
-    "구로구",
-    "금천구",
-    "영등포구",
-    "동작구",
-    "관악구",
-    "서초구",
-    "강남구",
-    "송파구",
-    "강동구",
-  ];
-
-  List<String> locationGuBusanList = [
-    "중구",
-    "서구",
-    "동구",
-    "영도구",
-    "부산진구",
-    "동래구",
-    "남구",
-    "북구",
-    "해운대구",
-    "사하구",
-    "금정구",
-    "강서구",
-    "연제구",
-    "수영구",
-    "사상구",
-    "기장군"
-  ];
   List<String> locationGuList = [];
   String? _selectedDo = null;
   String? _selectedGu = null;
@@ -146,7 +82,10 @@ class _PostAddScreenState extends State<PostAddScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                InputChip(label: Text("위치")),
+                InputChip(
+                  backgroundColor: Color(0xff9fc3a8),
+                  label: Text("위치"),
+                ),
                 locationDropdown(),
               ],
             ),
@@ -199,12 +138,42 @@ class _PostAddScreenState extends State<PostAddScreen> {
               return DropdownMenuItem(value: value, child: Text(value));
             }).toList(),
             onChanged: (dynamic value) {
-              if (value == '서울특별시') {
+              if (value == '서울') {
                 locationGuList = locationGuSeoulList;
-              } else if (value == '부산광역시') {
+              } else if (value == '부산') {
                 locationGuList = locationGuBusanList;
+              } else if (value == '대구') {
+                locationGuList = locationGuDaeguList;
+              } else if (value == '인천') {
+                locationGuList = locationGuIncheonList;
+              } else if (value == '광주') {
+                locationGuList = locationGuGwangjuList;
+              } else if (value == '대전') {
+                locationGuList = locationGuDaejeonList;
+              } else if (value == '울산') {
+                locationGuList = locationGuUlsanList;
+              } else if (value == '세종') {
+                locationGuList = locationGuSejongList;
+                //전체로만
+              } else if (value == '경기') {
+                locationGuList = locationSiGyeonggiList;
+              } else if (value == '강원') {
+                locationGuList = locationSiGangwonList;
+              } else if (value == '충북') {
+                locationGuList = locationSiChungbukList;
+              } else if (value == '충남') {
+                locationGuList = locationSiChungnamList;
+              } else if (value == '전북') {
+                locationGuList = locationSiJeonbukList;
+              } else if (value == '전남') {
+                locationGuList = locationSiJeonnamList;
+              } else if (value == '경북') {
+                locationGuList = locationSiGyeongbukList;
+              } else if (value == '경남') {
+                locationGuList = locationSiGyeongnamList;
+              } else if (value == '제주') {
+                locationGuList = locationSiJejuList;
               }
-
               setState(() {
                 _selectedDo = value;
                 _selectedGu = null;

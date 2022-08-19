@@ -59,7 +59,43 @@ class _BoardScreenState extends State<BoardScreen> {
                     },
                     child: ListTile(
                       title: Text("${data.title}"),
-                      subtitle: Text("${data.content}"),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            //칩 색이 안 바뀜
+                            children: [
+                              InputChip(
+                                label: Text(
+                                  "${data.tagDisaster}",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: Color(0xff9fc3a8),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              InputChip(
+                                label: Text(
+                                  "${data.locationSiDo}",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: Color(0xff9fc3a8),
+                              ),
+                            ],
+                          ),
+                          // Text(
+                          //   "${data.content}",
+                          // ),
+                        ],
+                      ),
+                      trailing: GestureDetector(
+                        onTap: () {},
+                        child: Icon(
+                          Icons.favorite_border,
+                          color: Color(0xff9fc3a8),
+                        ),
+                      ),
                     ),
                   ),
                 );

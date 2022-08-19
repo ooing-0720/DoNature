@@ -437,6 +437,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
                   _editedPost.title = titleEditingController.text;
                   print("date " + _editedPost.date.toString());
                   print("datetime " + datetime.toString());
+                  _editedPost.date = Timestamp.now();
                   print("시/도: " + _editedPost.locationSiDo!);
                   print("구: " + _editedPost.locationGuGunSi!);
                   print(_editedPost.tagDisaster);

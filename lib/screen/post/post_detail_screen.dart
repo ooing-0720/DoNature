@@ -35,13 +35,17 @@ class PostDetailScreen extends StatelessWidget {
             Row(
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                InputChip(label: Text(post.tagDisaster!)),
+                InputChip(
+                  label: Text(post.tagDisaster!),
+                  backgroundColor: Color(0xff9fc3a8),
+                ),
                 SizedBox(
                   width: 10,
                 ),
                 Icon(Icons.place),
                 InputChip(
                   label: Text(post.locationSiDo! + " " + post.locationGuGunSi!),
+                  backgroundColor: Color(0xff9fc3a8),
                 ),
                 // InputChip(
                 //   label: Text(post.locationGuGunSi!),

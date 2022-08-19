@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donation_nature/models/user_info_model.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -6,6 +10,22 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class SignUpScreenState extends State<SignUpScreen> {
+  final _emailTextEditingController = TextEditingController();
+  final _passwordTextEditingController = TextEditingController();
+  final _repasswordTextEditingController = TextEditingController();
+  final _nicknameTextEditingController = TextEditingController();
+  final _numberTextEditingController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailTextEditingController.dispose();
+    _passwordTextEditingController.dispose();
+    _repasswordTextEditingController.dispose();
+    _nicknameTextEditingController.dispose();
+    _numberTextEditingController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +45,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                       flex: 3,
                       child: Container(
                         child: TextFormField(
+                          controller: _emailTextEditingController,
                           style: TextStyle(
                             fontSize: 12,
                           ),
@@ -57,6 +78,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                       flex: 3,
                       child: Container(
                         child: TextFormField(
+                          controller: _passwordTextEditingController,
                           style: TextStyle(
                             fontSize: 12,
                           ),
@@ -89,6 +111,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                       flex: 3,
                       child: Container(
                         child: TextFormField(
+                          controller: _repasswordTextEditingController,
                           style: TextStyle(
                             fontSize: 12,
                           ),
@@ -116,11 +139,45 @@ class SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Row(
                   children: [
+                    Expanded(flex: 1, child: Text("닉네임")),
+                    Expanded(
+                      flex: 3,
+                      child: Container(
+                        child: TextFormField(
+                          controller: _nicknameTextEditingController,
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                          decoration: InputDecoration(
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 10.0),
+                            isDense: true,
+                            hintText: "닉네임",
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
+                          ),
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.visiblePassword,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
                     Expanded(flex: 1, child: Text("휴대폰")),
                     Expanded(
                       flex: 3,
                       child: Container(
                         child: TextFormField(
+                            controller: _numberTextEditingController,
                             style: TextStyle(
                               fontSize: 12,
                             ),
@@ -143,7 +200,9 @@ class SignUpScreenState extends State<SignUpScreen> {
                     primary: Color(0xff9fc3a8),
                   ),
                   child: Text('가입하기'),
-                  onPressed: () {},
+                  onPressed: () {
+                    _onPressedJoinButton();
+                  },
                 ),
                 SizedBox(
                   height: 50,
@@ -155,4 +214,16 @@ class SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
+
+   void _onPressedJoinButton(){
+    try{
+      UserInfoModel userinfoModel = UserInfoModel(email: _emailTextEditingController.text,password: _passwordTextEditingController.text,
+      nickname: _nicknameTextEditingController.text,number: _numberTextEditingController.text);
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      firestore.collection('/user_info').add(userinfoModel.toMap());
+    }catch(ex){
+      log('error)',error: ex.toString(),stackTrace: StackTrace.current);
+    }
+  }
 }
+

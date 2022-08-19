@@ -1,7 +1,7 @@
 import 'package:donation_nature/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:donation_nature/screen/chat_screen.dart';
+import 'package:donation_nature/screen/chat/chat_screen.dart';
 import 'package:donation_nature/screen/info_screen.dart';
 import 'package:donation_nature/screen/board_screen.dart';
 import 'package:donation_nature/screen/mypage_screen.dart';

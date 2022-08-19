@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:donation_nature/models/chat_users.dart';
+import 'package:donation_nature/models/chat_model.dart';
 import 'package:donation_nature/models/chatMessageModel.dart';
 
 class ChatDetailScreen extends StatefulWidget {

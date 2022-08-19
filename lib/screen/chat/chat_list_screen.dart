@@ -1,27 +1,29 @@
-/*import 'package:flutter/material.dart';
+/*import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:donation_nature/models/chat_model.dart';
 import './chat_detail_screen.dart';
 
-class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+class ChatListScreen extends StatefulWidget {
+  const ChatListScreen({Key? key}) : super(key: key);
 
   @override
-  State<ChatScreen> createState() => _ChatScreenState();
+  State<ChatListScreen> createState() => _ChatListScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatListScreenState extends State<ChatListScreen> {
   //예시
-  List<ChatUsers> chatUsers = [
-    ChatUsers(name: "ㅇㅇㅇ", messageText: "ㄱㄴㄷㄹ", time: "하루 전"),
-    ChatUsers(name: "ㅁㅁㅁ", messageText: "dㅁㄴㅇ", time: "지금"),
-    ChatUsers(name: "ㄱㄱㄱ", messageText: "dddd", time: "지금"),
-    ChatUsers(name: "ㅇㅇㅇ", messageText: "dddd", time: "지금"),
-    ChatUsers(name: "ㅇㅇㅇ", messageText: "ㅁㅇㄴd", time: "지금"),
-    ChatUsers(name: "ㅇㅇㅇ", messageText: "dddd", time: "지금"),
-    ChatUsers(name: "ㅇㅇㅇ", messageText: "dddd", time: "지금"),
-    ChatUsers(name: "ㅇㅇㅇ", messageText: "ㅁㅇㄴd", time: "지금"),
-    ChatUsers(name: "ㅇㅇㅇ", messageText: "dddd", time: "지금"),
-    ChatUsers(name: "ㅇㅇㅇ", messageText: "dddd", time: "이틀 전"),
+  List<ChatModel> chatUsers = [
+    ChatModel(name: "ㅇㅇㅇ", messageText: "ㄱㄴㄷㄹ", time: "하루 전"),
+    ChatModel(name: "ㅁㅁㅁ", messageText: "dㅁㄴㅇ", time: "지금"),
+    ChatModel(name: "ㄱㄱㄱ", messageText: "dddd", time: "지금"),
+    ChatModel(name: "ㅇㅇㅇ", messageText: "dddd", time: "지금"),
+    ChatModel(name: "ㅇㅇㅇ", messageText: "ㅁㅇㄴd", time: "지금"),
+    ChatModel(name: "ㅇㅇㅇ", messageText: "dddd", time: "지금"),
+    ChatModel(name: "ㅇㅇㅇ", messageText: "dddd", time: "지금"),
+    ChatModel(name: "ㅇㅇㅇ", messageText: "ㅁㅇㄴd", time: "지금"),
+    ChatModel(name: "ㅇㅇㅇ", messageText: "dddd", time: "지금"),
+    ChatModel(name: "ㅇㅇㅇ", messageText: "dddd", time: "이틀 전"), 
+    
   ];
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
         ),
-        body: ListView.separated(
+         body: ListView.separated(
           itemCount: chatUsers.length,
           shrinkWrap: true,
           padding: EdgeInsets.all(10),
@@ -60,8 +62,11 @@ class _ChatScreenState extends State<ChatScreen> {
             );
           },
         ));
-  }
-}
+
+            }
+          }
+    
+        
 
 class ChatList extends StatefulWidget {
   late String name;
@@ -101,42 +106,30 @@ class _ChatListState extends State<ChatList> {
               Expanded(
                   child: Row(
                 children: [
+                  SizedBox(
+                    width: 16,
+                  ),
                   Expanded(
                       child: Container(
                     color: Colors.transparent,
-                    child: Row(
-                      //crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CircleAvatar(
-                          backgroundColor: Color(0xff9fc3a8),
-                          radius: 24,
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.white,
-                          ),
+                        Text(
+                          widget.name,
+                          style: TextStyle(fontSize: 16),
                         ),
                         SizedBox(
-                          width: 20,
+                          height: 6,
                         ),
-                        Column(
-                          children: [
-                            Text(
-                              widget.name,
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            SizedBox(
-                              height: 6,
-                            ),
-                            Text(
-                              widget.messageText,
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.grey.shade600,
-                                  fontWeight: widget.isMessageRead
-                                      ? FontWeight.bold
-                                      : FontWeight.normal),
-                            ),
-                          ],
+                        Text(
+                          widget.messageText,
+                          style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.grey.shade600,
+                              fontWeight: widget.isMessageRead
+                                  ? FontWeight.bold
+                                  : FontWeight.normal),
                         ),
                       ],
                     ),
@@ -156,4 +149,4 @@ class _ChatListState extends State<ChatList> {
     );
   }
 }
- */
+*/

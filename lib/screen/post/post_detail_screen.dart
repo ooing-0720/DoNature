@@ -1,26 +1,44 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donation_nature/board/provider/post_provider.dart';
+import 'package:donation_nature/board/service/post_service.dart';
 import 'package:flutter/material.dart';
 import '../chat/chat_detail_screen.dart';
 import 'package:donation_nature/board/domain/post.dart';
 
 class PostDetailScreen extends StatelessWidget {
-  final int id;
-  PostDetailScreen(this.id);
+  DocumentReference reference;
+  PostDetailScreen(this.reference);
+  //var post = FirebaseFirestore.instance.collection("bulletin_board").doc(reference.id);
 
-  var _detailPost = Post(
-    title: '글 제목ddddddddddddddddddddddddddddddddddddddddd',
-    writer: '',
-    date: null,
-    content: '',
-    locationSiDo: '서울', // 시/도
-    locationGuGunSi: '', // 구/군/시
-    tagDisaster: '지진', // 재난 태그
-    tagMore: '', // 그 외 태그
+  // var _detailPost = Post(
+  //   title: '글 제목ddddddddddddddddddddddddddddddddddddddddd',
+  //   writer: '',
+  //   date: null,
+  //   content: '',
+  //   locationSiDo: '서울', // 시/도
+  //   locationGuGunSi: '', // 구/군/시
+  //   tagDisaster: '지진', // 재난 태그
+  //   tagMore: '', // 그 외 태그
 
-    //시도 - 구군시-동읍면 이 낫지 않을까
-  );
+  //   //시도 - 구군시-동읍면 이 낫지 않을까
+  // );
 
   @override
   Widget build(BuildContext context) {
+    PostService _postService = PostService();
+    Future<Post> post = _postService.getPost(this.reference.id);
+
+    // String id = this.reference.id;
+
+    // String title = "";
+    // FirebaseFirestore firestore = FirebaseFirestore.instance;
+    // firestore
+    //     .collection("bulletin_board")
+    //     .doc("$reference")
+    //     .get()
+    //     .then((DocumentSnapshot ds) {
+    //   print(ds.data());
+    // });
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -32,8 +50,8 @@ class PostDetailScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  _detailPost.title!,
-                  maxLines: 1,
+                  "ddd",
+                  maxLines: 3,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                 ),
               ],
@@ -42,22 +60,22 @@ class PostDetailScreen extends StatelessWidget {
               height: 20,
               thickness: 1.5,
             ),
-            Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InputChip(label: Text(_detailPost.tagDisaster!)),
-                SizedBox(
-                  width: 10,
-                ),
-                Icon(Icons.place),
-                InputChip(
-                  label: Text(_detailPost.locationSiDo!),
-                ),
-                Spacer(),
-                deleteButton(),
-                editButton()
-              ],
-            ),
+            // Row(
+            //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     InputChip(label: Text(_detailPost.tagDisaster!)),
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //     Icon(Icons.place),
+            //     InputChip(
+            //       label: Text(_detailPost.locationSiDo!),
+            //     ),
+            //     Spacer(),
+            //     deleteButton(),
+            //     editButton()
+            //   ],
+            // ),
             Divider(
               height: 20,
               thickness: 1.5,
@@ -71,10 +89,10 @@ class PostDetailScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ChatDetailScreen(userName: "$id")));
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => ChatDetailScreen(userName: "$id")));
         },
         label: Text('채팅하기'),
         backgroundColor: Color.fromARGB(255, 7, 65, 29),

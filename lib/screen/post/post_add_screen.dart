@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:donation_nature/board/service/post_service.dart';
+import 'package:donation_nature/screen/board_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:donation_nature/board/domain/post.dart';
@@ -429,8 +431,12 @@ class _PostAddScreenState extends State<PostAddScreen> {
                   //   content: contentEditingController.text,
                   //   title: titleEditingController.text,
                   // );
+                  _editedPost.date = Timestamp.now();
+                  DateTime datetime = _editedPost.date!.toDate();
                   _editedPost.content = contentEditingController.text;
                   _editedPost.title = titleEditingController.text;
+                  print("date " + _editedPost.date.toString());
+                  print("datetime " + datetime.toString());
                   print("시/도: " + _editedPost.locationSiDo!);
                   print("구: " + _editedPost.locationGuGunSi!);
                   print(_editedPost.tagDisaster);
@@ -442,7 +448,17 @@ class _PostAddScreenState extends State<PostAddScreen> {
                   //저장되었습니다 스낵바 띄우기
                   ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text('저장되었습니다')));
-                  Navigator.of(context).pop();
+
+//네비게이터
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BoardScreen(),
+                      )).then((value) {
+                    setState(() {});
+                  });
+
+                  // Navigator.of(context).pop();
                 },
                 child: Text("예")),
             FlatButton(

@@ -43,41 +43,30 @@ class PostService {
     return posts;
   }
 
+  // Select One(목록에서 게시글 선택)
+  Future<Post> getPost(DocumentReference reference) async {
+    var documentSnapshot = await reference.get();
+    return Post.fromJson(documentSnapshot, reference);
+  }
+
   // Select All Matching Tags(위치 태그 구분)
   Future<List<Post>> selectPostsByLocation(
-      String? dou, String? si, String? gu, String? dong) async {
+      String? sido, String? gugunsi) async {
     CollectionReference<Map<String, dynamic>> collectionReference =
         FirebaseFirestore.instance.collection("bulletin_board");
     QuerySnapshot<Map<String, dynamic>> querySnapshot;
 
-    if (si == null) {
+    if (sido == null) {
       // 도 전체(도 선택 - 시 선택X)
       querySnapshot = await collectionReference
-          .where('location_do', isEqualTo: dou)
-          .orderBy("date")
-          .get();
-    } else if (gu == null) {
-      // 시 전체(도 선택 - 시 선택 - 구 선택X)
-      querySnapshot = await collectionReference
-          .where('location_do', isEqualTo: dou)
-          .where('location_si', isEqualTo: si)
-          .orderBy("date")
-          .get();
-    } else if (dong == null) {
-      // 구 전체(도 선택 - 시 선택 - 구 선택 - 동 선택X)
-      querySnapshot = await collectionReference
-          .where('location_do', isEqualTo: dou)
-          .where('location_si', isEqualTo: si)
-          .where('location_gu', isEqualTo: gu)
+          .where('location_si/do', isEqualTo: sido)
           .orderBy("date")
           .get();
     } else {
-      // (도 선택 - 시 선택 - 구 선택 - 동 선택)
+      // 시 전체(도 선택 - 시 선택 - 구 선택X)
       querySnapshot = await collectionReference
-          .where('location_do', isEqualTo: dou)
-          .where('location_si', isEqualTo: si)
-          .where('location_gu', isEqualTo: gu)
-          .where('location_dong', isEqualTo: dong)
+          .where('location_si/do', isEqualTo: sido)
+          .where('location_gu/gun/si', isEqualTo: gugunsi)
           .orderBy("date")
           .get();
     }

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:date_format/date_format.dart';
+import 'package:donation_nature/board/service/post_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:donation_nature/board/domain/post.dart';
@@ -106,10 +107,8 @@ class _PostAddScreenState extends State<PostAddScreen> {
     writer: '',
     date: null,
     content: '',
-    locationDo: '', // 도
-    locationSi: '', // 시
-    locationGu: '', // 구
-    locationDong: '', // 동
+    locationSiDo: '',
+    locationGuGunSi: '',
     tagDisaster: '', // 재난 태그
     tagMore: '', // 그 외 태그
   );
@@ -207,7 +206,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
               setState(() {
                 _selectedDo = value;
                 _selectedGu = null;
-                _editedPost.locationDo = _selectedDo;
+                _editedPost.locationSiDo = _selectedDo;
               });
             },
           ),
@@ -228,7 +227,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
               setState(() {
                 _selectedGu = value;
 
-                _editedPost.locationGu = _selectedGu;
+                _editedPost.locationGuGunSi = _selectedGu;
               });
             },
           ),
@@ -369,8 +368,8 @@ class _PostAddScreenState extends State<PostAddScreen> {
         onPressed: () {
           if (_formkey.currentState!.validate() &&
               selectedIndex != -1 &&
-              (_editedPost.locationDo != null ||
-                  _editedPost.locationGu != null)) {
+              (_editedPost.locationSiDo != null ||
+                  _editedPost.locationGuGunSi != null)) {
             //validation 성공하면 폼 저장하기
             _formkey.currentState!.save();
             addPost();
@@ -379,7 +378,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
                 .showSnackBar(SnackBar(content: Text('재난태그 지정필요')));
           } else if (_formkey.currentState!.validate() &&
               selectedIndex != -1 &&
-              _editedPost.locationDo == null) {
+              _editedPost.locationSiDo == null) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text('위치태그 지정필요')));
           }
@@ -415,6 +414,8 @@ class _PostAddScreenState extends State<PostAddScreen> {
   }
 
   void addPost() {
+    PostService _postService = PostService();
+
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -430,10 +431,14 @@ class _PostAddScreenState extends State<PostAddScreen> {
                   // );
                   _editedPost.content = contentEditingController.text;
                   _editedPost.title = titleEditingController.text;
-                  print("시/도: " + _editedPost.locationDo!);
-                  print("구: " + _editedPost.locationGu!);
+                  print("시/도: " + _editedPost.locationSiDo!);
+                  print("구: " + _editedPost.locationGuGunSi!);
                   print(_editedPost.tagDisaster);
                   print(_editedPost.title! + ' ' + _editedPost.content!);
+
+                  // Firebase 연동
+                  _postService.createPost(_editedPost.toJson());
+
                   //저장되었습니다 스낵바 띄우기
                   ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text('저장되었습니다')));

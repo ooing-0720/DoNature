@@ -11,10 +11,8 @@ class PostDetailScreen extends StatelessWidget {
     writer: '',
     date: null,
     content: '',
-    locationDo: '서울', // 도
-    locationSi: '', // 시
-    locationGu: '', // 구
-    locationDong: '', // 동
+    locationSiDo: '서울', // 시/도
+    locationGuGunSi: '', // 구/군/시
     tagDisaster: '지진', // 재난 태그
     tagMore: '', // 그 외 태그
 
@@ -53,7 +51,7 @@ class PostDetailScreen extends StatelessWidget {
                 ),
                 Icon(Icons.place),
                 InputChip(
-                  label: Text(_detailPost.locationDo!),
+                  label: Text(_detailPost.locationSiDo!),
                 ),
                 Spacer(),
                 deleteButton(),

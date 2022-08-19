@@ -8,10 +8,8 @@ class Post {
   bool isDone = false; // 나눔/받기 완료되었는지
   String? content;
   List<String>? image; // firestore에 저장될 이미지 url
-  String? locationDo; // 도
-  String? locationSi; // 시
-  String? locationGu; // 구
-  String? locationDong; // 동
+  String? locationSiDo; // 시/도
+  String? locationGuGunSi; // 구/군/시
   String? tagDisaster; // 재난 태그
   String? tagMore; // 그 외 태그
   final DocumentReference? reference; // Firebase에서 document의 위치
@@ -21,10 +19,8 @@ class Post {
     this.writer,
     this.date,
     this.content,
-    this.locationDo,
-    this.locationSi,
-    this.locationGu,
-    this.locationDong,
+    this.locationSiDo,
+    this.locationGuGunSi,
     this.tagDisaster,
     this.tagMore,
     this.reference,
@@ -37,10 +33,8 @@ class Post {
     writer = json['writer'];
     date = json['date']; // format 맞게 출력되는지 확인해야함
     content = json['content'];
-    locationDo = json['location_do'];
-    locationSi = json['location_si'];
-    locationGu = json['location_gu'];
-    locationDong = json['location_dong'];
+    locationSiDo = json['location_si/do'];
+    locationGuGunSi = json['location_gu/gun/si'];
     tagDisaster = json['tag_disaster'];
     tagMore = json['tag_more'];
   }
@@ -56,10 +50,8 @@ class Post {
     map['writer'] = writer;
     map['date'] = date;
     map['content'] = content;
-    map['location_do'] = locationDo;
-    map['location_si'] = locationSi;
-    map['location_gu'] = locationGu;
-    map['location_dong'] = locationDong;
+    map['location_si/do'] = locationSiDo;
+    map['location_gu/gun/si'] = locationGuGunSi;
     map['tag_disaster'] = tagDisaster;
     map['tag_more'] = tagMore;
 

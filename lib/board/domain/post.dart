@@ -42,6 +42,9 @@ class Post {
   Post.fromQuerySnapshot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot)
       : this.fromJson(snapshot.data(), snapshot.reference);
 
+  Post.fromSnapShot(DocumentSnapshot snapshot)
+      : this.fromJson(snapshot.data(), snapshot.reference);
+
   // Dart(Flutter) -> Firebase
   // CREATE
   Map<String, dynamic> toJson() {

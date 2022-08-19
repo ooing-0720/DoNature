@@ -45,8 +45,13 @@ class PostService {
 
   // Select One(목록에서 게시글 선택)
   Future<Post> getPost(DocumentReference reference) async {
-    var documentSnapshot = await reference.get();
-    return Post.fromJson(documentSnapshot, reference);
+    CollectionReference<Map<String, dynamic>> collectionReference =
+        FirebaseFirestore.instance.collection("bulletin_board");
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+        await collectionReference.doc("$reference").get();
+
+    var post = Post.fromJson(documentSnapshot.data(), reference);
+    return post;
   }
 
   // Select All Matching Tags(위치 태그 구분)

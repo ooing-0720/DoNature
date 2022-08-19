@@ -1,6 +1,8 @@
+import 'package:donation_nature/board/service/post_service.dart';
 import 'package:flutter/material.dart';
 import './post/post_add_screen.dart';
 import './post/post_detail_screen.dart';
+import 'package:donation_nature/board/domain/post.dart';
 
 class BoardScreen extends StatefulWidget {
   const BoardScreen({Key? key}) : super(key: key);
@@ -12,6 +14,8 @@ class BoardScreen extends StatefulWidget {
 class _BoardScreenState extends State<BoardScreen> {
   @override
   Widget build(BuildContext context) {
+    PostService _postService = PostService();
+    Future<List<Post>> posts = _postService.getPosts();
     return Scaffold(
       appBar: AppBar(
         title: Text("나눔게시판"),
@@ -30,29 +34,26 @@ class _BoardScreenState extends State<BoardScreen> {
           ),
         ],
       ),
-      body: ListView.separated(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return ListTile(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PostDetailScreen(index), //0,1,2,3..
-                  ));
-            },
-            //사진 첨부시 썸네일
-            title: Text("제목1"),
-            subtitle: Text("본문1"),
-            leading: Icon(Icons.abc),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [Text("$index")],
-            ),
-          );
-        },
-        separatorBuilder: (context, index) {
-          return Divider();
+      body: FutureBuilder<List<Post>>(
+        future: PostService().getPosts(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Post> posts = snapshot.data!;
+            return ListView.builder(
+              itemCount: posts.length,
+              itemBuilder: (BuildContext context, int index) {
+                Post data = posts[index];
+                return Card(
+                  child: ListTile(
+                    title: Text("${data.title}"),
+                    subtitle: Text("${data.content}"),
+                  ),
+                );
+              },
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
         },
       ),
       floatingActionButton: FloatingActionButton.extended(

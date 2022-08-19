@@ -61,7 +61,7 @@ class _BoardScreenState extends State<BoardScreen> {
               MaterialPageRoute(builder: (context) => PostAddScreen()));
         },
         label: Text('글쓰기'),
-        backgroundColor: Color.fromARGB(255, 33, 33, 33),
+        backgroundColor: Color.fromARGB(255, 7, 65, 29),
         icon: Icon(Icons.add),
       ),
     );

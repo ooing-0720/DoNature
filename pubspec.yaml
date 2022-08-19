@@ -44,6 +44,8 @@ dependencies:
   date_format: ^2.0.6
   cloud_firestore: ^3.4.3
   firebase_core: ^1.20.0
+  firebase_storage: ^10.3.5
+  permission_handler: ^10.0.0
   image_picker: ^0.8.5+3
 
 dev_dependencies:

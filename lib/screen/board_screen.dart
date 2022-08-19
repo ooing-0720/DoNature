@@ -54,8 +54,7 @@ class _BoardScreenState extends State<BoardScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                PostDetailScreen(data.reference!),
+                            builder: (context) => PostDetailScreen(data),
                           ));
                     },
                     child: ListTile(

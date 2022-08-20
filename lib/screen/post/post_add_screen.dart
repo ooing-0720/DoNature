@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:donation_nature/board/service/post_service.dart';
+import 'package:donation_nature/media/media.dart';
 import 'package:donation_nature/screen/board_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -23,8 +24,8 @@ class _PostAddScreenState extends State<PostAddScreen> {
   TextEditingController titleEditingController = TextEditingController();
   TextEditingController contentEditingController = TextEditingController();
   final GlobalKey<FormState> _formkey = GlobalKey();
-  //PickedFile? _image;
-  final ImagePicker _picker = ImagePicker();
+
+  Media _media = Media();
 
   List<String> locationGuList = [];
   String? _selectedDo = null;
@@ -217,16 +218,9 @@ class _PostAddScreenState extends State<PostAddScreen> {
                 children: [
                   SimpleDialogOption(
                     onPressed: () async {
-                      // Future getImageFromCam() async {
-                      //   //카메라에서 가져오기
-                      //   var image = await ImagePicker.platform
-                      //       .pickImage(source: ImageSource.camera);
-                      //   setState(() {
-                      //     _image = image!;
-                      //   });
-                      // }
-                      final XFile? image =
-                          await _picker.pickImage(source: ImageSource.gallery);
+                      // 카메라에서 가져오기
+                      _editedPost.imageUrl = await _media.uploadImage(
+                          ImageSource.camera, _editedPost);
                     },
                     child: Row(
                       children: [
@@ -240,16 +234,9 @@ class _PostAddScreenState extends State<PostAddScreen> {
                   ),
                   SimpleDialogOption(
                     onPressed: () async {
-                      final XFile? image =
-                          await _picker.pickImage(source: ImageSource.gallery);
-                      // Future getImageFromGallery() async {
-                      //   //갤러리에서 가져오기
-                      //   var image = await ImagePicker.platform
-                      //       .pickImage(source: ImageSource.gallery);
-                      //   setState(() {
-                      //     _image = image!;
-                      //   });
-                      // }
+                      // 갤러리에서 가져오기
+                      _editedPost.imageUrl = await _media.uploadImage(
+                          ImageSource.gallery, _editedPost);
                     },
                     child: Row(
                       children: [

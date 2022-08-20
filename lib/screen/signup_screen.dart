@@ -285,26 +285,26 @@ class SignUpScreenState extends State<SignUpScreen> {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         setState(() {
-          message = "\u26A0 비밀번호 보안성이 낮습니다. 다시 입력해주세요.";
+          message = "비밀번호 보안성이 낮습니다. 다시 입력해주세요.";
         });
       } else if (e.code == 'email-already-in-use') {
         setState(() {
-          message = "\u26A0 중복된 아이디입니다. 다른아이디를 입력해주세요.";
+          message = "중복된 이메일입니다. 다른이메일를 입력해주세요.";
         });
       } else {
         setState(() {
-          message = "\u26A0 오류가 발생하였습니다.\n 잠시후 다시 시도해주세요.";
+          message = "오류가 발생하였습니다.\n 잠시후 다시 시도해주세요.";
         });
       }
     } catch (e) {
       setState(() {
-        message = "\u26A0 오류가 발생하였습니다.\n 잠시후 다시 시도해주세요.";
+        message = "오류가 발생하였습니다.\n 잠시후 다시 시도해주세요.";
       });
     }
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Color(0xffE4EFE7),
       ),
     );
   }
@@ -317,7 +317,7 @@ class SignUpScreenState extends State<SignUpScreen> {
 
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       firestore
-          .collection('user/${_emailTextEditingController.text}/nickname')
+          .collection('user/${_emailTextEditingController.text}/userinfo')
           .add(userinfoModel.toMap());
     } catch (ex) {
       log('error)', error: ex.toString(), stackTrace: StackTrace.current);

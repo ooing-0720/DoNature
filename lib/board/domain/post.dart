@@ -7,7 +7,7 @@ class Post {
   Timestamp? date;
   bool isDone = false; // 나눔/받기 완료되었는지
   String? content;
-  List<String>? image; // firestore에 저장될 이미지 url
+  String? imageUrl; // firestore에 저장될 이미지 url
   String? locationSiDo; // 시/도
   String? locationGuGunSi; // 구/군/시
   String? tagDisaster; // 재난 태그
@@ -33,6 +33,7 @@ class Post {
     writer = json['writer'];
     date = json['date']; // format 맞게 출력되는지 확인해야함
     content = json['content'];
+    imageUrl = json['image_url'];
     locationSiDo = json['location_si/do'];
     locationGuGunSi = json['location_gu/gun/si'];
     tagDisaster = json['tag_disaster'];
@@ -53,6 +54,7 @@ class Post {
     map['writer'] = writer;
     map['date'] = date;
     map['content'] = content;
+    map['image_url'] = imageUrl;
     map['location_si/do'] = locationSiDo;
     map['location_gu/gun/si'] = locationGuGunSi;
     map['tag_disaster'] = tagDisaster;

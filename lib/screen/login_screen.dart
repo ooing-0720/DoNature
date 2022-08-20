@@ -1,7 +1,7 @@
-import 'package:donation_nature/screen/mypage_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:logger/logger.dart';
+import 'package:donation_nature/screen/mypage_screen.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -20,7 +20,7 @@ class LoginScreenState extends State<LoginScreen> {
             )),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => _login(),
             icon: Icon(Icons.notifications),
           ),
         ],
@@ -28,16 +28,11 @@ class LoginScreenState extends State<LoginScreen> {
       body: Container(margin: EdgeInsets.all(50), child: _loginForm(context)),
     );
   }
-  
+
   final _formkey = GlobalKey<FormState>();
 
   final _emailTextEditingController = TextEditingController();
   final _passwordTextEditingController = TextEditingController();
-
-
-var logger = Logger(
-  printer: PrettyPrinter(),
-);
 
   void dispose() {
     _emailTextEditingController.dispose();
@@ -58,16 +53,27 @@ var logger = Logger(
             ),
             TextFormField(
               controller: _emailTextEditingController,
-              validator: (value) =>
-                  value!.isEmpty ? "Please enter some text" : null,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return '이메일을 입력하세요.';
+                } else if (!RegExp(
+                        r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                    .hasMatch(value)) {
+                  return '올바른 이메일 형식이 아닙니다.';
+                }
+                return null;
+              },
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: '이메일',
               ),
             ),
             SizedBox(height: 12.0),
-            TextField(
+            TextFormField(
               controller: _passwordTextEditingController,
+              validator: (value) {
+                value!.isEmpty ? '비밀번호를 입력하세요.' : null;
+              },
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: '비밀번호',
@@ -83,8 +89,7 @@ var logger = Logger(
                 child: Text('로그인'),
                 onPressed: () {
                   if (_formkey.currentState!.validate()) {
-                _login();
-                    print(_passwordTextEditingController.text);
+                    _login();
                   }
                 }),
           ],
@@ -105,7 +110,7 @@ var logger = Logger(
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const MyPageScreen()));
       } on FirebaseAuthException catch (e) {
-        logger.e(e);
+        //logger.e(e);
         String message = '';
 
         if (e.code == 'user-not-found') {
@@ -116,8 +121,6 @@ var logger = Logger(
           message = '이메일을 확인하세요.';
         }
 
-        
-
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(message),
@@ -127,6 +130,4 @@ var logger = Logger(
       }
     }
   }
-
-  
 }

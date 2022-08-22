@@ -19,6 +19,7 @@ class Post {
     this.writer,
     this.date,
     this.content,
+    this.imageUrl,
     this.locationSiDo,
     this.locationGuGunSi,
     this.tagDisaster,

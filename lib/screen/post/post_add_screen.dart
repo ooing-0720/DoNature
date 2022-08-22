@@ -46,6 +46,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
     writer: '',
     date: null,
     content: '',
+    imageUrl: '',
     locationSiDo: '',
     locationGuGunSi: '',
     tagDisaster: '', // 재난 태그
@@ -219,8 +220,10 @@ class _PostAddScreenState extends State<PostAddScreen> {
                   SimpleDialogOption(
                     onPressed: () async {
                       // 카메라에서 가져오기
+                      // 파이어베이스에 사진 업로드된 후에 글작성 버튼 눌러야함 - 5sec
                       _editedPost.imageUrl = await _media.uploadImage(
-                          ImageSource.camera, _editedPost);
+                          ImageSource.camera,
+                          titleEditingController.text.hashCode.toString());
                     },
                     child: Row(
                       children: [
@@ -234,9 +237,10 @@ class _PostAddScreenState extends State<PostAddScreen> {
                   ),
                   SimpleDialogOption(
                     onPressed: () async {
-                      // 갤러리에서 가져오기
+                      // 갤러리에서 가져오기 - 4sec
                       _editedPost.imageUrl = await _media.uploadImage(
-                          ImageSource.gallery, _editedPost);
+                          ImageSource.gallery,
+                          titleEditingController.text.hashCode.toString());
                     },
                     child: Row(
                       children: [
@@ -391,6 +395,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
                   DateTime datetime = _editedPost.date!.toDate();
                   _editedPost.content = contentEditingController.text;
                   _editedPost.title = titleEditingController.text;
+                  print("url " + _editedPost.imageUrl.toString());
                   print("date " + _editedPost.date.toString());
                   print("datetime " + datetime.toString());
                   _editedPost.date = Timestamp.now();

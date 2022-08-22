@@ -4,11 +4,23 @@ import 'package:donation_nature/likelist_screen.dart';
 import 'package:donation_nature/activitylist_screen.dart';
 import 'package:donation_nature/screen/certify_screen.dart';
 import 'package:donation_nature/screen/signup_screen.dart';
+import 'package:donation_nature/screen/user_manage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class MyPageHeader extends StatelessWidget {
+class MyPageHeader extends StatefulWidget {
   const MyPageHeader({Key? key}) : super(key: key);
 
-  final String userName = "홍길동";
+  @override
+  State<MyPageHeader> createState() => MyPageHeaderState();
+}
+
+class MyPageHeaderState extends State<MyPageHeader> {
+  final UserManage userManage = UserManage();
+  String userName = '';
+  String userEmail = '';
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,17 +34,27 @@ class MyPageHeader extends StatelessWidget {
         ),
         padding: EdgeInsets.all(20),
         child: Column(children: [
-          _buildMypageHeader(),
+          _buildMypageHeader(context),
           _buildMypageMenu(context),
           Divider(
             thickness: 4,
             color: Color(0xffE4EFE7),
           ),
-          MypageList(),
+          _buildMypageListView(),
         ]));
   }
 
-  Widget _buildMypageHeader() {
+  Widget _buildMypageHeader(BuildContext context) {
+    User? user = userManage.getUser();
+
+    if (user == null) {
+      userName = "로그인하세요";
+      userEmail = '';
+    } else {
+      userName = user.displayName! + '님';
+      userEmail = user.email!;
+    }
+
     return Row(children: [
       CircleAvatar(
         backgroundImage: AssetImage('assets/images/splash.png'),
@@ -41,17 +63,47 @@ class MyPageHeader extends StatelessWidget {
       SizedBox(width: 20),
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         SizedBox(height: 10),
-        Text(
-          userName + '님',
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
-        ),
+        if (user == null) ...[
+          Container(
+              margin: EdgeInsets.only(top: 20),
+              child: RichText(
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: '로그인',
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w400,
+                        decoration: TextDecoration.underline),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()),
+                        );
+                      },
+                  ),
+                  TextSpan(
+                      text: '하세요',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w400,
+                      )),
+                ]),
+              )),
+        ] else ...[
+          Text(
+            userName,
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
+          )
+        ],
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: Color(0xffE4EFE7),
           ),
           child: Text(
-            'gildong@mail.com',
+            userEmail,
             style: TextStyle(
               fontSize: 13,
             ),
@@ -109,7 +161,7 @@ class MyPageHeader extends StatelessWidget {
                 width: 2,
               ),
               borderRadius: BorderRadius.circular(30)),
-          child: Icon(
+          child: FaIcon(
             mIcon,
             color: Color(0xff9fc3a8),
             size: 50,
@@ -120,17 +172,8 @@ class MyPageHeader extends StatelessWidget {
       ],
     );
   }
-}
 
-class MypageList extends StatefulWidget {
-  _MypageListState createState() {
-    return _MypageListState();
-  }
-}
-
-class _MypageListState extends State<MypageList> {
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildMypageListView() {
     return ListView(
       children: [
         ListTile(
@@ -213,7 +256,9 @@ class _MypageListState extends State<MypageList> {
                   ),
                   child: Text('로그아웃'),
                   onPressed: () {
-                    Navigator.pop(context);
+                    userManage.signOut();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()));
                   }),
             ])
           ]);

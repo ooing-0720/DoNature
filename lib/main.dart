@@ -27,8 +27,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          primaryColor: Color.fromARGB(255, 7, 65, 29), // 임의로 지정
+          // primaryColor: Color.fromARGB(255, 7, 65, 29),
+
           appBarTheme: AppBarTheme(
+              elevation: 1.0,
               centerTitle: true,
               color: Colors.white,
               iconTheme: IconThemeData(color: Colors.black),
@@ -76,7 +78,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
+            icon: Icon(Icons.home),
             label: '홈',
           ),
           BottomNavigationBarItem(
@@ -97,7 +99,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color.fromARGB(255, 7, 65, 29),
+        selectedItemColor: Color(0xff003300),
         onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
       ),

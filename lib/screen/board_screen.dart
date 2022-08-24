@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation_nature/board/provider/post_provider.dart';
 import 'package:donation_nature/board/service/post_service.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,7 @@ class _BoardScreenState extends State<BoardScreen> {
                           Row(
                             //칩 색이 안 바뀜
                             children: [
-                              InputChip(
+                              Chip(
                                 label: Text(
                                   "${data.tagDisaster}",
                                   style: TextStyle(color: Colors.white),
@@ -75,7 +76,7 @@ class _BoardScreenState extends State<BoardScreen> {
                               SizedBox(
                                 width: 10,
                               ),
-                              InputChip(
+                              Chip(
                                 label: Text(
                                   "${data.locationSiDo}",
                                   style: TextStyle(color: Colors.white),

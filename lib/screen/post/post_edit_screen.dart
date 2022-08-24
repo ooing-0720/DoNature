@@ -15,35 +15,30 @@ import 'package:image_picker/image_picker.dart';
 import 'package:donation_nature/screen/location_list.dart';
 import '../disaster_list.dart';
 
-class PostAddScreen extends StatefulWidget {
-  const PostAddScreen({Key? key}) : super(key: key);
+class PostEditScreen extends StatefulWidget {
+  final Post post;
+
+  const PostEditScreen({required this.post});
 
   @override
-  State<PostAddScreen> createState() => _PostAddScreenState();
+  State<PostEditScreen> createState() => _PostEditScreenState();
 }
 
-class _PostAddScreenState extends State<PostAddScreen> {
-  TextEditingController titleEditingController = TextEditingController();
-  TextEditingController contentEditingController = TextEditingController();
-  final GlobalKey<FormState> _formkey = GlobalKey();
-
-  Media _media = Media();
-
+class _PostEditScreenState extends State<PostEditScreen> {
+  late TextEditingController titleEditingController;
+  late TextEditingController contentEditingController;
+  int selectedIndex = -1;
   List<String> locationGuList = [];
   String? _selectedDo = null;
   String? _selectedGu = null;
-
-  int selectedIndex = -1;
-  var _editedPost = Post(
-    title: '',
-    writer: '',
-    date: null,
-    content: '',
-    locationSiDo: '',
-    locationGuGunSi: '',
-    tagDisaster: '', // 재난 태그
-    tagMore: '', // 그 외 태그
-  );
+  final GlobalKey<FormState> _formkey = GlobalKey();
+  Media _media = Media();
+  @override
+  void initState() {
+    super.initState();
+    titleEditingController = TextEditingController(text: widget.post.title);
+    contentEditingController = TextEditingController(text: widget.post.content);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,75 +47,125 @@ class _PostAddScreenState extends State<PostAddScreen> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-          appBar: AppBar(
-            title: Text("글쓰기"),
-          ),
-          body: postForm()),
-    );
-  }
-
-  Form postForm() {
-    return Form(
-      key: _formkey,
-      child: SingleChildScrollView(
-        padding: EdgeInsets.all(15),
-        scrollDirection: Axis.vertical,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            titleForm(),
-            Divider(
-              height: 20,
-              thickness: 1.5,
-            ),
-            Column(
+        appBar: AppBar(title: const Text("글 수정하기")),
+        body: Form(
+          key: _formkey,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(15),
+            scrollDirection: Axis.vertical,
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                titleEditForm(),
+                Divider(
+                  height: 20,
+                  thickness: 1.5,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Chip(
-                      backgroundColor: Color(0xff9fc3a8),
-                      label: Text("위치", style: TextStyle(color: Colors.white)),
+                    Row(
+                      children: [
+                        Chip(
+                          backgroundColor: Color(0xff9fc3a8),
+                          label:
+                              Text("위치", style: TextStyle(color: Colors.white)),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        locationDropdown(),
+                      ],
                     ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    locationDropdown(),
                   ],
                 ),
-              ],
-            ),
-            contentForm(),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Row(
-                    children: [
-                      Icon(Icons.local_offer),
-                      SizedBox(width: 10),
-                      Text("재난 태그: ")
-                    ],
+                contentEditForm(),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Row(
+                        children: [
+                          Icon(Icons.local_offer),
+                          SizedBox(width: 10),
+                          Text("재난 태그: ")
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(children: disasterChips()),
+                ),
+                Divider(
+                  height: 20,
+                  thickness: 1.5,
+                ),
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return SimpleDialog(
+                              children: [
+                                SimpleDialogOption(
+                                  onPressed: () async {
+                                    // 카메라에서 가져오기
+                                    widget.post.imageUrl =
+                                        await _media.uploadImage(
+                                            ImageSource.camera, widget.post);
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.photo_camera),
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      Text("카메라에서 가져오기")
+                                    ],
+                                  ),
+                                ),
+                                SimpleDialogOption(
+                                  onPressed: () async {
+                                    // 갤러리에서 가져오기
+                                    widget.post.imageUrl =
+                                        await _media.uploadImage(
+                                            ImageSource.gallery, widget.post);
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.image),
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      Text("갤러리에서 가져오기")
+                                    ],
+                                  ),
+                                )
+                              ],
+                            );
+                          });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      height: 80,
+                      width: 80,
+                      child: Center(child: Icon(Icons.add_to_photos)),
+                    ),
                   ),
                 ),
+                Center(child: editButton(context))
               ],
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(children: disasterChips()),
-            ),
-            Divider(
-              height: 20,
-              thickness: 1.5,
-            ),
-            Center(
-              child: uploadImage(),
-            ),
-            Center(child: uploadButton())
-          ],
+          ),
         ),
       ),
     );
@@ -178,7 +223,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
               setState(() {
                 _selectedDo = value;
                 _selectedGu = null;
-                _editedPost.locationSiDo = _selectedDo;
+                widget.post.locationSiDo = _selectedDo;
               });
             },
           ),
@@ -198,7 +243,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
             onChanged: (dynamic value) {
               setState(() {
                 _selectedGu = value;
-                _editedPost.locationGuGunSi = _selectedGu;
+                widget.post.locationGuGunSi = _selectedGu;
               });
             },
           ),
@@ -207,63 +252,35 @@ class _PostAddScreenState extends State<PostAddScreen> {
     );
   }
 
-  GestureDetector uploadImage() {
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return SimpleDialog(
-                children: [
-                  SimpleDialogOption(
-                    onPressed: () async {
-                      // 카메라에서 가져오기
-                      _editedPost.imageUrl = await _media.uploadImage(
-                          ImageSource.camera, _editedPost);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.photo_camera),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text("카메라에서 가져오기")
-                      ],
-                    ),
-                  ),
-                  SimpleDialogOption(
-                    onPressed: () async {
-                      // 갤러리에서 가져오기
-                      _editedPost.imageUrl = await _media.uploadImage(
-                          ImageSource.gallery, _editedPost);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.image),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text("갤러리에서 가져오기")
-                      ],
-                    ),
-                  )
-                ],
-              );
-            });
+  TextFormField contentEditForm() {
+    return TextFormField(
+      controller: contentEditingController,
+      maxLines: 20,
+      validator: (String? val) {
+        if (val!.isEmpty) {
+          return "내용은 비워둘 수 없습니다";
+        }
       },
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.transparent,
-            border: Border.all(color: Colors.grey),
+      decoration: InputDecoration(
+        hintText: '내용을 입력하세요',
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 1, color: Colors.grey),
+            borderRadius: BorderRadius.all(
+              Radius.circular(20),
+            )),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 2, color: Colors.grey),
+            borderRadius: BorderRadius.all(
+              Radius.circular(20),
+            )),
+        errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 1, color: Colors.red),
             borderRadius: BorderRadius.all(Radius.circular(20))),
-        height: 80,
-        width: 80,
-        child: Center(child: Icon(Icons.add_to_photos)),
       ),
     );
   }
 
-  TextFormField titleForm() {
+  TextFormField titleEditForm() {
     return TextFormField(
       controller: titleEditingController,
       maxLines: 1,
@@ -292,56 +309,28 @@ class _PostAddScreenState extends State<PostAddScreen> {
     );
   }
 
-  TextFormField contentForm() {
-    return TextFormField(
-      controller: contentEditingController,
-      maxLines: 20,
-      validator: (String? val) {
-        if (val!.isEmpty) {
-          return "내용은 비워둘 수 없습니다";
-        }
-      },
-      decoration: InputDecoration(
-        hintText: '내용을 입력하세요',
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Colors.grey),
-            borderRadius: BorderRadius.all(
-              Radius.circular(20),
-            )),
-        focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 2, color: Colors.grey),
-            borderRadius: BorderRadius.all(
-              Radius.circular(20),
-            )),
-        errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Colors.red),
-            borderRadius: BorderRadius.all(Radius.circular(20))),
-      ),
-    );
-  }
-
-  ElevatedButton uploadButton() {
+  ElevatedButton editButton(BuildContext context) {
     return ElevatedButton(
         onPressed: () {
           if (_formkey.currentState!.validate() &&
               selectedIndex != -1 &&
-              (_editedPost.locationSiDo != null ||
-                  _editedPost.locationGuGunSi != null)) {
+              (widget.post.locationSiDo != null ||
+                  widget.post.locationGuGunSi != null)) {
             //validation 성공하면 폼 저장하기
             _formkey.currentState!.save();
-            addPost();
+            editPost();
           } else if (_formkey.currentState!.validate() && selectedIndex == -1) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text('재난태그 지정필요')));
           } else if (_formkey.currentState!.validate() &&
               selectedIndex != -1 &&
-              _editedPost.locationSiDo == null) {
+              widget.post.locationSiDo == null) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text('위치태그 지정필요')));
           }
         },
         style: ElevatedButton.styleFrom(primary: Color(0xff9fc3a8)),
-        child: Text("글쓰기"));
+        child: Text("글 수정하기"));
   }
 
   List<Widget> disasterChips() {
@@ -356,7 +345,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
           onSelected: (bool value) {
             setState(() {
               selectedIndex = i;
-              _editedPost.tagDisaster = disasterList[selectedIndex];
+              widget.post.tagDisaster = disasterList[selectedIndex];
             });
           },
           label: Text(
@@ -370,7 +359,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
     return chips;
   }
 
-  void addPost() {
+  void editPost() {
     PostService _postService = PostService();
 
     showDialog(
@@ -378,7 +367,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Text("게시글을 등록하시겠습니까?"),
+          content: Text("게시글을 수정하시겠습니까?"),
           actions: [
             FlatButton(
                 onPressed: () {
@@ -386,20 +375,22 @@ class _PostAddScreenState extends State<PostAddScreen> {
                   //   content: contentEditingController.text,
                   //   title: titleEditingController.text,
                   // );
-                  _editedPost.date = Timestamp.now();
-                  DateTime datetime = _editedPost.date!.toDate();
-                  _editedPost.content = contentEditingController.text;
-                  _editedPost.title = titleEditingController.text;
-                  print("date " + _editedPost.date.toString());
+                  widget.post.date = Timestamp.now();
+                  DateTime datetime = widget.post.date!.toDate();
+                  widget.post.content = contentEditingController.text;
+                  widget.post.title = titleEditingController.text;
+                  print("date " + widget.post.date.toString());
                   print("datetime " + datetime.toString());
-                  _editedPost.date = Timestamp.now();
-                  print("시/도: " + _editedPost.locationSiDo!);
-                  print("구: " + _editedPost.locationGuGunSi!);
-                  print(_editedPost.tagDisaster);
-                  print(_editedPost.title! + ' ' + _editedPost.content!);
+                  widget.post.date = Timestamp.now();
+                  print("시/도: " + widget.post.locationSiDo!);
+                  print("구: " + widget.post.locationGuGunSi!);
+                  print(widget.post.tagDisaster);
+                  print(widget.post.title! + ' ' + widget.post.content!);
 
                   // Firebase 연동
-                  _postService.createPost(_editedPost.toJson());
+                  _postService.updatePost(
+                      reference: widget.post.reference!,
+                      json: widget.post.toJson());
 
                   //저장되었습니다 스낵바 띄우기
                   ScaffoldMessenger.of(context)
@@ -419,7 +410,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
                     setState(() {});
                   });
 
-                  //              Navigator.of(context).pop();
+                  // Navigator.of(context).pop();
                 },
                 child: Text("예")),
             FlatButton(

@@ -30,8 +30,6 @@ class Media {
   }
 
   Future<String> uploadProfileImage(ImageSource source, String title) async {
-    // PermissionRequest.getStoragePermission();
-
     var image = await ImagePicker()
         .pickImage(source: source, imageQuality: 50, maxWidth: 150);
 

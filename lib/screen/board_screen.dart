@@ -16,6 +16,15 @@ class BoardScreen extends StatefulWidget {
 }
 
 class _BoardScreenState extends State<BoardScreen> {
+  GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+
+  @override
+  void initState() {
+    super.initState();
+    // _initPostData=
+  }
+
   @override
   Widget build(BuildContext context) {
     // PostService _postService = PostService();
@@ -40,72 +49,85 @@ class _BoardScreenState extends State<BoardScreen> {
           ),
         ],
       ),
-      body: FutureBuilder<List<Post>>(
-        future: PostService().getPosts(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            List<Post> posts = snapshot.data!;
-            return ListView.builder(
-              itemCount: posts.length,
-              itemBuilder: (BuildContext context, int index) {
-                Post data = posts[index];
-                return Card(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PostDetailScreen(data),
-                          ));
-                    },
-                    child: ListTile(
-                      title: Text("${data.title}"),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            //칩 색이 안 바뀜
-                            children: [
-                              Chip(
-                                label: Text(
-                                  "${data.tagDisaster}",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                backgroundColor: Color(0xff9fc3a8),
+      body: RefreshIndicator(
+        onRefresh: () {
+          return Future(() {
+            setState(() {});
+          });
+        },
+        child: FutureBuilder<List<Post>>(
+          future: PostService().getPosts(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<Post> posts = snapshot.data!;
+              return ListView.builder(
+                itemCount: posts.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Post data = posts[index];
+                  return Card(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PostDetailScreen(data),
+                            ));
+                      },
+                      child: ListTile(
+                        title: Text(
+                          "${data.title}",
+                          style: TextStyle(fontSize: 17.5),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${data.date!.toDate().toLocal().toString().substring(5, 16)}",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            Transform(
+                              transform: new Matrix4.identity()..scale(0.95),
+                              child: Row(
+                                children: [
+                                  Chip(
+                                    label: Text(
+                                      "${data.tagDisaster}",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    backgroundColor: Color(0xff9fc3a8),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Chip(
+                                    label: Text(
+                                      "${data.locationSiDo}",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    backgroundColor: Color(0xff9fc3a8),
+                                  ),
+                                ],
                               ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Chip(
-                                label: Text(
-                                  "${data.locationSiDo}",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                backgroundColor: Color(0xff9fc3a8),
-                              ),
-                            ],
+                            ),
+                          ],
+                        ),
+                        trailing: GestureDetector(
+                          onTap: () {},
+                          child: Icon(
+                            Icons.favorite_border,
+                            color: Color(0xff9fc3a8),
                           ),
-                          // Text(
-                          //   "${data.content}",
-                          // ),
-                        ],
-                      ),
-                      trailing: GestureDetector(
-                        onTap: () {},
-                        child: Icon(
-                          Icons.favorite_border,
-                          color: Color(0xff9fc3a8),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
+                  );
+                },
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -113,11 +135,12 @@ class _BoardScreenState extends State<BoardScreen> {
               MaterialPageRoute(builder: (context) => PostAddScreen()));
         },
         label: Text('글쓰기'),
-        backgroundColor: Color.fromARGB(255, 7, 65, 29),
+        backgroundColor: Color(0xff9fc3a8),
         icon: Icon(Icons.add),
       ),
     );
   }
+  //Future <void> _refreshPosts() async {}
 }
 
 class MySearchDelegate extends SearchDelegate {

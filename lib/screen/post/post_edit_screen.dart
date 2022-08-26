@@ -47,7 +47,7 @@ class _PostEditScreenState extends State<PostEditScreen> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text("글 수정하기")),
+        appBar: AppBar(title: Text("글 수정하기")),
         body: Form(
           key: _formkey,
           child: SingleChildScrollView(
@@ -64,6 +64,72 @@ class _PostEditScreenState extends State<PostEditScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return SimpleDialog(
+                                children: [
+                                  SimpleDialogOption(
+                                    onPressed: () async {
+                                      // 카메라에서 가져오기
+                                      widget.post.imageUrl =
+                                          await _media.uploadImage(
+                                              ImageSource.camera,
+                                              titleEditingController
+                                                  .text.hashCode
+                                                  .toString());
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.photo_camera),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        Text("카메라에서 가져오기")
+                                      ],
+                                    ),
+                                  ),
+                                  SimpleDialogOption(
+                                    onPressed: () async {
+                                      // 갤러리에서 가져오기
+                                      widget.post.imageUrl =
+                                          await _media.uploadImage(
+                                              ImageSource.gallery,
+                                              titleEditingController
+                                                  .text.hashCode
+                                                  .toString());
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.image),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        Text("갤러리에서 가져오기")
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              );
+                            });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            border: Border.all(color: Colors.grey),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        height: 80,
+                        width: 80,
+                        child: Center(child: Icon(Icons.add_to_photos)),
+                      ),
+                    ),
+                    Divider(
+                      height: 20,
+                      thickness: 1.5,
+                    ),
                     Row(
                       children: [
                         Chip(
@@ -104,67 +170,6 @@ class _PostEditScreenState extends State<PostEditScreen> {
                 Divider(
                   height: 20,
                   thickness: 1.5,
-                ),
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return SimpleDialog(
-                              children: [
-                                SimpleDialogOption(
-                                  onPressed: () async {
-                                    // 카메라에서 가져오기
-                                    widget.post.imageUrl =
-                                        await _media.uploadImage(
-                                            ImageSource.camera,
-                                            titleEditingController.text.hashCode
-                                                .toString());
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.photo_camera),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text("카메라에서 가져오기")
-                                    ],
-                                  ),
-                                ),
-                                SimpleDialogOption(
-                                  onPressed: () async {
-                                    // 갤러리에서 가져오기
-                                    widget.post.imageUrl =
-                                        await _media.uploadImage(
-                                            ImageSource.gallery,
-                                            titleEditingController.text.hashCode
-                                                .toString());
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.image),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text("갤러리에서 가져오기")
-                                    ],
-                                  ),
-                                )
-                              ],
-                            );
-                          });
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
-                      height: 80,
-                      width: 80,
-                      child: Center(child: Icon(Icons.add_to_photos)),
-                    ),
-                  ),
                 ),
                 Center(child: editButton(context))
               ],
@@ -373,23 +378,17 @@ class _PostEditScreenState extends State<PostEditScreen> {
         return AlertDialog(
           content: Text("게시글을 수정하시겠습니까?"),
           actions: [
-            FlatButton(
+            OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  minimumSize: Size(40, 40),
+                  primary: Color(0xff9fc3a8),
+                ),
                 onPressed: () {
-                  // _editedPost = Post(
-                  //   content: contentEditingController.text,
-                  //   title: titleEditingController.text,
-                  // );
                   widget.post.date = Timestamp.now();
                   DateTime datetime = widget.post.date!.toDate();
                   widget.post.content = contentEditingController.text;
                   widget.post.title = titleEditingController.text;
-                  print("date " + widget.post.date.toString());
-                  print("datetime " + datetime.toString());
                   widget.post.date = Timestamp.now();
-                  print("시/도: " + widget.post.locationSiDo!);
-                  print("구: " + widget.post.locationGuGunSi!);
-                  print(widget.post.tagDisaster);
-                  print(widget.post.title! + ' ' + widget.post.content!);
 
                   // Firebase 연동
                   _postService.updatePost(
@@ -400,24 +399,17 @@ class _PostEditScreenState extends State<PostEditScreen> {
                   ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text('저장되었습니다')));
 
-//네비게이터
-// Navigator.of(
-//                       context,
-//                       MaterialPageRoute(
-//                           builder: (context) => PostDetailScreen(_editedPost))
-//                           );
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BoardScreen(),
-                      )).then((value) {
-                    setState(() {});
-                  });
-
-                  // Navigator.of(context).pop();
+                          builder: (context) => PostDetailScreen(widget.post)));
                 },
                 child: Text("예")),
-            FlatButton(
+            OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  minimumSize: Size(40, 40),
+                  primary: Color(0xff9fc3a8),
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

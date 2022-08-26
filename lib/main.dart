@@ -6,6 +6,7 @@ import 'package:donation_nature/screen/info_screen.dart';
 import 'package:donation_nature/screen/board_screen.dart';
 import 'package:donation_nature/screen/mypage/mypage_screen.dart';
 import 'package:donation_nature/screen/home_screen.dart';
+//import 'package:get/get.dart';
 
 import 'screen/chat/chat_detail_screen.dart';
 

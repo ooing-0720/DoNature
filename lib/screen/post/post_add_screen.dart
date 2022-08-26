@@ -81,6 +81,11 @@ class _PostAddScreenState extends State<PostAddScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                uploadImage(),
+                Divider(
+                  height: 20,
+                  thickness: 1.5,
+                ),
                 Row(
                   children: [
                     Chip(
@@ -120,9 +125,6 @@ class _PostAddScreenState extends State<PostAddScreen> {
             Divider(
               height: 20,
               thickness: 1.5,
-            ),
-            Center(
-              child: uploadImage(),
             ),
             Center(child: uploadButton())
           ],
@@ -388,26 +390,19 @@ class _PostAddScreenState extends State<PostAddScreen> {
         return AlertDialog(
           content: Text("게시글을 등록하시겠습니까?"),
           actions: [
-            FlatButton(
+            OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  minimumSize: Size(40, 40),
+                  primary: Color(0xff9fc3a8),
+                ),
                 onPressed: () {
-                  // _editedPost = Post(
-                  //   content: contentEditingController.text,
-                  //   title: titleEditingController.text,
-                  // );
                   _editedPost.date = Timestamp.now();
                   DateTime datetime = _editedPost.date!.toDate();
                   _editedPost.content = contentEditingController.text;
                   _editedPost.title = titleEditingController.text;
                   _editedPost.userEmail = user?.email;
                   _editedPost.writer = user?.displayName;
-                  print("url " + _editedPost.imageUrl.toString());
-                  print("date " + _editedPost.date.toString());
-                  print("datetime " + datetime.toString());
                   _editedPost.date = Timestamp.now();
-                  print("시/도: " + _editedPost.locationSiDo!);
-                  print("구: " + _editedPost.locationGuGunSi!);
-                  print(_editedPost.tagDisaster);
-                  print(_editedPost.title! + ' ' + _editedPost.content!);
 
                   // Firebase 연동
                   _postService.createPost(_editedPost.toJson());
@@ -433,7 +428,11 @@ class _PostAddScreenState extends State<PostAddScreen> {
                   //              Navigator.of(context).pop();
                 },
                 child: Text("예")),
-            FlatButton(
+            OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  minimumSize: Size(40, 40),
+                  primary: Color(0xff9fc3a8),
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

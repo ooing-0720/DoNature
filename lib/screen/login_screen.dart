@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:donation_nature/screen/mypage_screen.dart';
+import 'package:donation_nature/screen/mypage/mypage_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -25,7 +25,7 @@ class LoginScreenState extends State<LoginScreen> {
           ),
         ],
       ),
-      body: Container(margin: EdgeInsets.all(50), child: _loginForm(context)),
+      body: SingleChildScrollView(child: _loginForm(context)),
     );
   }
 
@@ -45,7 +45,8 @@ class LoginScreenState extends State<LoginScreen> {
         key: _formkey,
         child: Column(
           children: [
-            Flexible(
+            Container(
+              margin: EdgeInsets.all(50),
               child: SizedBox(
                   height: 200,
                   width: 300,

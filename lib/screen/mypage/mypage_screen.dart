@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:donation_nature/screen/mypage_header.dart';
+import 'package:donation_nature/screen/mypage/mypage_header.dart';
+import 'package:donation_nature/screen/mypage/mypage_menu.dart';
 
-class MyPageScreen extends StatelessWidget {
+class MyPageScreen extends StatefulWidget {
   const MyPageScreen({Key? key}) : super(key: key);
 
-  final String userName = "홍길동";
+  @override
+  State<MyPageScreen> createState() => MyPageScreenState();
+}
+
+class MyPageScreenState extends State<MyPageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,15 +25,10 @@ class MyPageScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        //color: Color(0xffE4EFE7),
-        child: Column(
-          // 코드 정리
-          children: [
-            MyPageHeader(),
-          ],
-        ),
+      body: SingleChildScrollView(
+        child: Column(children: [MyPageHeader(), MyPageMenu()]),
       ),
+      // backgroundColor: Color(0xffededed),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation_nature/models/user_info_model.dart';
+import 'package:donation_nature/screen/user_manage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/screen/login_screen.dart';
@@ -273,7 +274,10 @@ class SignUpScreenState extends State<SignUpScreen> {
           .then((value) {
         if (value.user!.email == null) {
         } else {
-          createUserInfo();
+          User? user = value.user;
+          user?.updateDisplayName(_nicknameTextEditingController.text);
+          // user?.updatePhoneNumber(_numberTextEditingController.text);
+          // user?.updatePhotoURL((_numberTextEditingController.text);
           Navigator.pop(context);
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const LoginScreen()));
@@ -309,20 +313,20 @@ class SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  void createUserInfo() {
-    try {
-      UserInfoModel userinfoModel = UserInfoModel(
-          nickname: _nicknameTextEditingController.text,
-          number: _numberTextEditingController.text);
+  // void createUserInfo() {
+  //   try {
+  //     UserInfoModel userinfoModel = UserInfoModel(
+  //         nickname: _nicknameTextEditingController.text,
+  //         number: _numberTextEditingController.text);
 
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
-      firestore
-          .collection('user/${_emailTextEditingController.text}/userinfo')
-          .add(userinfoModel.toMap());
-    } catch (ex) {
-      log('error)', error: ex.toString(), stackTrace: StackTrace.current);
-    }
-  }
+  //     FirebaseFirestore firestore = FirebaseFirestore.instance;
+  //     firestore
+  //         .collection('user/${_emailTextEditingController.text}/userinfo')
+  //         .add(userinfoModel.toMap());
+  //   } catch (ex) {
+  //     log('error)', error: ex.toString(), stackTrace: StackTrace.current);
+  //   }
+  // }
 
   // void _onPressedJoinButton() {
   //   try {

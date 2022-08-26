@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:donation_nature/board/provider/post_provider.dart';
 import 'package:donation_nature/board/service/post_service.dart';
+import 'package:donation_nature/screen/board_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:donation_nature/screen/user_manage.dart';
 import '../chat/chat_detail_screen.dart';
 import './post_edit_screen.dart';
 
@@ -10,6 +13,7 @@ import 'package:donation_nature/board/domain/post.dart';
 
 class PostDetailScreen extends StatelessWidget {
   Post post;
+
   PostService postService = PostService();
   PostDetailScreen(this.post);
 
@@ -21,6 +25,7 @@ class PostDetailScreen extends StatelessWidget {
 //                   _editedPost.date = Timestamp.now();
   @override
   Widget build(BuildContext context) {
+    User? user = UserManage().getUser();
     DateTime dateTime = post.date!.toDate();
 
     return Scaffold(
@@ -41,7 +46,7 @@ class PostDetailScreen extends StatelessWidget {
                 SizedBox(
                   height: 5,
                 ),
-                Text(dateTime.toString()),
+                Text(dateTime.toLocal().toString().substring(5, 16)),
               ],
             ),
             Divider(
@@ -75,8 +80,8 @@ class PostDetailScreen extends StatelessWidget {
                   //   label: Text(post.locationGuGunSi!),
                   // ),
                   Spacer(),
-                  deleteButton(context),
-                  editButton(context)
+                  if (post.userEmail == user?.email)
+                    Row(children: [deleteButton(context), editButton(context)]),
                 ],
               ),
             ),
@@ -99,7 +104,7 @@ class PostDetailScreen extends StatelessWidget {
           //         builder: (context) => ChatDetailScreen(userName: "$id")));
         },
         label: Text('채팅하기'),
-        backgroundColor: Color.fromARGB(255, 7, 65, 29),
+        backgroundColor: Color(0xff9fc3a8),
         icon: Icon(Icons.chat_bubble),
       ),
     );
@@ -109,6 +114,12 @@ class PostDetailScreen extends StatelessWidget {
     return TextButton(
         //수정버튼
         onPressed: () {
+          // Navigator.pushAndRemoveUntil(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) => PostEditScreen(post: post),
+          //     ),
+          //     (route) => false);
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -117,6 +128,7 @@ class PostDetailScreen extends StatelessWidget {
                       )));
           // PostService()
           //     .updatePost(reference: post.reference!, json: post.toJson());
+          //Get.to(() => PostEditScreen(post: post));
         },
         child: Row(
           children: [
@@ -142,13 +154,25 @@ class PostDetailScreen extends StatelessWidget {
                 return AlertDialog(
                   content: Text("게시글을 삭제하시겠습니까?"),
                   actions: [
-                    FlatButton(
+                    OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: Size(40, 40),
+                          primary: Color(0xff9fc3a8),
+                        ),
                         onPressed: () {
                           Navigator.of(ctx).pop();
                           PostService().deletePost(post.reference!);
+                          Navigator.push(
+                              ctx,
+                              MaterialPageRoute(
+                                  builder: ((context) => BoardScreen())));
                         },
                         child: Text("예")),
-                    FlatButton(
+                    OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: Size(40, 40),
+                          primary: Color(0xff9fc3a8),
+                        ),
                         onPressed: () {
                           Navigator.of(ctx).pop();
                         },

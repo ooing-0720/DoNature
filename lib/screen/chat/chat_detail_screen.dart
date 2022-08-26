@@ -1,18 +1,24 @@
+import 'dart:async';
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:donation_nature/models/chat_model.dart';
 import 'package:donation_nature/models/chatMessageModel.dart';
+import 'package:provider/provider.dart';
 
 class ChatDetailScreen extends StatefulWidget {
   final String userName;
-
   //나중에 userId로 받아야할것같음..
   ChatDetailScreen({Key? key, required this.userName}) : super(key: key);
-
+  
   @override
   State<ChatDetailScreen> createState() => _ChatDetailScreenState();
 }
 
 class _ChatDetailScreenState extends State<ChatDetailScreen> {
+  TextEditingController controller = TextEditingController();
+  
   List<ChatMessage> messages = [
     ChatMessage(messageContent: "받는사람", messageType: "receiver"),
     ChatMessage(messageContent: "받는사람2", messageType: "receiver"),
@@ -21,6 +27,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     ChatMessage(
         messageContent: "보내는사람2", messageType: "sender"),
   ];
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +40,34 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           appBar: AppBar(
             title: Text(widget.userName + '의 채팅'),
           ),
-          body:
+          body: StreamBuilder<List<ChatModel>>(
+          stream: streamChat(),
+          builder:(context, asyncSnapshot){
+            if(!asyncSnapshot.hasData){
+              return const Center(child: CircularProgressIndicator());
+            }else if (asyncSnapshot.hasError){
+              return const Center(child:Text('오류 발생'),);
+            }else {
+              List<ChatModel> chats = asyncSnapshot.data!;
+              return Column(children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: chats.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(chats[index].messageText),
+                            //subtitle: Text(chats[index].time.toDate().toLocal().toString().substring(5,16)),
+                      );
+                    }),
+                  ),  sendMessageField()]);}
+  }) 
               // Padding(
               //   padding: EdgeInsets.all(10),
               //   child: Text(''),
               // ),
-              Stack(
-            children: [chatBubble(), sendMessageField()],
-          )),
+            // Stack(
+           // children: [chatBubble(), sendMessageField()],)
+          ),
     );
   }
 
@@ -58,7 +86,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
             ),
             Expanded(
                 child: TextField(
-              decoration: InputDecoration(
+                  controller: controller,
+                  decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(10),
                   // enabledBorder: OutlineInputBorder(
                   //     borderRadius: BorderRadius.circular(15)),
@@ -76,8 +105,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
             SizedBox(
               width: 10,
             ),
-            FloatingActionButton(
-              onPressed: () {},
+           FloatingActionButton(
+              onPressed: _onPressedSendingButton,
               child: Icon(
                 Icons.send,
                 color: Colors.white,
@@ -126,4 +155,40 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
       },
     );
   }
+
+
+void _onPressedSendingButton(){
+    try{
+      ChatModel chatModel = ChatModel(messageText: controller.text,time: Timestamp.now());
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      firestore.collection('/chattingroom_list/TRyiSq9MTxcJiao5TcHL/message_list').add(chatModel.toMap());
+
+    }catch(ex){
+      log('error)',error: ex.toString(),stackTrace: StackTrace.current);
+    }
+  }
 }
+  
+
+  Stream<List<ChatModel>> streamChat(){
+    try{
+      final Stream<QuerySnapshot> snapshots = FirebaseFirestore.instance.collection('/chattingroom_list/TRyiSq9MTxcJiao5TcHL/message_list').orderBy('time').snapshots();
+      return snapshots.map((querySnapshot){
+        List<ChatModel> chats = [];
+        for (var element in querySnapshot.docs) {
+          chats.add(
+            ChatModel.fromMap(
+                  id:element.id,
+                  //name:element.name
+                  map:element.data() as Map<String, dynamic>
+              )
+          );
+        }
+        return chats;
+      });
+    }catch(ex){
+      log('error)',error: ex.toString(),stackTrace: StackTrace.current);
+      return Stream.error(ex.toString());
+    }
+
+  }

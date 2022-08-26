@@ -48,9 +48,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
             return InkWell(
               onTap: () {},
               child: ChatList(
-                name: chatUsers[index].name, //이름
-                messageText: chatUsers[index].messageText, //메세지텍스트
-                time: chatUsers[index].time, //보낸 시간
+                name: ChatModel[index].name, //이름
+                messageText: ChatModel[index].messageText, //메세지텍스트
+                time: ChatModel[index].time, //보낸 시간
                 isMessageRead:
                     ((index == 0 || index == 3) ? true : false), //읽음표시
               ),

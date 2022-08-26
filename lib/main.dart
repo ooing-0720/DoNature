@@ -1,5 +1,4 @@
 import 'package:donation_nature/firebase_options.dart';
-import 'package:donation_nature/screen/chat/chat_test.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:donation_nature/screen/chat/chat_screen.dart';
@@ -7,6 +6,8 @@ import 'package:donation_nature/screen/info_screen.dart';
 import 'package:donation_nature/screen/board_screen.dart';
 import 'package:donation_nature/screen/mypage/mypage_screen.dart';
 import 'package:donation_nature/screen/home_screen.dart';
+
+import 'screen/chat/chat_detail_screen.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -58,7 +59,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     InfoScreen(),
-    ChatTest(),
+    ChatDetailScreen(userName: 'test'),
     BoardScreen(),
     MyPageScreen(),
   ];

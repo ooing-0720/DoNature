@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 	    Timestamp? time,
 	  }): time = time??Timestamp(0,0);
 	
-	  factory ChatModel.fromMap({required id, required Map<String, dynamic> map}){
+	  factory ChatModel.fromMap({required String id,required Map<String,dynamic> map}){
 	    return ChatModel(
 	      id: id,
       //name: name,

@@ -112,21 +112,21 @@ class _ChatTest extends State<ChatTest> {
 }
   
 
-  Stream<List<ChatModel>> streamChat(){
+Stream<List<ChatModel>> streamChat(){
     try{
-      final Stream<QuerySnapshot> snapshots = FirebaseFirestore.instance.collection('/chattingroom_list/TRyiSq9MTxcJiao5TcHL/message_list').snapshots();
+
+      final Stream<QuerySnapshot> snapshots = FirebaseFirestore.instance.collection('chatrooms/YLCoRBj59XRsDdav2YV1/messages').orderBy('time').snapshots();
       return snapshots.map((querySnapshot){
         List<ChatModel> chats = [];
-        for (var element in querySnapshot.docs) {
+        querySnapshot.docs.forEach((element) { 
           chats.add(
-            ChatModel.fromMap(
-              id: element.id,
-              //name: element.name,
-              map: element.data() as Map<String, dynamic>
-            )
+              ChatModel.fromMap(
+                  id:element.id,
+                  map:element.data() as Map<String, dynamic>
+              )
           );
-        }
-        return chats;
+        });
+        return chats; 
       });
     }catch(ex){
       log('error)',error: ex.toString(),stackTrace: StackTrace.current);

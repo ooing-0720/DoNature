@@ -118,7 +118,9 @@ class _PostEditScreenState extends State<PostEditScreen> {
                                     // 카메라에서 가져오기
                                     widget.post.imageUrl =
                                         await _media.uploadImage(
-                                            ImageSource.camera, widget.post);
+                                            ImageSource.camera,
+                                            titleEditingController.text.hashCode
+                                                .toString());
                                   },
                                   child: Row(
                                     children: [
@@ -135,7 +137,9 @@ class _PostEditScreenState extends State<PostEditScreen> {
                                     // 갤러리에서 가져오기
                                     widget.post.imageUrl =
                                         await _media.uploadImage(
-                                            ImageSource.gallery, widget.post);
+                                            ImageSource.gallery,
+                                            titleEditingController.text.hashCode
+                                                .toString());
                                   },
                                   child: Row(
                                     children: [

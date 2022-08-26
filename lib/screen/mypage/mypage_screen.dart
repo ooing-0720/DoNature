@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:donation_nature/screen/mypage_header.dart';
+import 'package:donation_nature/screen/mypage/mypage_header.dart';
+import 'package:donation_nature/screen/mypage/mypage_menu.dart';
 
 class MyPageScreen extends StatelessWidget {
   const MyPageScreen({Key? key}) : super(key: key);
@@ -20,15 +21,10 @@ class MyPageScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        //color: Color(0xffE4EFE7),
-        child: Column(
-          // 코드 정리
-          children: [
-            MyPageHeader(),
-          ],
-        ),
+      body: SingleChildScrollView(
+        child: Column(children: [MyPageHeader(), MyPageMenu()]),
       ),
+      // backgroundColor: Color(0xffededed),
     );
   }
 }

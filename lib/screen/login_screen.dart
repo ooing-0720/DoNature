@@ -13,20 +13,22 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('로그인',
-            style: TextStyle(
-              color: Colors.black,
-            )),
-        actions: [
-          IconButton(
-            onPressed: () => _login(),
-            icon: Icon(Icons.notifications),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(child: _loginForm(context)),
-    );
+        appBar: AppBar(
+          title: Text('로그인',
+              style: TextStyle(
+                color: Colors.black,
+              )),
+          actions: [
+            IconButton(
+              onPressed: () => _login(),
+              icon: Icon(Icons.notifications),
+            ),
+          ],
+        ),
+        body: SingleChildScrollView(
+          child:
+              Container(margin: EdgeInsets.all(50), child: _loginForm(context)),
+        ));
   }
 
   final _formkey = GlobalKey<FormState>();
@@ -73,7 +75,10 @@ class LoginScreenState extends State<LoginScreen> {
             TextFormField(
               controller: _passwordTextEditingController,
               validator: (value) {
-                value!.isEmpty ? '비밀번호를 입력하세요.' : null;
+                if (value!.isEmpty) {
+                  return '비밀번호를 입력하세요.';
+                }
+                return null;
               },
               decoration: InputDecoration(
                 border: OutlineInputBorder(),

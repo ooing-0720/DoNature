@@ -1,13 +1,12 @@
 import 'dart:convert' as convert;
 import 'package:donation_nature/API/domain/ultra_srt_ncst.dart';
-//import 'package:donation_nature/secret/api_key.dart';
+import 'package:donation_nature/secret/api_key.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:date_format/date_format.dart';
 
 class UltraSrtNcstRepository {
-  var serviceKey =
-      "hcSqsIgXuR1IYTZbp3ZRKDiJZ5OyKkREMRKBDw558%2FGFzMiojAxM0tINjW7lXwJ82LN3y9ZzpLwfFqphgnX9bA%3D%3D";
+  var serviceKey = ultraSrtNcstServiceKey;
 
   Future<UltraSrtNcst?> loadUltraSrtNcst() async {
     Position position = await Geolocator.getCurrentPosition(

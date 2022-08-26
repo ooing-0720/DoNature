@@ -1,7 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/screen/user_manage.dart';
-
+import 'package:donation_nature/screen/user_manage.dart';
+import 'package:donation_nature/media/media.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 import 'mypage_screen.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -33,41 +37,37 @@ class EditProfileScreen extends StatefulWidget {
 // }
 
 class EditProfileScreenState extends State<EditProfileScreen> {
-  TextEditingController profileNameTextEditingController =
-      TextEditingController();
-  TextEditingController bioTextEditingController = TextEditingController();
+  TextEditingController nicknameTextEditingController = TextEditingController();
+  TextEditingController numberTextEditingController = TextEditingController();
   UserManage userManage = UserManage();
+
   final _scaffoldGlobalKey = GlobalKey<ScaffoldState>();
 
   bool loading = false;
   User? user;
   bool _profileNameValid = true;
   bool _bioValid = true;
+  String? _image;
 
   updateUserData() {
     setState(() {
-      profileNameTextEditingController.text.trim().length < 3 ||
-              profileNameTextEditingController.text.isEmpty
+      nicknameTextEditingController.text.trim().length < 3 ||
+              nicknameTextEditingController.text.isEmpty
           ? _profileNameValid = false
           : _profileNameValid = true;
 
-      bioTextEditingController.text.trim().length > 110 ||
-              bioTextEditingController.text.isEmpty
+      numberTextEditingController.text.trim().length > 110 ||
+              numberTextEditingController.text.isEmpty
           ? _bioValid = false
           : _bioValid = true;
     });
+  }
 
-    // if (_bioValid && _profileNameValid) {
-    //   userReference.doc(widget.currentOnlineUserId).update({
-    //     'profileName': profileNameTextEditingController.text,
-    //     'bio': bioTextEditingController.text,
-    //   });
-
-    //   SnackBar successSnackBar = SnackBar(
-    //     content: Text('Profile has been updated successfully.'),
-    //   );
-    //   _scaffoldGlobalKey.currentState.showSnackBar(successSnackBar);
-    // }
+  @override
+  void initState() {
+    super.initState();
+    user = userManage.getUser();
+    _image = user?.photoURL;
   }
 
   // @override
@@ -95,6 +95,8 @@ class EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    user = userManage.getUser();
+
     return Scaffold(
         key: _scaffoldGlobalKey,
         appBar: AppBar(
@@ -115,33 +117,35 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                 margin: EdgeInsets.all(50),
                 child: Column(
                   children: [
-                    Stack(
-                      children: <Widget>[
-                        //padding: EdgeInsets.only(top: 16, bottom: 7),
-                        CircleAvatar(
-                          backgroundColor: Color.fromARGB(221, 223, 223, 223),
-                          radius: 54,
-                          backgroundImage:
-                              AssetImage('assets/images/default_profile.png'),
-
-                          // backgroundImage: CachedNetworkImageProvider(user.url),
-                        ),
-                        Positioned(
-                            bottom: 1,
-                            right: 1,
-                            child: Container(
-                                height: 30,
-                                width: 30,
-                                child: Icon(
-                                  Icons.edit,
-                                  color: Colors.white,
-                                  size: 20,
-                                ),
-                                decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(20))))),
-                      ],
+                    InkWell(
+                      onTap: () {
+                        getImageFromGallery(ImageSource.gallery);
+                      },
+                      child: Stack(
+                        children: <Widget>[
+                          //padding: EdgeInsets.only(top: 16, bottom: 7),
+                          CircleAvatar(
+                            backgroundColor: Color.fromARGB(221, 223, 223, 223),
+                            radius: 54,
+                            backgroundImage: _imageProvider(),
+                          ),
+                          Positioned(
+                              bottom: 1,
+                              right: 1,
+                              child: Container(
+                                  height: 30,
+                                  width: 30,
+                                  child: Icon(
+                                    Icons.photo_camera,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))))),
+                        ],
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.all(16),
@@ -155,7 +159,14 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                     Padding(
                         padding: EdgeInsets.all(0),
                         child: ElevatedButton(
-                          onPressed: updateUserData,
+                          onPressed: () {
+                            if (_profileNameValid) {
+                              user?.updateDisplayName(
+                                  nicknameTextEditingController.text);
+                              user?.updatePhotoURL(_image);
+                              print(_image);
+                            }
+                          },
                           child: Text('완료'),
                           style: ElevatedButton.styleFrom(
                               primary: Color(0xffcddc39)),
@@ -178,10 +189,9 @@ class EditProfileScreenState extends State<EditProfileScreen> {
           ),
         ),
         TextField(
-          style: TextStyle(color: Colors.white),
-          controller: profileNameTextEditingController,
+          controller: nicknameTextEditingController,
           decoration: InputDecoration(
-              hintText: '변경할 닉네임을 작성하세요.',
+              hintText: user!.displayName,
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey)),
               focusedBorder: UnderlineInputBorder(
@@ -205,10 +215,9 @@ class EditProfileScreenState extends State<EditProfileScreen> {
           ),
         ),
         TextField(
-          style: TextStyle(color: Colors.white),
-          controller: bioTextEditingController,
+          controller: numberTextEditingController,
           decoration: InputDecoration(
-              hintText: '변경할 전화번호를 작성하세요.',
+              hintText: user!.email,
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey)),
               focusedBorder: UnderlineInputBorder(
@@ -218,5 +227,24 @@ class EditProfileScreenState extends State<EditProfileScreen> {
         )
       ],
     );
+  }
+
+  Future getImageFromGallery(ImageSource source) async {
+    // 접근 권한인데 갤럭시는 필요없다함?
+    // PermissionRequest.getStoragePermission();
+
+    var image = await ImagePicker()
+        .pickImage(source: source, imageQuality: 50, maxWidth: 150);
+
+    setState(() {
+      if (image != null) {
+        _image = image.path;
+      }
+    });
+  }
+
+  ImageProvider _imageProvider() {
+    print(_image);
+    return Image.network(_image!).image;
   }
 }

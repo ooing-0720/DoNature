@@ -1,7 +1,7 @@
 import 'dart:convert' as convert;
 
 import 'package:donation_nature/permission/permission_request.dart';
-import 'package:donation_nature/secret/api_key.dart';
+//import 'package:donation_nature/secret/api_key.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,6 +15,7 @@ class MainAction {
 
     var latitude = position.latitude;
     var longitude = position.longitude;
+    var geoCodingKey = "AIzaSyD-IAdUO2rnLw4BPpjC48HqgBQIZcrudbo";
     final url = Uri.parse(
         'https://maps.googleapis.com/maps/api/geocode/json?sensor=false&language=ko&latlng=$latitude,$longitude&key=$geoCodingKey');
 

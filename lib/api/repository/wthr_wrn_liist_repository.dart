@@ -1,10 +1,11 @@
 import 'package:donation_nature/API/domain/wthr_wrn_list.dart';
-import 'package:donation_nature/secret/api_key.dart';
+//import 'package:donation_nature/secret/api_key.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 class WthrWrnListRepository {
-  var serviceKey = wthrWrnServiceKey;
+  var serviceKey =
+      "hcSqsIgXuR1IYTZbp3ZRKDiJZ5OyKkREMRKBDw558%2FGFzMiojAxM0tINjW7lXwJ82LN3y9ZzpLwfFqphgnX9bA%3D%3D";
 
   Future<List<WthrWrnList>?> loadWthrWrnList() async {
     var url = Uri.parse(

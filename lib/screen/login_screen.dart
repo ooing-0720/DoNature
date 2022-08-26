@@ -25,7 +25,7 @@ class LoginScreenState extends State<LoginScreen> {
           ),
         ],
       ),
-      body: Container(margin: EdgeInsets.all(50), child: _loginForm(context)),
+      body: SingleChildScrollView(child: _loginForm(context)),
     );
   }
 
@@ -45,7 +45,8 @@ class LoginScreenState extends State<LoginScreen> {
         key: _formkey,
         child: Column(
           children: [
-            Flexible(
+            Container(
+              margin: EdgeInsets.all(50),
               child: SizedBox(
                   height: 200,
                   width: 300,

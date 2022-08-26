@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Post {
   String? title;
+  String? userEmail;
   String? writer;
   Timestamp? date;
   bool isDone = false; // 나눔/받기 완료되었는지
@@ -16,6 +18,7 @@ class Post {
 
   Post({
     this.title,
+    this.userEmail,
     this.writer,
     this.date,
     this.content,
@@ -31,6 +34,7 @@ class Post {
   // READ
   Post.fromJson(dynamic json, this.reference) {
     title = json['title'];
+    userEmail = json['user_email'];
     writer = json['writer'];
     date = json['date']; // format 맞게 출력되는지 확인해야함
     content = json['content'];
@@ -52,6 +56,7 @@ class Post {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['title'] = title;
+    map['user_email'] = userEmail;
     map['writer'] = writer;
     map['date'] = date;
     map['content'] = content;

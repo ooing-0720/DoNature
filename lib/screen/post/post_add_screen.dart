@@ -6,6 +6,8 @@ import 'package:donation_nature/board/service/post_service.dart';
 import 'package:donation_nature/media/media.dart';
 import 'package:donation_nature/screen/board_screen.dart';
 import 'package:donation_nature/screen/post/post_detail_screen.dart';
+import 'package:donation_nature/screen/user_manage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:donation_nature/board/domain/post.dart';
@@ -28,6 +30,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
   final GlobalKey<FormState> _formkey = GlobalKey();
 
   Media _media = Media();
+  User? user = UserManage().getUser();
 
   List<String> locationGuList = [];
   String? _selectedDo = null;
@@ -36,6 +39,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
   int selectedIndex = -1;
   var _editedPost = Post(
     title: '',
+    userEmail: '',
     writer: '',
     date: null,
     content: '',
@@ -394,6 +398,8 @@ class _PostAddScreenState extends State<PostAddScreen> {
                   DateTime datetime = _editedPost.date!.toDate();
                   _editedPost.content = contentEditingController.text;
                   _editedPost.title = titleEditingController.text;
+                  _editedPost.userEmail = user?.email;
+                  _editedPost.writer = user?.displayName;
                   print("url " + _editedPost.imageUrl.toString());
                   print("date " + _editedPost.date.toString());
                   print("datetime " + datetime.toString());

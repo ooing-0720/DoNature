@@ -32,7 +32,7 @@ class PostService {
     CollectionReference<Map<String, dynamic>> collectionReference =
         FirebaseFirestore.instance.collection("bulletin_board");
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await collectionReference.orderBy("date").get();
+        await collectionReference.orderBy("date", descending: true).get();
 
     List<Post> posts = [];
     for (var doc in querySnapshot.docs) {
@@ -65,14 +65,14 @@ class PostService {
       // 도 전체(도 선택 - 시 선택X)
       querySnapshot = await collectionReference
           .where('location_si/do', isEqualTo: sido)
-          .orderBy("date")
+          .orderBy("date", descending: true)
           .get();
     } else {
       // 시 전체(도 선택 - 시 선택 - 구 선택X)
       querySnapshot = await collectionReference
           .where('location_si/do', isEqualTo: sido)
           .where('location_gu/gun/si', isEqualTo: gugunsi)
-          .orderBy("date")
+          .orderBy("date", descending: true)
           .get();
     }
 

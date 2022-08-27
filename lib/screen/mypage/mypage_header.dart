@@ -17,6 +17,7 @@ class MyPageHeaderState extends State<MyPageHeader> {
   final UserManage userManage = UserManage();
   String userName = '';
   String userEmail = '';
+  String userPhoto = '';
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +36,11 @@ class MyPageHeaderState extends State<MyPageHeader> {
     if (user == null) {
       userName = "로그인하세요";
       userEmail = '';
+      userPhoto = 'assets/images/default_profile.png';
     } else {
       userName = user.displayName! + '님';
       userEmail = user.email!;
+      userPhoto = (user.photoURL)!;
     }
 
     return Container(
@@ -48,7 +51,7 @@ class MyPageHeaderState extends State<MyPageHeader> {
           Row(children: [
             CircleAvatar(
               backgroundColor: Color.fromARGB(221, 223, 223, 223),
-              backgroundImage: AssetImage('assets/images/default_profile.png'),
+              backgroundImage: Image.network(userPhoto).image,
               radius: 30.0,
             ),
             SizedBox(width: 30),
@@ -62,6 +65,7 @@ class MyPageHeaderState extends State<MyPageHeader> {
                         TextSpan(
                           text: '로그인',
                           style: TextStyle(
+                              color: Colors.black,
                               fontSize: 22,
                               fontWeight: FontWeight.w400,
                               decoration: TextDecoration.underline),
@@ -77,6 +81,7 @@ class MyPageHeaderState extends State<MyPageHeader> {
                         TextSpan(
                             text: '하세요',
                             style: TextStyle(
+                              color: Colors.black,
                               fontSize: 22,
                               fontWeight: FontWeight.w400,
                             )),

@@ -277,7 +277,7 @@ class SignUpScreenState extends State<SignUpScreen> {
           User? user = value.user;
           user?.updateDisplayName(_nicknameTextEditingController.text);
           // user?.updatePhoneNumber(_numberTextEditingController.text);
-          // user?.updatePhotoURL((_numberTextEditingController.text);
+          user?.updatePhotoURL('assets/images/default_profile.png');
           Navigator.pop(context);
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const LoginScreen()));

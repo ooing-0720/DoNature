@@ -1,6 +1,5 @@
 import 'dart:convert' as convert;
 import 'package:donation_nature/API/domain/ultra_srt_ncst.dart';
-import 'package:donation_nature/action/conv_grid_gps.dart';
 import 'package:donation_nature/secret/api_key.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
@@ -12,7 +11,7 @@ class UltraSrtNcstRepository {
   Future<UltraSrtNcst?> loadUltraSrtNcst() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-
+/*
     var latitude = position.latitude;
     var longitude = position.longitude;
 
@@ -20,10 +19,11 @@ class UltraSrtNcstRepository {
     var grid = ConvGridGps.gpsToGRID(latitude, longitude);
     var nx = grid['x'];
     var ny = grid['y'];
+*/
 
     // emulator 테스트 용
-    // var nx = 55;
-    // var ny = 127;
+    var nx = 55;
+    var ny = 127;
 
     // 현재 날짜, 시간을 포맷에 맞게 변환
     var dateNow = DateTime.now();

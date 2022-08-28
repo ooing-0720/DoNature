@@ -7,21 +7,23 @@ class WthrWrnListRepository {
   var serviceKey = wthrWrnServiceKey;
 
   Future<List<WthrWrnList>?> loadWthrWrnList() async {
-    var url = Uri.parse(
-        "http://apis.data.go.kr/1360000/WthrWrnInfoService/getPwnStatus?serviceKey=$serviceKey&numOfRows=10&pageNo=1&dataType=JSON");
+    // var url = Uri.parse(
+    //     "http://apis.data.go.kr/1360000/WthrWrnInfoService/getPwnStatus?serviceKey=$serviceKey&numOfRows=10&pageNo=1&dataType=JSON");
+
+    // 192.168.35.85 / 10.0.2.2
+
+    var url = Uri.parse("http://10.0.2.2:8080/WthrWrnInfoService");
 
     var response = await http.get(url);
 
-    if (response.statusCode == 200) {
-      final body = convert.utf8.decode(response.bodyBytes);
-      Map<String, dynamic> jsonResult = convert.json.decode(body);
-      final jsonWthrWrnlist = jsonResult['response']['body']['items'];
+    //  if (response.statusCode == 200) {
+    final body = convert.utf8.decode(response.bodyBytes);
+    Map<String, dynamic> jsonResult = convert.json.decode(body);
+    final jsonWthrWrnlist = jsonResult['response']['body']['items'];
 
-      List<dynamic> list = jsonWthrWrnlist['item'];
+    List<dynamic> list = jsonWthrWrnlist['item'];
 
-      return list
-          .map<WthrWrnList>((item) => WthrWrnList.fromJson(item))
-          .toList();
-    }
+    return list.map<WthrWrnList>((item) => WthrWrnList.fromJson(item)).toList();
+    //  }
   }
 }

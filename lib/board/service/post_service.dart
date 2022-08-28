@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation_nature/board/domain/post.dart';
+import 'package:donation_nature/media/media.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:http/http.dart';
 
 class PostService {
   // PostServicer를 factory 생성자로 만들어서 싱글톤으로 사용
@@ -13,17 +16,6 @@ class PostService {
 
   // CREATE
   Future createPost(Map<String, dynamic> json) async {
-    /*
-    DocumentReference<Map<String, dynamic>> documentReference =
-        FirebaseFirestore.instance.collection("bulletin_board").doc();
-    final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-        await documentReference.get();
-
-    if (!documentSnapshot.exists) {
-      await documentReference.set(json);
-    }
-    */
-
     await FirebaseFirestore.instance.collection("bulletin_board").add(json);
   }
 
@@ -61,20 +53,19 @@ class PostService {
         FirebaseFirestore.instance.collection("bulletin_board");
     QuerySnapshot<Map<String, dynamic>> querySnapshot;
 
-    if (sido == null) {
-      // 도 전체(도 선택 - 시 선택X)
-      querySnapshot = await collectionReference
-          .where('location_si/do', isEqualTo: sido)
-          .orderBy("date", descending: true)
-          .get();
-    } else {
-      // 시 전체(도 선택 - 시 선택 - 구 선택X)
-      querySnapshot = await collectionReference
-          .where('location_si/do', isEqualTo: sido)
-          .where('location_gu/gun/si', isEqualTo: gugunsi)
-          .orderBy("date", descending: true)
-          .get();
-    }
+    // if (sido == null) {
+    //   // 도 전체(도 선택 - 시 선택X)
+    //   querySnapshot = await collectionReference
+    //       .where('location_si/do', isEqualTo: sido)
+    //       .orderBy("date", descending: true)
+    //       .get();
+    // } else {
+    // 시 전체(도 선택 - 시 선택 - 구 선택X)
+    querySnapshot = await collectionReference
+        .where('location_si/do', isEqualTo: sido)
+        .where('location_gu/gun/si', isEqualTo: gugunsi)
+        .orderBy("date", descending: true)
+        .get();
 
     List<Post> posts = [];
     for (var doc in querySnapshot.docs) {
@@ -94,6 +85,13 @@ class PostService {
 
   // DELETE
   Future<void> deletePost(DocumentReference reference) async {
+    Media _media = Media();
+    Post post = await getPost(reference);
+    _media.deleteImage(post.title!);
     await reference.delete();
   }
+
+  // Future<bool> checkLikePost(User user, DocumentReference reference) {
+
+  // }
 }

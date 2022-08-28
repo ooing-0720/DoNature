@@ -14,6 +14,7 @@ class Post {
   String? locationGuGunSi; // 구/군/시
   String? tagDisaster; // 재난 태그
   String? tagMore; // 그 외 태그
+  int likeCount = 0; // 관심 개수
   final DocumentReference? reference; // Firebase에서 document의 위치
 
   Post({
@@ -43,6 +44,7 @@ class Post {
     locationGuGunSi = json['location_gu/gun/si'];
     tagDisaster = json['tag_disaster'];
     tagMore = json['tag_more'];
+    likeCount = json['like_count'];
   }
 
   Post.fromQuerySnapshot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot)
@@ -65,6 +67,7 @@ class Post {
     map['location_gu/gun/si'] = locationGuGunSi;
     map['tag_disaster'] = tagDisaster;
     map['tag_more'] = tagMore;
+    map['like_count'] = likeCount;
 
     return map;
   }

@@ -10,7 +10,7 @@ class WthrWrnListRepository {
     // var url = Uri.parse(
     //     "http://apis.data.go.kr/1360000/WthrWrnInfoService/getPwnStatus?serviceKey=$serviceKey&numOfRows=10&pageNo=1&dataType=JSON");
 
-    // 192.168.35.85 / 10.0.2.2
+    // device: IPv4 / emulator: 10.0.2.2
 
     var url = Uri.parse("http://10.0.2.2:8080/WthrWrnInfoService");
 

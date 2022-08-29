@@ -2,12 +2,19 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:donation_nature/models/chat_model.dart';
 import 'package:donation_nature/models/chatMessageModel.dart';
 import 'package:provider/provider.dart';
 
+import 'chat_bubble.dart';
+import 'chat_provider.dart';
+
 class ChatDetailScreen extends StatefulWidget {
+
+
   final String userName;
   //나중에 userId로 받아야할것같음..
   ChatDetailScreen({Key? key, required this.userName}) : super(key: key);
@@ -19,17 +26,14 @@ class ChatDetailScreen extends StatefulWidget {
 class _ChatDetailScreenState extends State<ChatDetailScreen> {
   TextEditingController controller = TextEditingController();
   
-  List<ChatMessage> messages = [
+/*  List<ChatMessage> messages = [
     ChatMessage(messageContent: "받는사람", messageType: "receiver"),
     ChatMessage(messageContent: "받는사람2", messageType: "receiver"),
     ChatMessage(messageContent: "보내는사람", messageType: "sender"),
     ChatMessage(messageContent: "받는사람3", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "보내는사람2", messageType: "sender"),
-  ];
-
-
-
+    ChatMessage(messageContent: "보내는사람2", messageType: "sender"),
+  ];*/
+  
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -49,6 +53,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
               return const Center(child:Text('오류 발생'),);
             }else {
               List<ChatModel> chats = asyncSnapshot.data!;
+              
               return Column(children: [
                 Expanded(
                   child: ListView.builder(
@@ -59,7 +64,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                             //subtitle: Text(chats[index].time.toDate().toLocal().toString().substring(5,16)),
                       );
                     }),
-                  ),  sendMessageField()]);}
+                  ), sendMessageField()]);}
   }) 
               // Padding(
               //   padding: EdgeInsets.all(10),
@@ -71,7 +76,45 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     );
   }
 
-  Align sendMessageField() {
+  /*ListView chatBubble() {
+    var isMe = ChatModel().userUID != Provider.of<ChatProvider>(context).userUID;
+
+
+    return ListView.builder(
+      itemCount: chatModel.messageText.length,
+      shrinkWrap: true,
+      padding: EdgeInsets.only(top: 8, bottom: 8),
+      physics: NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        return Container(
+          padding: EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 8),
+          child: Align(
+            alignment: (isMe//messages[index].messageType == "receiver"
+                ? Alignment.topLeft
+                : Alignment.topRight),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: (isMe//messages[index].messageType == "receiver"
+                    ? Colors.grey.shade200
+                    : Color(0xff9fc3a8)),
+              ),
+              padding: EdgeInsets.all(12),
+              child: Text(
+                chatModel.messageText,
+                style: (isMe//messages[index].messageType == "receiver"
+                    ? TextStyle(fontSize: 15, color: Colors.black)
+                    : TextStyle(fontSize: 15, color: Colors.white)),
+                //TextStyle(fontSize: 15),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }*/
+
+Align sendMessageField() {
     return Align(
       alignment: Alignment.bottomLeft,
       child: Container(
@@ -102,7 +145,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                           const BorderSide(width: 1, color: Colors.black54),
                       borderRadius: BorderRadius.circular(20))),
             )),
-            SizedBox(
+             SizedBox(
               width: 10,
             ),
            FloatingActionButton(
@@ -121,54 +164,19 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     );
   }
 
-  ListView chatBubble() {
-    return ListView.builder(
-      itemCount: messages.length,
-      shrinkWrap: true,
-      padding: EdgeInsets.only(top: 8, bottom: 8),
-      physics: NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
-        return Container(
-          padding: EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 8),
-          child: Align(
-            alignment: (messages[index].messageType == "receiver"
-                ? Alignment.topLeft
-                : Alignment.topRight),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: (messages[index].messageType == "receiver"
-                    ? Colors.grey.shade200
-                    : Color(0xff9fc3a8)),
-              ),
-              padding: EdgeInsets.all(12),
-              child: Text(
-                messages[index].messageContent,
-                style: (messages[index].messageType == "receiver"
-                    ? TextStyle(fontSize: 15, color: Colors.black)
-                    : TextStyle(fontSize: 15, color: Colors.white)),
-                //TextStyle(fontSize: 15),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-
 void _onPressedSendingButton(){
+  final user = FirebaseAuth.instance.currentUser;
+
     try{
-      ChatModel chatModel = ChatModel(messageText: controller.text,time: Timestamp.now());
+      ChatModel chatModel = ChatModel(userUID: user!.uid, messageText: controller.text, time: Timestamp.now());
       FirebaseFirestore firestore = FirebaseFirestore.instance;
-      firestore.collection('/chattingroom_list/TRyiSq9MTxcJiao5TcHL/message_list').add(chatModel.toMap());
+      firestore.collection('//chattingroom_list/TRyiSq9MTxcJiao5TcHL/message_list').add(chatModel.toMap());
 
     }catch(ex){
       log('error)',error: ex.toString(),stackTrace: StackTrace.current);
     }
   }
-}
-  
+
 
   Stream<List<ChatModel>> streamChat(){
     try{
@@ -179,7 +187,6 @@ void _onPressedSendingButton(){
           chats.add(
             ChatModel.fromMap(
                   id:element.id,
-                  //name:element.name
                   map:element.data() as Map<String, dynamic>
               )
           );
@@ -192,3 +199,8 @@ void _onPressedSendingButton(){
     }
 
   }
+  
+}
+  
+
+  

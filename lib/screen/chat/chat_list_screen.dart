@@ -5,26 +5,27 @@ import './chat_detail_screen.dart';
 
 class ChatListScreen extends StatefulWidget {
   const ChatListScreen({Key? key}) : super(key: key);
-
+  
   @override
   State<ChatListScreen> createState() => _ChatListScreenState();
 }
 
 class _ChatListScreenState extends State<ChatListScreen> {
   //예시
-  List<ChatModel> chatUsers = [
-    ChatModel(name: "ㅇㅇㅇ", messageText: "ㄱㄴㄷㄹ", time: "하루 전"),
-    ChatModel(name: "ㅁㅁㅁ", messageText: "dㅁㄴㅇ", time: "지금"),
-    ChatModel(name: "ㄱㄱㄱ", messageText: "dddd", time: "지금"),
-    ChatModel(name: "ㅇㅇㅇ", messageText: "dddd", time: "지금"),
-    ChatModel(name: "ㅇㅇㅇ", messageText: "ㅁㅇㄴd", time: "지금"),
-    ChatModel(name: "ㅇㅇㅇ", messageText: "dddd", time: "지금"),
-    ChatModel(name: "ㅇㅇㅇ", messageText: "dddd", time: "지금"),
-    ChatModel(name: "ㅇㅇㅇ", messageText: "ㅁㅇㄴd", time: "지금"),
-    ChatModel(name: "ㅇㅇㅇ", messageText: "dddd", time: "지금"),
-    ChatModel(name: "ㅇㅇㅇ", messageText: "dddd", time: "이틀 전"), 
-    
+ List<ChatModel> chatUsers = [
+    ChatModel(name: "ㅇㅇㅇ", messageText: "ㄱㄴㄷㄹ",/* time: "지금" */),
+    ChatModel(name: "ㅁㅁㅁ", messageText: "dㅁㄴㅇ", /* time: "지금" */),
+    ChatModel(name: "ㄱㄱㄱ", messageText: "dddd", /* time: "지금" */),
+    ChatModel(name: "ㅇㅇㅇ", messageText: "dddd", /* time: "지금" */),
+    ChatModel(name: "ㅇㅇㅇ", messageText: "ㅁㅇㄴd", /* time: "지금" */),
+    ChatModel(name: "ㅇㅇㅇ", messageText: "dddd", /* time: "지금" */),
+    ChatModel(name: "ㅇㅇㅇ", messageText: "dddd", /* time: "지금" */),
+    ChatModel(name: "ㅇㅇㅇ", messageText: "ㅁㅇㄴd", /* time: "지금" */),
+    ChatModel(name: "ㅇㅇㅇ", messageText: "dddd", /* time: "지금" */),
+    ChatModel(name: "ㅇㅇㅇ", messageText: "dddd", /* time: "지금" */), 
   ];
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +49,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
             return InkWell(
               onTap: () {},
               child: ChatList(
-                name: ChatModel[index].name, //이름
+                name:  ChatModel[index].name, //이름
                 messageText: ChatModel[index].messageText, //메세지텍스트
                 time: ChatModel[index].time, //보낸 시간
                 isMessageRead:
@@ -66,8 +67,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
             }
           }
     
-        
-
 class ChatList extends StatefulWidget {
   late String name;
   late String messageText;
@@ -99,42 +98,52 @@ class _ChatListState extends State<ChatList> {
                     ChatDetailScreen(userName: widget.name))));
         //디테일페이지로 이동
       },
-      child: Container(
+            child: Container(
           padding: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
           child: Row(
             children: [
               Expanded(
                   child: Row(
                 children: [
-                  SizedBox(
-                    width: 16,
-                  ),
                   Expanded(
                       child: Container(
                     color: Colors.transparent,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
+                      //crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.name,
-                          style: TextStyle(fontSize: 16),
+                        CircleAvatar(
+                          backgroundColor: Color(0xff9fc3a8),
+                          radius: 24,
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                          ),
                         ),
                         SizedBox(
-                          height: 6,
+                          width: 20,
                         ),
-                        Text(
-                          widget.messageText,
-                          style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.grey.shade600,
-                              fontWeight: widget.isMessageRead
-                                  ? FontWeight.bold
-                                  : FontWeight.normal),
+                        Column(
+                          children: [
+                            Text(
+                              widget.name,
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            SizedBox(
+                              height: 6,
+                            ),
+                            Text(
+                              widget.messageText,
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.grey.shade600,
+                                  fontWeight: widget.isMessageRead
+                                      ? FontWeight.bold
+                                      : FontWeight.normal),
                         ),
                       ],
                     ),
-                  ))
-                ],
+                ]))
+                  )],
               )),
               Text(
                 widget.time,
@@ -149,4 +158,5 @@ class _ChatListState extends State<ChatList> {
     );
   }
 }
+
 */

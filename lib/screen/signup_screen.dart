@@ -241,17 +241,19 @@ class SignUpScreenState extends State<SignUpScreen> {
               SizedBox(
                 height: 10,
               ),
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  minimumSize: Size(400, 40),
-                  primary: Color(0xff9fc3a8),
-                ),
-                child: Text('가입하기'),
+              ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     join();
                   }
                 },
+                child: Text('회원가입'),
+                style: ElevatedButton.styleFrom(
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0),
+                    ),
+                    primary: Color(0xff416E5C),
+                    minimumSize: const Size.fromHeight(50)),
               ),
               SizedBox(
                 height: 50,

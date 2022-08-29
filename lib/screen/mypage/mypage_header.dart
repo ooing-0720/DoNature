@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:donation_nature/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:donation_nature/screen/mypage/likelist_screen.dart';
@@ -18,122 +19,134 @@ class MyPageHeaderState extends State<MyPageHeader> {
   String userName = '';
   String userEmail = '';
   String userPhoto = '';
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Color(0xffFFFFFF),
-      ),
-      padding: EdgeInsets.all(20), child: buildMypageHeader(context),
-      // _buildMypageMenu(context),
+      padding: EdgeInsets.all(20),
+      child: buildMypageHeader(context),
     );
   }
 
-  Widget buildMypageHeader(BuildContext context) {
-    User? user = userManage.getUser();
+  @override
+  void initState() {
+    super.initState();
+    getAndDisplayUserInformation();
+  }
 
+  getAndDisplayUserInformation() async {
+    setState(() {
+      loading = true;
+    });
+
+    User? user = userManage.getUser();
     if (user == null) {
-      userName = "로그인하세요";
+      userName = "";
       userEmail = '';
       userPhoto = 'assets/images/default_profile.png';
     } else {
       userName = user.displayName! + '님';
       userEmail = user.email!;
-      userPhoto = (user.photoURL)!;
+      userPhoto = user.photoURL!;
     }
 
+    // 셋팅 끝나면 loading은 false로 바뀌고 화면에 값들이 보임
+    setState(() {
+      loading = false;
+    });
+  }
+
+  Widget buildMypageHeader(BuildContext context) {
     return Container(
-        decoration: BoxDecoration(
-          color: Color(0xffFFFFFF),
-        ),
+        // decoration: BoxDecoration(
+        //   color: Color(0xffFFFFFF),
+        // ),
         child: Column(children: [
-          Row(children: [
-            CircleAvatar(
-              backgroundColor: Color.fromARGB(221, 223, 223, 223),
-              backgroundImage: Image.network(userPhoto).image,
-              radius: 30.0,
+      Row(children: [
+        CircleAvatar(
+          backgroundColor: Color.fromARGB(221, 223, 223, 223),
+          backgroundImage: Image.network(userPhoto).image,
+          radius: 30.0,
+        ),
+        SizedBox(width: 30),
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          SizedBox(height: 15),
+          if (userName == "") ...[
+            Container(
+                margin: EdgeInsets.only(top: 20),
+                child: RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '로그인',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w400,
+                          decoration: TextDecoration.underline),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()),
+                          );
+                        },
+                    ),
+                    TextSpan(
+                        text: '하세요',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w400,
+                        )),
+                  ]),
+                )),
+          ] else ...[
+            Text(
+              userName,
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
+            )
+          ],
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Color(0xff90B1A4),
             ),
-            SizedBox(width: 30),
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              SizedBox(height: 15),
-              if (user == null) ...[
-                Container(
-                    margin: EdgeInsets.only(top: 20),
-                    child: RichText(
-                      text: TextSpan(children: [
-                        TextSpan(
-                          text: '로그인',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w400,
-                              decoration: TextDecoration.underline),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginScreen()),
-                              );
-                            },
-                        ),
-                        TextSpan(
-                            text: '하세요',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w400,
-                            )),
-                      ]),
-                    )),
-              ] else ...[
-                Text(
-                  userName,
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
-                )
-              ],
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Color(0xffE4EFE7),
-                ),
-                child: Text(
-                  userEmail,
-                  style: TextStyle(
-                    fontSize: 13,
-                  ),
-                ),
+            child: Text(
+              userEmail,
+              style: TextStyle(
+                fontSize: 13,
               ),
-              SizedBox(height: 30),
-            ])
-          ]),
-          Row(
-            // mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ActivitylistScreen()));
-                },
-                child: _buildMypageMenuItem(Icons.view_list, "활동내역"),
-              ),
-              VerticalDivider(thickness: 2, color: Colors.grey),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => LikelistScreen()));
-                },
-                child: _buildMypageMenuItem(Icons.favorite, "관심목록"),
-              )
-            ],
+            ),
           ),
-        ]));
+          SizedBox(height: 30),
+        ])
+      ]),
+      Row(
+        // mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ActivitylistScreen()));
+            },
+            child: _buildMypageMenuItem(Icons.view_list, "활동내역"),
+          ),
+          VerticalDivider(thickness: 2, color: Colors.grey),
+          InkWell(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LikelistScreen()));
+            },
+            child: _buildMypageMenuItem(Icons.favorite, "관심목록"),
+          )
+        ],
+      ),
+    ]));
   }
 
   Widget _buildMypageMenuItem(IconData mIcon, String text) {
@@ -150,7 +163,7 @@ class MyPageHeaderState extends State<MyPageHeader> {
           //     borderRadius: BorderRadius.circular(30)),
           child: Icon(
             mIcon,
-            color: Color(0xffE4EFE7),
+            color: Color(0xff90B1A4),
             size: 30,
           ),
         ),

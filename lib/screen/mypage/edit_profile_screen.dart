@@ -1,12 +1,8 @@
-import 'dart:io';
+import 'package:donation_nature/screen/mypage/mypage_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/screen/user_manage.dart';
-import 'package:donation_nature/screen/user_manage.dart';
-import 'package:donation_nature/media/media.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
-import 'mypage_screen.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
@@ -104,11 +100,22 @@ class EditProfileScreenState extends State<EditProfileScreen> {
               style: TextStyle(
                 color: Colors.black,
               )),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.notifications),
-            ),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () {
+                  if (_profileNameValid) {
+                    user?.updateDisplayName(nicknameTextEditingController.text);
+                    user?.updatePhotoURL(_image);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyPageScreen()),
+                    );
+                  }
+                },
+                child: Text('변경'),
+                style: TextButton.styleFrom(
+                  primary: Color(0xff416E5C),
+                )),
           ],
         ),
         body: ListView(
@@ -152,25 +159,10 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                       child: Column(
                         children: [
                           createProfileNameTextFormField(),
-                          createBioTextFormField(),
+                          //createBioTextFormField(),
                         ],
                       ),
                     ),
-                    Padding(
-                        padding: EdgeInsets.all(0),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_profileNameValid) {
-                              user?.updateDisplayName(
-                                  nicknameTextEditingController.text);
-                              user?.updatePhotoURL(_image);
-                              print(_image);
-                            }
-                          },
-                          child: Text('완료'),
-                          style: ElevatedButton.styleFrom(
-                              primary: Color(0xffcddc39)),
-                        )),
                   ],
                 ))
           ],
@@ -203,31 +195,31 @@ class EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  createBioTextFormField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(top: 13),
-          child: Text(
-            '전화번호',
-            style: TextStyle(color: Colors.grey),
-          ),
-        ),
-        TextField(
-          controller: numberTextEditingController,
-          decoration: InputDecoration(
-              hintText: user!.email,
-              enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey)),
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white)),
-              hintStyle: TextStyle(color: Colors.grey),
-              errorText: _bioValid ? null : '올바른 형식이 아닙니다.'),
-        )
-      ],
-    );
-  }
+  // createBioTextFormField() {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       Padding(
+  //         padding: EdgeInsets.only(top: 13),
+  //         child: Text(
+  //           '전화번호',
+  //           style: TextStyle(color: Colors.grey),
+  //         ),
+  //       ),
+  //       TextField(
+  //         controller: numberTextEditingController,
+  //         decoration: InputDecoration(
+  //             hintText: user!.email,
+  //             enabledBorder: UnderlineInputBorder(
+  //                 borderSide: BorderSide(color: Colors.grey)),
+  //             focusedBorder: UnderlineInputBorder(
+  //                 borderSide: BorderSide(color: Colors.white)),
+  //             hintStyle: TextStyle(color: Colors.grey),
+  //             errorText: _bioValid ? null : '올바른 형식이 아닙니다.'),
+  //       )
+  //     ],
+  //   );
+  // }
 
   Future getImageFromGallery(ImageSource source) async {
     // 접근 권한인데 갤럭시는 필요없다함?

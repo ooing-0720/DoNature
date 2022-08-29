@@ -17,13 +17,6 @@ class PostDetailScreen extends StatelessWidget {
   PostService postService = PostService();
   PostDetailScreen(this.post);
 
-//                   DateTime datetime = _editedPost.date!.toDate();
-//                   _editedPost.content = contentEditingController.text;
-//                   _editedPost.title = titleEditingController.text;
-//                   print("date " + _editedPost.date.toString());
-//                   print("datetime " + datetime.toString());
-//                   _editedPost.date = Timestamp.now();
-  @override
   Widget build(BuildContext context) {
     User? user = UserManage().getUser();
     DateTime dateTime = post.date!.toDate();
@@ -46,6 +39,7 @@ class PostDetailScreen extends StatelessWidget {
                 SizedBox(
                   height: 5,
                 ),
+                //Text("작성자: " + post.writer!),
                 Text(dateTime.toLocal().toString().substring(5, 16)),
               ],
             ),
@@ -56,7 +50,6 @@ class PostDetailScreen extends StatelessWidget {
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Chip(
                     label: Text(post.tagDisaster!,
@@ -76,9 +69,6 @@ class PostDetailScreen extends StatelessWidget {
                         style: TextStyle(color: Colors.white)),
                     backgroundColor: Color(0xff9fc3a8),
                   ),
-                  // InputChip(
-                  //   label: Text(post.locationGuGunSi!),
-                  // ),
                   Spacer(),
                   if (post.userEmail == user?.email)
                     Row(children: [deleteButton(context), editButton(context)]),
@@ -91,18 +81,37 @@ class PostDetailScreen extends StatelessWidget {
             ),
             Expanded(
                 child: SingleChildScrollView(
-              child: Text(post.content!),
+              child: post.imageUrl != null
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage("${post.imageUrl}"),
+                                    fit: BoxFit.cover)),
+                            height: 400,
+                            width: MediaQuery.of(context).size.width,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: Text(post.content!),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        Text(post.content!),
+                      ],
+                    ),
             ))
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => ChatDetailScreen(userName: "$id")));
-        },
+        onPressed: () {},
         label: Text('채팅하기'),
         backgroundColor: Color(0xff9fc3a8),
         icon: Icon(Icons.chat_bubble),
@@ -114,21 +123,12 @@ class PostDetailScreen extends StatelessWidget {
     return TextButton(
         //수정버튼
         onPressed: () {
-          // Navigator.pushAndRemoveUntil(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => PostEditScreen(post: post),
-          //     ),
-          //     (route) => false);
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => PostEditScreen(
                         post: post,
                       )));
-          // PostService()
-          //     .updatePost(reference: post.reference!, json: post.toJson());
-          //Get.to(() => PostEditScreen(post: post));
         },
         child: Row(
           children: [

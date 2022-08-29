@@ -11,8 +11,12 @@ class Media {
     // 접근 권한인데 갤럭시는 필요없다함?
     // PermissionRequest.getStoragePermission();
 
-    var image = await ImagePicker()
-        .pickImage(source: source, imageQuality: 50, maxWidth: 150);
+    var image = await ImagePicker().pickImage(
+      source: source,
+
+      imageQuality: 70,
+      // maxWidth: 200
+    );
 
     io.File? imageFile = io.File(image!.path);
 
@@ -50,6 +54,7 @@ class Media {
         FirebaseStorage.instance.ref().child('post_image').child(imageUrl);
 
     final url = await ref.getDownloadURL();
+    return url;
     return url;
   }
 

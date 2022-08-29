@@ -84,11 +84,10 @@ class PostService {
   }
 
   // DELETE
-  Future<void> deletePost(DocumentReference reference) async {
+  Future<void> deletePost(Post post) async {
     Media _media = Media();
-    Post post = await getPost(reference);
     _media.deleteImage(post.title!.hashCode.toString());
-    await reference.delete();
+    await post.reference?.delete();
   }
 
   // Future<bool> checkLikePost(User user, DocumentReference reference) {

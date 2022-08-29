@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:donation_nature/board/provider/post_provider.dart';
 import 'package:donation_nature/board/service/post_service.dart';
+import 'package:donation_nature/chat/domain/chatting_room.dart';
+import 'package:donation_nature/chat/service/chat_service.dart';
 import 'package:donation_nature/screen/board_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,6 +18,8 @@ class PostDetailScreen extends StatelessWidget {
 
   PostService postService = PostService();
   PostDetailScreen(this.post);
+
+  ChatService chatService = ChatService();
 
   Widget build(BuildContext context) {
     User? user = UserManage().getUser();
@@ -111,7 +115,21 @@ class PostDetailScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          User? user = UserManage().getUser();
+          List<String> users = [];
+          users.add(user!.email!);
+          users.add(post.userEmail!);
+          //  print(UserManage().getUser()!.email! + post.userEmail!);
+          List<String> nicknames = [];
+          nicknames.add(user.displayName!);
+          nicknames.add(post.writer!);
+
+          ChattingRoom _chattingRoom =
+              ChattingRoom(user: users, nickname: nicknames, post: post);
+
+          chatService.createChattingRoom(_chattingRoom.toJson());
+        },
         label: Text('채팅하기'),
         backgroundColor: Color(0xff9fc3a8),
         icon: Icon(Icons.chat_bubble),

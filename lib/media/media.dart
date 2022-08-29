@@ -55,14 +55,13 @@ class Media {
 
     final url = await ref.getDownloadURL();
     return url;
-    return url;
   }
 
   Future deleteImage(String title) async {
     FirebaseStorage.instance
         .ref()
         .child('post_image')
-        .child(title.hashCode.toString())
+        .child(title.hashCode.toString() + 'jpg')
         .delete();
   }
 }

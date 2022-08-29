@@ -86,7 +86,7 @@ class PostService {
   // DELETE
   Future<void> deletePost(Post post) async {
     Media _media = Media();
-    _media.deleteImage(post.title!.hashCode.toString());
+    _media.deleteImage(post.title!);
     await post.reference?.delete();
   }
 

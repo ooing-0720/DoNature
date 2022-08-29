@@ -161,7 +161,7 @@ class PostDetailScreen extends StatelessWidget {
                         ),
                         onPressed: () {
                           Navigator.of(ctx).pop();
-                          PostService().deletePost(post.reference!);
+                          PostService().deletePost(post);
                           Navigator.push(
                               ctx,
                               MaterialPageRoute(

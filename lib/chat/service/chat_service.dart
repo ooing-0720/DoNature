@@ -20,7 +20,7 @@ class ChatService {
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await collectionReference
             .where('user', arrayContains: user.email)
-            .orderBy('date', descending: true)
+            .orderBy('updated_date', descending: true)
             .get();
 
     List<ChattingRoom> rooms = [];

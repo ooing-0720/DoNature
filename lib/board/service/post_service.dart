@@ -87,7 +87,7 @@ class PostService {
   Future<void> deletePost(DocumentReference reference) async {
     Media _media = Media();
     Post post = await getPost(reference);
-    _media.deleteImage(post.title!);
+    _media.deleteImage(post.title!.hashCode.toString());
     await reference.delete();
   }
 

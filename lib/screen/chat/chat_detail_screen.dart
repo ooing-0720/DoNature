@@ -17,6 +17,7 @@ class ChatDetailScreen extends StatefulWidget {
 
   final String userName;
   //나중에 userId로 받아야할것같음..
+  // 채팅보내고 보낸 내용 지우기 , 채팅방 맨 밑으로 자동으로 내려지게
   ChatDetailScreen({Key? key, required this.userName}) : super(key: key);
   
   @override
@@ -25,14 +26,6 @@ class ChatDetailScreen extends StatefulWidget {
 
 class _ChatDetailScreenState extends State<ChatDetailScreen> {
   TextEditingController controller = TextEditingController();
-  
-/*  List<ChatMessage> messages = [
-    ChatMessage(messageContent: "받는사람", messageType: "receiver"),
-    ChatMessage(messageContent: "받는사람2", messageType: "receiver"),
-    ChatMessage(messageContent: "보내는사람", messageType: "sender"),
-    ChatMessage(messageContent: "받는사람3", messageType: "receiver"),
-    ChatMessage(messageContent: "보내는사람2", messageType: "sender"),
-  ];*/
   
   @override
   Widget build(BuildContext context) {
@@ -60,8 +53,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     itemCount: chats.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text(chats[index].messageText),
-                            //subtitle: Text(chats[index].time.toDate().toLocal().toString().substring(5,16)),
+                        title: Text(chats[index].messageText)
                       );
                     }),
                   ), sendMessageField()]);}
@@ -170,7 +162,7 @@ void _onPressedSendingButton(){
     try{
       ChatModel chatModel = ChatModel(userUID: user!.uid, messageText: controller.text, time: Timestamp.now());
       FirebaseFirestore firestore = FirebaseFirestore.instance;
-      firestore.collection('//chattingroom_list/TRyiSq9MTxcJiao5TcHL/message_list').add(chatModel.toMap());
+      firestore.collection('/chattingroom_list/TRyiSq9MTxcJiao5TcHL/message_list').add(chatModel.toMap());
 
     }catch(ex){
       log('error)',error: ex.toString(),stackTrace: StackTrace.current);

@@ -17,6 +17,7 @@ class ChattingRoom {
     this.user,
     this.nickname,
     this.post,
+    this.chatReference,
   });
 
   ChattingRoom.fromJson(dynamic json, this.chatReference) {
@@ -37,7 +38,7 @@ class ChattingRoom {
     final map = <String, dynamic>{};
     map['user'] = user;
     map['nickname'] = nickname;
-    map['profile_image'] = profileImg;
+    map['profile_image'] = profileImg ?? [];
     map['post_title'] = post!.title;
     map['updated_date'] = updatedDate ?? Timestamp.now();
     map['updated_msg'] = updatedMsg ?? '';

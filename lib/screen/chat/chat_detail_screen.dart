@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation_nature/chat/domain/chatting_room.dart';
+import 'package:donation_nature/chat/service/chat_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
@@ -16,9 +17,13 @@ import 'chat_provider.dart';
 class ChatDetailScreen extends StatefulWidget {
   final String userName;
   final ChattingRoom chattingRoom;
+  final DocumentReference reference;
 
   ChatDetailScreen(
-      {Key? key, required this.userName, required this.chattingRoom})
+      {Key? key,
+      required this.userName,
+      required this.chattingRoom,
+      required this.reference})
       : super(key: key);
 
   @override
@@ -173,7 +178,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     );
   }
 
-  void _onPressedSendingButton() {
+  void _onPressedSendingButton() async {
     final user = FirebaseAuth.instance.currentUser;
 
     try {
@@ -181,9 +186,19 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           userUID: user!.uid,
           messageText: controller.text,
           time: Timestamp.now());
+
+      widget.chattingRoom.updatedDate = Timestamp.now();
+      widget.chattingRoom.updatedMsg = controller.text;
+
+      await ChatService().updateChat(
+          reference: widget.reference,
+          updatedDate: Timestamp.now(),
+          updatedMsg: controller.text);
+
       FirebaseFirestore firestore = FirebaseFirestore.instance;
+
       firestore
-          .collection('//chattingroom_list/TRyiSq9MTxcJiao5TcHL/message_list')
+          .collection('/chattingroom_list/${widget.reference.id}/message_list')
           .add(chatModel.toMap());
     } catch (ex) {
       log('error)', error: ex.toString(), stackTrace: StackTrace.current);
@@ -193,7 +208,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   Stream<List<ChatModel>> streamChat() {
     try {
       final Stream<QuerySnapshot> snapshots = FirebaseFirestore.instance
-          .collection('/chattingroom_list/TRyiSq9MTxcJiao5TcHL/message_list')
+          .collection('/chattingroom_list/${widget.reference.id}/message_list')
           .orderBy('time')
           .snapshots();
       return snapshots.map((querySnapshot) {

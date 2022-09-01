@@ -67,6 +67,8 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                                     chattingRoom: data,
                                                     userName:
                                                         data.nickname!.last,
+                                                    reference:
+                                                        data.chatReference!,
                                                   )
                                               //   ChatDetailScreen(
                                               //  chat  data
@@ -124,16 +126,17 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ChatDetailScreen(
-                                                    chattingRoom: data,
-                                                    userName:
-                                                        data.nickname!.first,
-                                                  )
-                                              // ChatDetailScreen(
-                                              //     userName:
-                                              //         data.nickname!.first),
-                                              ));
+                                            builder: (context) =>
+                                                ChatDetailScreen(
+                                              chattingRoom: data,
+                                              userName: data.nickname!.first,
+                                              reference: data.chatReference!,
+                                            ),
+
+                                            // ChatDetailScreen(
+                                            //     userName:
+                                            //         data.nickname!.first),
+                                          ));
                                     },
                                     child: ListTile(
                                       leading: CircleAvatar(

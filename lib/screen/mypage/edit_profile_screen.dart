@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:donation_nature/screen/mypage/mypage_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -118,10 +119,10 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                 )),
           ],
         ),
-        body: ListView(
+        body: Column(
           children: [
             Container(
-                margin: EdgeInsets.all(50),
+                margin: EdgeInsets.all(60),
                 child: Column(
                   children: [
                     InkWell(
@@ -154,8 +155,8 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(16),
+                    Container(
+                      margin: EdgeInsets.only(top: 40),
                       child: Column(
                         children: [
                           createProfileNameTextFormField(),
@@ -226,7 +227,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
     // PermissionRequest.getStoragePermission();
 
     var image = await ImagePicker()
-        .pickImage(source: source, imageQuality: 50, maxWidth: 150);
+        .pickImage(source: source, imageQuality: 100, maxWidth: 150);
 
     setState(() {
       if (image != null) {
@@ -236,7 +237,6 @@ class EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   ImageProvider _imageProvider() {
-    print(_image);
-    return Image.network(_image!).image;
+    return Image.file(File(_image!)).image;
   }
 }

@@ -6,7 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
 class MainAction {
-  void getAddress() async {
+  Future<String> getAddress() async {
     // original return type is Future<String>
     PermissionRequest.determinePosition();
 
@@ -23,7 +23,6 @@ class MainAction {
     Map<String, dynamic> jsonResult = convert.json.decode(body);
     final address = jsonResult['results'][0]['formatted_address'];
 
-    print(address);
-    //return address;
+    return address;
   }
 }

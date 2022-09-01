@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:io';
 import 'package:donation_nature/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:donation_nature/screen/mypage/likelist_screen.dart';
@@ -66,7 +66,7 @@ class MyPageHeaderState extends State<MyPageHeader> {
       Row(children: [
         CircleAvatar(
           backgroundColor: Color.fromARGB(221, 223, 223, 223),
-          backgroundImage: Image.network(userPhoto).image,
+          backgroundImage: Image.file(File(userPhoto)).image,
           radius: 30.0,
         ),
         SizedBox(width: 30),
@@ -123,6 +123,7 @@ class MyPageHeaderState extends State<MyPageHeader> {
           SizedBox(height: 30),
         ])
       ]),
+      SizedBox(height: 15),
       Row(
         // mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -209,3 +210,4 @@ class MyPageHeaderState extends State<MyPageHeader> {
   // }
 
 }
+

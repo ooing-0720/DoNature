@@ -1,13 +1,50 @@
 import 'package:donation_nature/action/action.dart';
 import 'package:donation_nature/screen/info_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:svg_path_parser/svg_path_parser.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => HomeScreenState();
+}
+
+class HomeScreenState extends State<HomeScreen>
+    with AutomaticKeepAliveClientMixin<HomeScreen> {
+  final List<String> images = [
+    'assets/images/drought_icon.png',
+    'assets/images/flood_icon.png',
+    'assets/images/heatwave_icon.png',
+    'assets/images/heavyrain_icon.png',
+    'assets/images/tornado_icon.png',
+    'assets/images/wind_icon.png'
+  ];
+  final List<String> labels = [
+    '가뭄주의보',
+    '홍수주의보',
+    '폭염주의보',
+    '폭우주의보',
+    '태풍주의보',
+    '폭풍주의보'
+  ];
+  bool _isPlaying = false;
   MainAction _mainAction = MainAction();
+  String userLocation = "";
+  String result = "";
+  int currentPos = 0;
+
   @override
   Widget build(BuildContext context) {
+    _mainAction.getAddress().then((String value) {
+      setState(() {
+        result = value;
+        userLocation = result.replaceAll(RegExp('[대한민국0-9\-]'), '');
+        print(result);
+      });
+    });
+
     return Scaffold(
         appBar: AppBar(
           title: Text("내 위치"),
@@ -19,39 +56,65 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Text(_mainAction.getAddress),
-            Text('광진구 화양동'),
+            Text(
+              userLocation,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 22,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            SizedBox(height: 10),
             Text('2022 08 29 pm 08:12'),
-            CarouselSlider(
-              options: CarouselOptions(height: 400.0),
-              items: [
-                'assets/images/drought_icon.png',
-                'assets/images/flood_icon.png',
-                'assets/images/heatwave_icon.png',
-                'assets/images/heavyrain_icon.png',
-                'assets/images/tornado_icon.png',
-                'assets/images/wind_icon.png'
-              ].map((i) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Container(
-                      width: 300,
-                      height: 300,
-                      // width: MediaQuery.of(context).size.width,
-                      // margin: EdgeInsets.symmetric(horizontal: 0.0),
-                      // decoration: BoxDecoration(color: Colors.white),
-                      child: Image(image: AssetImage(i)),
-                      // child: Text('text $i', style: TextStyle(fontSize: 16.0),)
-                    );
-                  },
+            Text('온도: 28도 습도: '),
+            SizedBox(height: 10),
+            CarouselSlider.builder(
+              itemCount: images.length,
+              options: CarouselOptions(
+                  // autoPlay: true,
+                  onPageChanged: (index, reason) {
+                setState(() {
+                  currentPos = index;
+                });
+              }),
+              itemBuilder: (context, itemIndex, realIndex) {
+                return Container(
+                    width: 200,
+                    margin: EdgeInsets.symmetric(horizontal: 3.0),
+                    // decoration: BoxDecoration(
+                    //   color: Colors.wh,
+                    // ),
+                    child: Column(
+                      children: [
+                        Image.asset(images[itemIndex], fit: BoxFit.fill),
+                        Text(labels[itemIndex])
+                      ],
+                    ));
+              },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: images.map((url) {
+                int index = images.indexOf(url);
+                return Container(
+                  width: 5.0,
+                  height: 5.0,
+                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: currentPos == index
+                        ? Color.fromRGBO(0, 0, 0, 0.9)
+                        : Color.fromRGBO(0, 0, 0, 0.4),
+                  ),
                 );
               }).toList(),
             ),
             TextButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => InfoScreen()));
+                Navigator.of(context).push(
+                    CupertinoPageRoute(builder: (context) => InfoScreen()));
               },
               child: Text("대처법 알아보기 →"),
               style: TextButton.styleFrom(
@@ -63,6 +126,11 @@ class HomeScreen extends StatelessWidget {
 
         // Stack(children: [MyHomePage(), _buildAlertList()]),
         );
+  }
+
+  @override
+  bool get wantKeepAlive {
+    return true;
   }
 
   Widget _buildAlertList() {
@@ -87,6 +155,8 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+
 
 // class MyHomePage extends StatefulWidget {
 //   final paths = [
@@ -218,3 +288,4 @@ class HomeScreen extends StatelessWidget {
 //   @override
 //   bool shouldRepaint(CustomPainter oldDelegate) => true;
 // }
+

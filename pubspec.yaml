@@ -55,6 +55,7 @@ dependencies:
   font_awesome_flutter: ^10.1.0
   cached_network_image: ^3.2.1
   carousel_slider: ^4.1.1
+  animate_do: ^2.1.0
 
 dev_dependencies:
   flutter_test:

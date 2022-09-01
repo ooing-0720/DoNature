@@ -3,6 +3,7 @@ import 'package:donation_nature/screen/info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:animate_do/animate_do.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -46,84 +47,119 @@ class HomeScreenState extends State<HomeScreen>
     });
 
     return Scaffold(
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
-          title: Text("내 위치"),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.notifications),
-            ),
-          ],
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          title: Row(children: [
+            Icon(Icons.near_me, color: Colors.white),
             Text(
               userLocation,
               style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontSize: 22,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w300,
               ),
-            ),
-            SizedBox(height: 10),
-            Text('2022 08 29 pm 08:12'),
-            Text('온도: 28도 습도: '),
-            SizedBox(height: 10),
-            CarouselSlider.builder(
-              itemCount: images.length,
-              options: CarouselOptions(
-                  // autoPlay: true,
-                  onPageChanged: (index, reason) {
-                setState(() {
-                  currentPos = index;
-                });
-              }),
-              itemBuilder: (context, itemIndex, realIndex) {
-                return Container(
-                    width: 200,
-                    margin: EdgeInsets.symmetric(horizontal: 3.0),
-                    // decoration: BoxDecoration(
-                    //   color: Colors.wh,
-                    // ),
-                    child: Column(
-                      children: [
-                        Image.asset(images[itemIndex], fit: BoxFit.fill),
-                        Text(labels[itemIndex])
-                      ],
-                    ));
-              },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: images.map((url) {
-                int index = images.indexOf(url);
-                return Container(
-                  width: 5.0,
-                  height: 5.0,
-                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: currentPos == index
-                        ? Color.fromRGBO(0, 0, 0, 0.9)
-                        : Color.fromRGBO(0, 0, 0, 0.4),
-                  ),
-                );
-              }).toList(),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                    CupertinoPageRoute(builder: (context) => InfoScreen()));
-              },
-              child: Text("대처법 알아보기 →"),
-              style: TextButton.styleFrom(
-                primary: Color(0xff416E5C), // foreground
-              ),
-            ),
+            )
+          ]),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.notifications, color: Colors.white),
+            )
           ],
-        )
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+        body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(
+                    'assets/images/background_drought.jpg'), // 배경 이미지
+              ),
+            ),
+            child: FadeInUp(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  userLocation,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text('2022 08 29 pm 08:12'),
+                Text('온도: 28도 습도: '),
+                SizedBox(height: 10),
+                CarouselSlider.builder(
+                  itemCount: images.length,
+                  options: CarouselOptions(
+                      // autoPlay: true,
+                      onPageChanged: (index, reason) {
+                    setState(() {
+                      currentPos = index;
+                    });
+                  }),
+                  itemBuilder: (context, itemIndex, realIndex) {
+                    return Container(
+                        decoration: BoxDecoration(
+                          // color: Color.fromARGB(173, 170, 170, 170)
+                          //     .withOpacity(0.5),
+                          // borderRadius: BorderRadius.all(
+                          //   Radius.circular(10),
+                          // )
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(
+                                'assets/images/background_drought.jpg'), // 배경 이미지
+                          ),
+                        ),
+                        width: 200,
+                        margin: EdgeInsets.symmetric(horizontal: 3.0),
 
+                        // decoration: BoxDecoration(
+                        //   color: Colors.wh,
+                        // ),
+                        child: Column(
+                          children: [
+                            Image.asset(images[itemIndex], fit: BoxFit.fill),
+                            Text(labels[itemIndex])
+                          ],
+                        ));
+                  },
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: images.map((url) {
+                    int index = images.indexOf(url);
+                    return Container(
+                      width: 5.0,
+                      height: 5.0,
+                      margin:
+                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: currentPos == index
+                            ? Color.fromRGBO(0, 0, 0, 0.9)
+                            : Color.fromRGBO(0, 0, 0, 0.4),
+                      ),
+                    );
+                  }).toList(),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        CupertinoPageRoute(builder: (context) => InfoScreen()));
+                  },
+                  child: Text("대처법 알아보기 →"),
+                  style: TextButton.styleFrom(
+                    primary: Color(0xff416E5C), // foreground
+                  ),
+                ),
+              ],
+            )))
         // Stack(children: [MyHomePage(), _buildAlertList()]),
         );
   }

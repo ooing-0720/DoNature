@@ -44,7 +44,7 @@ class MyPageHeaderState extends State<MyPageHeader> {
     if (user == null) {
       userName = "";
       userEmail = '';
-      userPhoto = 'assets/images/default_profile.png';
+      userPhoto = 'default_profile';
     } else {
       userName = user.displayName! + '님';
       userEmail = user.email!;
@@ -66,7 +66,7 @@ class MyPageHeaderState extends State<MyPageHeader> {
       Row(children: [
         CircleAvatar(
           backgroundColor: Color.fromARGB(221, 223, 223, 223),
-          backgroundImage: Image.file(File(userPhoto)).image,
+          backgroundImage: _imageProvider(),
           radius: 30.0,
         ),
         SizedBox(width: 30),
@@ -209,5 +209,9 @@ class MyPageHeaderState extends State<MyPageHeader> {
   //   );
   // }
 
+  ImageProvider _imageProvider() {
+    if (userPhoto == 'default_profile')
+      return AssetImage('assets/images/default_profile.png');
+    return Image.file(File(userPhoto)).image;
+  }
 }
-

@@ -34,6 +34,8 @@ class ChattingRoom {
       QueryDocumentSnapshot<Map<String, dynamic>> snapshot)
       : this.fromJson(snapshot.data(), snapshot.reference);
 
+  ChattingRoom.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromJson(snapshot.data(), snapshot.reference);
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['user'] = user;

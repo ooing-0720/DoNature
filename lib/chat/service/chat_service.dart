@@ -9,12 +9,16 @@ class ChatService {
   ChatService._internal();
 
   // CREATE
-  Future createChattingRoom(Map<String, dynamic> json) async {
-    await FirebaseFirestore.instance.collection("chattingroom_list").add(json);
+  Future<DocumentReference> createChattingRoom(
+      Map<String, dynamic> json) async {
+    var newChatRef =
+        FirebaseFirestore.instance.collection("chattingroom_list").doc();
+    await newChatRef.set(json);
+    return newChatRef;
   }
 
   // READ
-  Future<List<ChattingRoom>> getChattingRoom(User user) async {
+  Future<List<ChattingRoom>> getChattingRooms(User user) async {
     CollectionReference<Map<String, dynamic>> collectionReference =
         FirebaseFirestore.instance.collection("chattingroom_list");
     QuerySnapshot<Map<String, dynamic>> querySnapshot =

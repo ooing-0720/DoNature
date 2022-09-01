@@ -49,6 +49,11 @@ class _PostAddScreenState extends State<PostAddScreen> {
     tagDisaster: '', // 재난 태그
     tagMore: '', // 그 외 태그
   );
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,10 +102,13 @@ class _PostAddScreenState extends State<PostAddScreen> {
                                           ImageSource.camera,
                                           titleEditingController.text.hashCode
                                               .toString());
-                                  print(_editedPost.imageUrl);
-                                  image = true;
 
-                                  Navigator.pop(context);
+                                  setState(() {
+                                    print(_editedPost.imageUrl);
+                                    image = true;
+
+                                    Navigator.pop(context);
+                                  });
                                 },
                                 child: Row(
                                   children: [
@@ -121,9 +129,11 @@ class _PostAddScreenState extends State<PostAddScreen> {
                                           titleEditingController.text.hashCode
                                               .toString());
 
-                                  print(_editedPost.imageUrl);
-                                  image = true;
-                                  Navigator.pop(context);
+                                  setState(() {
+                                    print(_editedPost.imageUrl);
+                                    image = true;
+                                    Navigator.pop(context);
+                                  });
                                 },
                                 child: Row(
                                   children: [
@@ -156,18 +166,34 @@ class _PostAddScreenState extends State<PostAddScreen> {
                 ),
                 Container(
                     child: _editedPost.imageUrl != null
-                        ? Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: NetworkImage(
-                                        "${_editedPost.imageUrl}")),
-                                color: Colors.transparent,
-                                border: Border.all(color: Colors.grey),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                            height: MediaQuery.of(context).size.height,
-                            width: MediaQuery.of(context).size.width,
-                          )
+                        ? Stack(children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                          "${_editedPost.imageUrl}")),
+                                  color: Colors.transparent,
+                                  border: Border.all(color: Colors.grey),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              height: 400,
+                              width: MediaQuery.of(context).size.width,
+                            ),
+                            Positioned(
+                                child: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _editedPost.imageUrl = null;
+                                  print(_editedPost.imageUrl);
+                                });
+                              },
+                              icon: Icon(
+                                Icons.cancel,
+                                color: Colors.black.withOpacity(0.5),
+                                size: 18,
+                              ),
+                            ))
+                          ])
                         : Container(
                             child: Text("dd"),
                           )),

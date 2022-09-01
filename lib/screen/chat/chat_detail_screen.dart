@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donation_nature/chat/domain/chatting_room.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
@@ -13,20 +14,30 @@ import 'chat_bubble.dart';
 import 'chat_provider.dart';
 
 class ChatDetailScreen extends StatefulWidget {
-
-
   final String userName;
-  //나중에 userId로 받아야할것같음..
-  // 채팅보내고 보낸 내용 지우기 , 채팅방 맨 밑으로 자동으로 내려지게
-  ChatDetailScreen({Key? key, required this.userName}) : super(key: key);
-  
+  final ChattingRoom chattingRoom;
+
+  ChatDetailScreen(
+      {Key? key, required this.userName, required this.chattingRoom})
+      : super(key: key);
+
   @override
   State<ChatDetailScreen> createState() => _ChatDetailScreenState();
 }
 
 class _ChatDetailScreenState extends State<ChatDetailScreen> {
   TextEditingController controller = TextEditingController();
-  
+
+  //채팅만든사람이 0-
+
+/*  List<ChatMessage> messages = [
+    ChatMessage(messageContent: "받는사람", messageType: "receiver"),
+    ChatMessage(messageContent: "받는사람2", messageType: "receiver"),
+    ChatMessage(messageContent: "보내는사람", messageType: "sender"),
+    ChatMessage(messageContent: "받는사람3", messageType: "receiver"),
+    ChatMessage(messageContent: "보내는사람2", messageType: "sender"),
+  ];*/
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -38,32 +49,38 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
             title: Text(widget.userName + '의 채팅'),
           ),
           body: StreamBuilder<List<ChatModel>>(
-          stream: streamChat(),
-          builder:(context, asyncSnapshot){
-            if(!asyncSnapshot.hasData){
-              return const Center(child: CircularProgressIndicator());
-            }else if (asyncSnapshot.hasError){
-              return const Center(child:Text('오류 발생'),);
-            }else {
-              List<ChatModel> chats = asyncSnapshot.data!;
-              
-              return Column(children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: chats.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(chats[index].messageText)
-                      );
-                    }),
-                  ), sendMessageField()]);}
-  }) 
-              // Padding(
-              //   padding: EdgeInsets.all(10),
-              //   child: Text(''),
-              // ),
-            // Stack(
-           // children: [chatBubble(), sendMessageField()],)
+              stream: streamChat(),
+              builder: (context, asyncSnapshot) {
+                if (!asyncSnapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (asyncSnapshot.hasError) {
+                  return const Center(
+                    child: Text('오류 발생'),
+                  );
+                } else {
+                  List<ChatModel> chats = asyncSnapshot.data!;
+
+                  return Column(children: [
+                    Expanded(
+                      child: ListView.builder(
+                          itemCount: chats.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(chats[index].messageText),
+                              //subtitle: Text(chats[index].time.toDate().toLocal().toString().substring(5,16)),
+                            );
+                          }),
+                    ),
+                    sendMessageField()
+                  ]);
+                }
+              })
+          // Padding(
+          //   padding: EdgeInsets.all(10),
+          //   child: Text(''),
+          // ),
+          // Stack(
+          // children: [chatBubble(), sendMessageField()],)
           ),
     );
   }
@@ -106,7 +123,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     );
   }*/
 
-Align sendMessageField() {
+  Align sendMessageField() {
     return Align(
       alignment: Alignment.bottomLeft,
       child: Container(
@@ -121,8 +138,8 @@ Align sendMessageField() {
             ),
             Expanded(
                 child: TextField(
-                  controller: controller,
-                  decoration: InputDecoration(
+              controller: controller,
+              decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(10),
                   // enabledBorder: OutlineInputBorder(
                   //     borderRadius: BorderRadius.circular(15)),
@@ -137,10 +154,10 @@ Align sendMessageField() {
                           const BorderSide(width: 1, color: Colors.black54),
                       borderRadius: BorderRadius.circular(20))),
             )),
-             SizedBox(
+            SizedBox(
               width: 10,
             ),
-           FloatingActionButton(
+            FloatingActionButton(
               onPressed: _onPressedSendingButton,
               child: Icon(
                 Icons.send,
@@ -156,43 +173,40 @@ Align sendMessageField() {
     );
   }
 
-void _onPressedSendingButton(){
-  final user = FirebaseAuth.instance.currentUser;
+  void _onPressedSendingButton() {
+    final user = FirebaseAuth.instance.currentUser;
 
-    try{
-      ChatModel chatModel = ChatModel(userUID: user!.uid, messageText: controller.text, time: Timestamp.now());
+    try {
+      ChatModel chatModel = ChatModel(
+          userUID: user!.uid,
+          messageText: controller.text,
+          time: Timestamp.now());
       FirebaseFirestore firestore = FirebaseFirestore.instance;
-      firestore.collection('/chattingroom_list/TRyiSq9MTxcJiao5TcHL/message_list').add(chatModel.toMap());
-
-    }catch(ex){
-      log('error)',error: ex.toString(),stackTrace: StackTrace.current);
+      firestore
+          .collection('//chattingroom_list/TRyiSq9MTxcJiao5TcHL/message_list')
+          .add(chatModel.toMap());
+    } catch (ex) {
+      log('error)', error: ex.toString(), stackTrace: StackTrace.current);
     }
   }
 
-
-  Stream<List<ChatModel>> streamChat(){
-    try{
-      final Stream<QuerySnapshot> snapshots = FirebaseFirestore.instance.collection('/chattingroom_list/TRyiSq9MTxcJiao5TcHL/message_list').orderBy('time').snapshots();
-      return snapshots.map((querySnapshot){
+  Stream<List<ChatModel>> streamChat() {
+    try {
+      final Stream<QuerySnapshot> snapshots = FirebaseFirestore.instance
+          .collection('/chattingroom_list/TRyiSq9MTxcJiao5TcHL/message_list')
+          .orderBy('time')
+          .snapshots();
+      return snapshots.map((querySnapshot) {
         List<ChatModel> chats = [];
         for (var element in querySnapshot.docs) {
-          chats.add(
-            ChatModel.fromMap(
-                  id:element.id,
-                  map:element.data() as Map<String, dynamic>
-              )
-          );
+          chats.add(ChatModel.fromMap(
+              id: element.id, map: element.data() as Map<String, dynamic>));
         }
         return chats;
       });
-    }catch(ex){
-      log('error)',error: ex.toString(),stackTrace: StackTrace.current);
+    } catch (ex) {
+      log('error)', error: ex.toString(), stackTrace: StackTrace.current);
       return Stream.error(ex.toString());
     }
-
   }
-  
 }
-  
-
-  

@@ -25,116 +25,220 @@ class PostDetailScreen extends StatelessWidget {
     User? user = UserManage().getUser();
     DateTime dateTime = post.date!.toDate();
 
-    return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  post.title!,
-                  maxLines: 1,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+    return user != null //user가 로그인 해있을 때
+        ? Builder(builder: (context) {
+            bool userIsWriter = false;
+            if (user.email == post.userEmail) userIsWriter = true;
+            return Scaffold(
+              appBar: AppBar(),
+              body: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          post.title!,
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 30),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        //Text("작성자: " + post.writer!),
+                        Text(dateTime.toLocal().toString().substring(5, 16)),
+                      ],
+                    ),
+                    Divider(
+                      height: 20,
+                      thickness: 1.5,
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Row(
+                        children: [
+                          Chip(
+                            label: Text(post.tagDisaster!,
+                                style: TextStyle(color: Colors.white)),
+                            backgroundColor: Color(0xff9fc3a8),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Icon(
+                            Icons.place,
+                            color: Color(0xff9fc3a8),
+                          ),
+                          Chip(
+                            label: Text(
+                                post.locationSiDo! +
+                                    " " +
+                                    post.locationGuGunSi!,
+                                style: TextStyle(color: Colors.white)),
+                            backgroundColor: Color(0xff9fc3a8),
+                          ),
+                          Spacer(),
+                          if (userIsWriter == true)
+                            Row(children: [
+                              deleteButton(context),
+                              editButton(context)
+                            ]),
+                        ],
+                      ),
+                    ),
+                    Divider(
+                      height: 20,
+                      thickness: 1.5,
+                    ),
+                    Expanded(
+                        child: SingleChildScrollView(
+                      child: post.imageUrl != null
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Center(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                "${post.imageUrl}"),
+                                            fit: BoxFit.cover)),
+                                    height: 400,
+                                    width: MediaQuery.of(context).size.width,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: Text(post.content!),
+                                ),
+                              ],
+                            )
+                          : Column(
+                              children: [
+                                Text(post.content!),
+                              ],
+                            ),
+                    ))
+                  ],
                 ),
-                SizedBox(
-                  height: 5,
-                ),
-                //Text("작성자: " + post.writer!),
-                Text(dateTime.toLocal().toString().substring(5, 16)),
-              ],
-            ),
-            Divider(
-              height: 20,
-              thickness: 1.5,
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Row(
+              ),
+              floatingActionButton: userIsWriter == false //본인이 작성한 글이 아니면 채팅 가능
+                  ? FloatingActionButton.extended(
+                      onPressed: () {
+                        List<String> users = [];
+                        users.add(user.email!);
+                        users.add(post.userEmail!);
+                        //  print(UserManage().getUser()!.email! + post.userEmail!);
+                        List<String> nicknames = [];
+                        nicknames.add(user.displayName!);
+                        nicknames.add(post.writer!);
+
+                        ChattingRoom _chattingRoom = ChattingRoom(
+                            user: users, nickname: nicknames, post: post);
+
+                        chatService.createChattingRoom(_chattingRoom.toJson());
+                      },
+                      label: Text('채팅하기'),
+                      backgroundColor: Color(0xff9fc3a8),
+                      icon: Icon(Icons.chat_bubble),
+                    )
+                  : Container(),
+            );
+          })
+        : //유저가 로그인 안 해있을 때
+        Scaffold(
+            appBar: AppBar(),
+            body: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Chip(
-                    label: Text(post.tagDisaster!,
-                        style: TextStyle(color: Colors.white)),
-                    backgroundColor: Color(0xff9fc3a8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        post.title!,
+                        maxLines: 1,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 30),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      //Text("작성자: " + post.writer!),
+                      Text(dateTime.toLocal().toString().substring(5, 16)),
+                    ],
                   ),
-                  SizedBox(
-                    width: 10,
+                  Divider(
+                    height: 20,
+                    thickness: 1.5,
                   ),
-                  Icon(
-                    Icons.place,
-                    color: Color(0xff9fc3a8),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Row(
+                      children: [
+                        Chip(
+                          label: Text(post.tagDisaster!,
+                              style: TextStyle(color: Colors.white)),
+                          backgroundColor: Color(0xff9fc3a8),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Icon(
+                          Icons.place,
+                          color: Color(0xff9fc3a8),
+                        ),
+                        Chip(
+                          label: Text(
+                              post.locationSiDo! + " " + post.locationGuGunSi!,
+                              style: TextStyle(color: Colors.white)),
+                          backgroundColor: Color(0xff9fc3a8),
+                        ),
+                        Spacer(),
+                      ],
+                    ),
                   ),
-                  Chip(
-                    label: Text(
-                        post.locationSiDo! + " " + post.locationGuGunSi!,
-                        style: TextStyle(color: Colors.white)),
-                    backgroundColor: Color(0xff9fc3a8),
+                  Divider(
+                    height: 20,
+                    thickness: 1.5,
                   ),
-                  Spacer(),
-                  if (post.userEmail == user?.email)
-                    Row(children: [deleteButton(context), editButton(context)]),
+                  Expanded(
+                      child: SingleChildScrollView(
+                    child: post.imageUrl != null
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Center(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image:
+                                              NetworkImage("${post.imageUrl}"),
+                                          fit: BoxFit.cover)),
+                                  height: 400,
+                                  width: MediaQuery.of(context).size.width,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 5),
+                                child: Text(post.content!),
+                              ),
+                            ],
+                          )
+                        : Column(
+                            children: [
+                              Text(post.content!),
+                            ],
+                          ),
+                  ))
                 ],
               ),
             ),
-            Divider(
-              height: 20,
-              thickness: 1.5,
-            ),
-            Expanded(
-                child: SingleChildScrollView(
-              child: post.imageUrl != null
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: NetworkImage("${post.imageUrl}"),
-                                    fit: BoxFit.cover)),
-                            height: 400,
-                            width: MediaQuery.of(context).size.width,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 5),
-                          child: Text(post.content!),
-                        ),
-                      ],
-                    )
-                  : Column(
-                      children: [
-                        Text(post.content!),
-                      ],
-                    ),
-            ))
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          User? user = UserManage().getUser();
-          List<String> users = [];
-          users.add(user!.email!);
-          users.add(post.userEmail!);
-          //  print(UserManage().getUser()!.email! + post.userEmail!);
-          List<String> nicknames = [];
-          nicknames.add(user.displayName!);
-          nicknames.add(post.writer!);
-
-          ChattingRoom _chattingRoom =
-              ChattingRoom(user: users, nickname: nicknames, post: post);
-
-          chatService.createChattingRoom(_chattingRoom.toJson());
-        },
-        label: Text('채팅하기'),
-        backgroundColor: Color(0xff9fc3a8),
-        icon: Icon(Icons.chat_bubble),
-      ),
-    );
+          );
   }
 
   TextButton editButton(BuildContext context) {

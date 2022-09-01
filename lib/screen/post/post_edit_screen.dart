@@ -80,6 +80,14 @@ class _PostEditScreenState extends State<PostEditScreen> {
                                               titleEditingController
                                                   .text.hashCode
                                                   .toString());
+
+                                      setState(() {
+                                        print(widget.post.imageUrl);
+                                        //image = true;
+
+                                        Navigator.pop(context);
+                                      });
+                                      ;
                                     },
                                     child: Row(
                                       children: [
@@ -100,6 +108,12 @@ class _PostEditScreenState extends State<PostEditScreen> {
                                               titleEditingController
                                                   .text.hashCode
                                                   .toString());
+
+                                      setState(() {
+                                        print(widget.post.imageUrl);
+                                        //image = true;
+                                        Navigator.pop(context);
+                                      });
                                     },
                                     child: Row(
                                       children: [
@@ -126,6 +140,39 @@ class _PostEditScreenState extends State<PostEditScreen> {
                         child: Center(child: Icon(Icons.add_to_photos)),
                       ),
                     ),
+                    Container(
+                        child: widget.post.imageUrl != null
+                            ? Stack(children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                              "${widget.post.imageUrl}")),
+                                      color: Colors.transparent,
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  height: 400,
+                                  width: MediaQuery.of(context).size.width,
+                                ),
+                                Positioned(
+                                    child: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      widget.post.imageUrl = null;
+                                      print(widget.post.imageUrl);
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.cancel,
+                                    color: Colors.black.withOpacity(0.5),
+                                    size: 18,
+                                  ),
+                                ))
+                              ])
+                            : Container(
+                                child: Text("dd"),
+                              )),
                     Divider(
                       height: 20,
                       thickness: 1.5,

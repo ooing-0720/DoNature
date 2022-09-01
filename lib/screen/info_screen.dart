@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class InfoScreen extends StatelessWidget {
   const InfoScreen({Key? key}) : super(key: key);
-/*
+
   void _callAPI() async {
     PermissionRequest.determinePosition();
 
@@ -27,7 +27,7 @@ class InfoScreen extends StatelessWidget {
     print(
         "폭염주의보: ${wthrWrnList?[0].HWA}\n폭염경보: ${wthrWrnList?[0].HWW}\n호우주의보: ${wthrWrnList?[0].HRA}\n호우경보: ${wthrWrnList?[0].HRW}\n태풍주의보: ${wthrWrnList?[0].TYA}\n강풍주의보: ${wthrWrnList?[0].SWA}\n풍랑주의보: ${wthrWrnList?[0].STA}");
   }
-*/
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,12 +43,12 @@ class InfoScreen extends StatelessWidget {
           ),
         ],
       ),
-      // body: Center(
-      //   child: ElevatedButton(
-      //     onPressed: _callAPI,
-      //     child: const Text('Call API'),
-      //   ),
-      // ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: _callAPI,
+          child: const Text('Call API'),
+        ),
+      ),
     );
   }
 }

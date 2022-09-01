@@ -15,6 +15,7 @@ class Post {
   String? tagDisaster; // 재난 태그
   String? tagMore; // 그 외 태그
   List<dynamic>? likeUsers; // 관심 누른 유저 email 배열
+  List<dynamic>? chatUsers; // 채팅하기 누른 유저 email 배열
   final DocumentReference? reference; // Firebase에서 document의 위치
 
   Post({
@@ -45,6 +46,7 @@ class Post {
     tagDisaster = json['tag_disaster'];
     tagMore = json['tag_more'];
     likeUsers = json['like_users'];
+    chatUsers = json['chat_users'];
   }
 
   Post.fromQuerySnapshot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot)
@@ -68,6 +70,7 @@ class Post {
     map['tag_disaster'] = tagDisaster;
     map['tag_more'] = tagMore;
     map['like_users'] = likeUsers ?? [];
+    map['chat_users'] = chatUsers ?? [];
 
     return map;
   }

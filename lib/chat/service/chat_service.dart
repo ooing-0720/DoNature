@@ -36,6 +36,15 @@ class ChatService {
     return rooms;
   }
 
+  // READ ONE
+  Future<ChattingRoom> getChattingRoom(DocumentReference reference) async {
+    CollectionReference<Map<String, dynamic>> collectionReference =
+        FirebaseFirestore.instance.collection("chattingroom_list");
+    var documentSnapshot = await collectionReference.doc(reference.id).get();
+
+    return ChattingRoom.fromSnapshot(documentSnapshot);
+  }
+
   // UPDATE
   // 메세지 전송할 때마다 updatedMsg, updatedDate에 값 업데이트하고 넘겨줘야함
   Future updateChat(

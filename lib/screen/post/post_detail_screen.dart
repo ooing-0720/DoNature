@@ -130,28 +130,48 @@ class PostDetailScreen extends StatelessWidget {
               floatingActionButton: userIsWriter == false //본인이 작성한 글이 아니면 채팅 가능
                   ? FloatingActionButton.extended(
                       onPressed: () async {
-                        List<String> users = [];
-                        users.add(user.email!);
-                        users.add(post.userEmail!);
-                        // print(UserManage().getUser()!.email! + post.userEmail!);
-                        List<String> nicknames = [];
-                        nicknames.add(user.displayName!);
-                        nicknames.add(post.writer!);
+                        ChattingRoom _chattingRoom;
+                        if (PostService().isChatted(post, user)) {
+                          _chattingRoom = await ChatService()
+                              .getChattingRoom(post.chatUsers![user.email]);
+                          // 채팅한적 있음
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => ChatDetailScreen(
+                                      userName: post.writer!,
+                                      chattingRoom: _chattingRoom,
+                                      reference:
+                                          post.chatUsers![user.email]))));
+                        } else {
+                          // 채팅한적 없음
+                          List<String> users = [];
+                          users.add(user.email!);
+                          users.add(post.userEmail!);
+                          // print(UserManage().getUser()!.email! + post.userEmail!);
+                          List<String> nicknames = [];
+                          nicknames.add(user.displayName!);
+                          nicknames.add(post.writer!);
 
-                        ChattingRoom _chattingRoom = ChattingRoom(
-                            user: users, nickname: nicknames, post: post);
+                          _chattingRoom = ChattingRoom(
+                              user: users, nickname: nicknames, post: post);
 
-                        _chattingRoom.chatReference = await chatService
-                            .createChattingRoom(_chattingRoom.toJson());
-
-                        print(_chattingRoom.chatReference);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) => ChatDetailScreen(
-                                    userName: post.writer!,
-                                    chattingRoom: _chattingRoom,
-                                    reference: _chattingRoom.chatReference!))));
+                          _chattingRoom.chatReference = await chatService
+                              .createChattingRoom(_chattingRoom.toJson());
+                          post.chatUsers![user.email] =
+                              _chattingRoom.chatReference;
+                          PostService().updatePost(
+                              reference: post.reference!, json: post.toJson());
+                          // print(_chattingRoom.chatReference);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => ChatDetailScreen(
+                                      userName: post.writer!,
+                                      chattingRoom: _chattingRoom,
+                                      reference:
+                                          _chattingRoom.chatReference!))));
+                        }
                       },
                       label: Text('채팅하기'),
                       backgroundColor: Color(0xff9fc3a8),

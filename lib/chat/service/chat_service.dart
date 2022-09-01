@@ -36,8 +36,14 @@ class ChatService {
   // 메세지 전송할 때마다 updatedMsg, updatedDate에 값 업데이트하고 넘겨줘야함
   Future updateChat(
       {required DocumentReference reference,
-      required Map<String, dynamic> json}) async {
-    await reference.set(json);
+      required Timestamp updatedDate,
+      required String updatedMsg}) async {
+    final collectionReference = FirebaseFirestore.instance
+        .collection("chattingroom_list")
+        .doc(reference.id);
+
+    collectionReference
+        .update({"updated_date": updatedDate, "updated_msg": updatedMsg});
   }
 
   //DELETE

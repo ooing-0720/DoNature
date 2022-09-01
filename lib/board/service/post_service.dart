@@ -138,7 +138,7 @@ class PostService {
       // 이미 만들어지 채팅방이 있다면 -> 만들어진 채팅방으로 연결
       return true;
     } else {
-      // 처음 채팅하기를 누르는 거라면 -> 채팅방 생성
+      // 처음 채팅하기를 누르는 거라면 -> 채팅방 생성 creating
       return false;
     }
   }

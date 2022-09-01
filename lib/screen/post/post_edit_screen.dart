@@ -170,9 +170,7 @@ class _PostEditScreenState extends State<PostEditScreen> {
                                   ),
                                 ))
                               ])
-                            : Container(
-                                child: Text("dd"),
-                              )),
+                            : Container()),
                     Divider(
                       height: 20,
                       thickness: 1.5,

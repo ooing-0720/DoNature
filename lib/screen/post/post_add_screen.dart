@@ -194,9 +194,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
                               ),
                             ))
                           ])
-                        : Container(
-                            child: Text("dd"),
-                          )),
+                        : Container()),
                 Divider(
                   height: 20,
                   thickness: 1.5,

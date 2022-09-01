@@ -145,6 +145,13 @@ class PostDetailScreen extends StatelessWidget {
                             .createChattingRoom(_chattingRoom.toJson());
 
                         print(_chattingRoom.chatReference);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) => ChatDetailScreen(
+                                    userName: post.writer!,
+                                    chattingRoom: _chattingRoom,
+                                    reference: _chattingRoom.chatReference!))));
                       },
                       label: Text('채팅하기'),
                       backgroundColor: Color(0xff9fc3a8),

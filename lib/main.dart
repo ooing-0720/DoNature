@@ -6,9 +6,8 @@ import 'package:donation_nature/screen/info_screen.dart';
 import 'package:donation_nature/screen/board_screen.dart';
 import 'package:donation_nature/screen/mypage/mypage_screen.dart';
 import 'package:donation_nature/screen/home_screen.dart';
-//import 'package:get/get.dart';
-
 import 'screen/chat/chat_detail_screen.dart';
+import 'screen/chat/chat_list_screen.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -60,7 +59,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     InfoScreen(),
-    ChatDetailScreen(userName: 'test'),
+    ChatListScreen(),
     BoardScreen(),
     MyPageScreen(),
   ];

@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation_nature/board/domain/post.dart';
+import 'package:donation_nature/media/media.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:http/http.dart';
 
 class PostService {
   // PostServicer를 factory 생성자로 만들어서 싱글톤으로 사용
@@ -13,17 +16,6 @@ class PostService {
 
   // CREATE
   Future createPost(Map<String, dynamic> json) async {
-    /*
-    DocumentReference<Map<String, dynamic>> documentReference =
-        FirebaseFirestore.instance.collection("bulletin_board").doc();
-    final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-        await documentReference.get();
-
-    if (!documentSnapshot.exists) {
-      await documentReference.set(json);
-    }
-    */
-
     await FirebaseFirestore.instance.collection("bulletin_board").add(json);
   }
 
@@ -61,20 +53,19 @@ class PostService {
         FirebaseFirestore.instance.collection("bulletin_board");
     QuerySnapshot<Map<String, dynamic>> querySnapshot;
 
-    if (sido == null) {
-      // 도 전체(도 선택 - 시 선택X)
-      querySnapshot = await collectionReference
-          .where('location_si/do', isEqualTo: sido)
-          .orderBy("date", descending: true)
-          .get();
-    } else {
-      // 시 전체(도 선택 - 시 선택 - 구 선택X)
-      querySnapshot = await collectionReference
-          .where('location_si/do', isEqualTo: sido)
-          .where('location_gu/gun/si', isEqualTo: gugunsi)
-          .orderBy("date", descending: true)
-          .get();
-    }
+    // if (sido == null) {
+    //   // 도 전체(도 선택 - 시 선택X)
+    //   querySnapshot = await collectionReference
+    //       .where('location_si/do', isEqualTo: sido)
+    //       .orderBy("date", descending: true)
+    //       .get();
+    // } else {
+    // 시 전체(도 선택 - 시 선택 - 구 선택X)
+    querySnapshot = await collectionReference
+        .where('location_si/do', isEqualTo: sido)
+        .where('location_gu/gun/si', isEqualTo: gugunsi)
+        .orderBy("date", descending: true)
+        .get();
 
     List<Post> posts = [];
     for (var doc in querySnapshot.docs) {
@@ -93,7 +84,32 @@ class PostService {
   }
 
   // DELETE
-  Future<void> deletePost(DocumentReference reference) async {
-    await reference.delete();
+  Future<void> deletePost(Post post) async {
+    Media _media = Media();
+    _media.deleteImage(post.title!);
+    await post.reference?.delete();
+  }
+
+  // 파이어베이스에 정보 변경
+  Future likePost(Post post, User user) async {
+    if (!isLiked(post, user)) {
+      // 유저의 관심 목록에 등록
+      post.likeUsers!.add(user.email);
+    } else {
+      // 유저의 관심 목록에서 제거
+      post.likeUsers!.remove(user.email);
+    }
+    await post.reference?.set(post.toJson());
+  }
+
+  // 관심글인지 확인
+  bool isLiked(Post post, User user) {
+    if (post.likeUsers!.contains(user.email) == false) {
+      // 관심있어요 누르지 않은 경우(♡)
+      return false;
+    } else {
+      // 관심있어요 이미 누른 경우(♥)
+      return true;
+    }
   }
 }

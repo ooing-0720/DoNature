@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ItDive.donation_nature">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="donation_nature"
         android:name="${applicationName}"

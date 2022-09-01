@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:donation_nature/board/provider/post_provider.dart';
 import 'package:donation_nature/board/service/post_service.dart';
+import 'package:donation_nature/chat/domain/chatting_room.dart';
+import 'package:donation_nature/chat/service/chat_service.dart';
 import 'package:donation_nature/screen/board_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,118 +19,238 @@ class PostDetailScreen extends StatelessWidget {
   PostService postService = PostService();
   PostDetailScreen(this.post);
 
-//                   DateTime datetime = _editedPost.date!.toDate();
-//                   _editedPost.content = contentEditingController.text;
-//                   _editedPost.title = titleEditingController.text;
-//                   print("date " + _editedPost.date.toString());
-//                   print("datetime " + datetime.toString());
-//                   _editedPost.date = Timestamp.now();
-  @override
+  ChatService chatService = ChatService();
+
   Widget build(BuildContext context) {
     User? user = UserManage().getUser();
     DateTime dateTime = post.date!.toDate();
 
-    return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  post.title!,
-                  maxLines: 1,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+    return user != null //user가 로그인 해있을 때
+        ? Builder(builder: (context) {
+            bool userIsWriter = false;
+            if (user.email == post.userEmail) userIsWriter = true;
+            return Scaffold(
+              appBar: AppBar(),
+              body: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          post.title!,
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 30),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        //Text("작성자: " + post.writer!),
+                        Text(dateTime.toLocal().toString().substring(5, 16)),
+                      ],
+                    ),
+                    Divider(
+                      height: 20,
+                      thickness: 1.5,
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Row(
+                        children: [
+                          Chip(
+                            label: Text(post.tagDisaster!,
+                                style: TextStyle(color: Colors.white)),
+                            backgroundColor: Color(0xff9fc3a8),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Icon(
+                            Icons.place,
+                            color: Color(0xff9fc3a8),
+                          ),
+                          Chip(
+                            label: Text(
+                                post.locationSiDo! +
+                                    " " +
+                                    post.locationGuGunSi!,
+                                style: TextStyle(color: Colors.white)),
+                            backgroundColor: Color(0xff9fc3a8),
+                          ),
+                          Spacer(),
+                          if (userIsWriter == true)
+                            Row(children: [
+                              deleteButton(context),
+                              editButton(context)
+                            ]),
+                        ],
+                      ),
+                    ),
+                    Divider(
+                      height: 20,
+                      thickness: 1.5,
+                    ),
+                    Expanded(
+                        child: SingleChildScrollView(
+                      child: post.imageUrl != null
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Center(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                "${post.imageUrl}"),
+                                            fit: BoxFit.cover)),
+                                    height: 400,
+                                    width: MediaQuery.of(context).size.width,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: Text(post.content!),
+                                ),
+                              ],
+                            )
+                          : Column(
+                              children: [
+                                Text(post.content!),
+                              ],
+                            ),
+                    ))
+                  ],
                 ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(dateTime.toLocal().toString().substring(5, 16)),
-              ],
-            ),
-            Divider(
-              height: 20,
-              thickness: 1.5,
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
+              floatingActionButton: userIsWriter == false //본인이 작성한 글이 아니면 채팅 가능
+                  ? FloatingActionButton.extended(
+                      onPressed: () {
+                        List<String> users = [];
+                        users.add(user.email!);
+                        users.add(post.userEmail!);
+                        //  print(UserManage().getUser()!.email! + post.userEmail!);
+                        List<String> nicknames = [];
+                        nicknames.add(user.displayName!);
+                        nicknames.add(post.writer!);
+
+                        ChattingRoom _chattingRoom = ChattingRoom(
+                            user: users, nickname: nicknames, post: post);
+
+                        chatService.createChattingRoom(_chattingRoom.toJson());
+                      },
+                      label: Text('채팅하기'),
+                      backgroundColor: Color(0xff9fc3a8),
+                      icon: Icon(Icons.chat_bubble),
+                    )
+                  : Container(),
+            );
+          })
+        : //유저가 로그인 안 해있을 때
+        Scaffold(
+            appBar: AppBar(),
+            body: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Chip(
-                    label: Text(post.tagDisaster!,
-                        style: TextStyle(color: Colors.white)),
-                    backgroundColor: Color(0xff9fc3a8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        post.title!,
+                        maxLines: 1,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 30),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      //Text("작성자: " + post.writer!),
+                      Text(dateTime.toLocal().toString().substring(5, 16)),
+                    ],
                   ),
-                  SizedBox(
-                    width: 10,
+                  Divider(
+                    height: 20,
+                    thickness: 1.5,
                   ),
-                  Icon(
-                    Icons.place,
-                    color: Color(0xff9fc3a8),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Row(
+                      children: [
+                        Chip(
+                          label: Text(post.tagDisaster!,
+                              style: TextStyle(color: Colors.white)),
+                          backgroundColor: Color(0xff9fc3a8),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Icon(
+                          Icons.place,
+                          color: Color(0xff9fc3a8),
+                        ),
+                        Chip(
+                          label: Text(
+                              post.locationSiDo! + " " + post.locationGuGunSi!,
+                              style: TextStyle(color: Colors.white)),
+                          backgroundColor: Color(0xff9fc3a8),
+                        ),
+                        Spacer(),
+                      ],
+                    ),
                   ),
-                  Chip(
-                    label: Text(
-                        post.locationSiDo! + " " + post.locationGuGunSi!,
-                        style: TextStyle(color: Colors.white)),
-                    backgroundColor: Color(0xff9fc3a8),
+                  Divider(
+                    height: 20,
+                    thickness: 1.5,
                   ),
-                  // InputChip(
-                  //   label: Text(post.locationGuGunSi!),
-                  // ),
-                  Spacer(),
-                  if (post.userEmail == user?.email)
-                    Row(children: [deleteButton(context), editButton(context)]),
+                  Expanded(
+                      child: SingleChildScrollView(
+                    child: post.imageUrl != null
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Center(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image:
+                                              NetworkImage("${post.imageUrl}"),
+                                          fit: BoxFit.cover)),
+                                  height: 400,
+                                  width: MediaQuery.of(context).size.width,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 5),
+                                child: Text(post.content!),
+                              ),
+                            ],
+                          )
+                        : Column(
+                            children: [
+                              Text(post.content!),
+                            ],
+                          ),
+                  ))
                 ],
               ),
             ),
-            Divider(
-              height: 20,
-              thickness: 1.5,
-            ),
-            Expanded(
-                child: SingleChildScrollView(
-              child: Text(post.content!),
-            ))
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => ChatDetailScreen(userName: "$id")));
-        },
-        label: Text('채팅하기'),
-        backgroundColor: Color(0xff9fc3a8),
-        icon: Icon(Icons.chat_bubble),
-      ),
-    );
+          );
   }
 
   TextButton editButton(BuildContext context) {
     return TextButton(
         //수정버튼
         onPressed: () {
-          // Navigator.pushAndRemoveUntil(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => PostEditScreen(post: post),
-          //     ),
-          //     (route) => false);
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => PostEditScreen(
                         post: post,
                       )));
-          // PostService()
-          //     .updatePost(reference: post.reference!, json: post.toJson());
-          //Get.to(() => PostEditScreen(post: post));
         },
         child: Row(
           children: [
@@ -161,7 +283,7 @@ class PostDetailScreen extends StatelessWidget {
                         ),
                         onPressed: () {
                           Navigator.of(ctx).pop();
-                          PostService().deletePost(post.reference!);
+                          PostService().deletePost(post);
                           Navigator.push(
                               ctx,
                               MaterialPageRoute(

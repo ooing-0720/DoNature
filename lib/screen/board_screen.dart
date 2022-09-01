@@ -7,6 +7,8 @@ import './post/post_add_screen.dart';
 import './post/post_detail_screen.dart';
 import 'package:donation_nature/board/domain/post.dart';
 import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:donation_nature/screen/user_manage.dart';
 
 class BoardScreen extends StatefulWidget {
   const BoardScreen({Key? key}) : super(key: key);
@@ -27,6 +29,7 @@ class _BoardScreenState extends State<BoardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    User? user = UserManage().getUser();
     // PostService _postService = PostService();
     // Future<List<Post>> posts = _postService.getPosts();
     // final postProvider = Provider.of<PostProvider>(context);
@@ -94,7 +97,7 @@ class _BoardScreenState extends State<BoardScreen> {
                                       "${data.tagDisaster}",
                                       style: TextStyle(color: Colors.white),
                                     ),
-                                    backgroundColor: Color(0xff9fc3a8),
+                                    backgroundColor: Color(0xff5B7B6E),
                                   ),
                                   SizedBox(
                                     width: 5,
@@ -104,7 +107,7 @@ class _BoardScreenState extends State<BoardScreen> {
                                       "${data.locationSiDo}",
                                       style: TextStyle(color: Colors.white),
                                     ),
-                                    backgroundColor: Color(0xff9fc3a8),
+                                    backgroundColor: Color(0xff5B7B6E),
                                   ),
                                 ],
                               ),
@@ -115,7 +118,7 @@ class _BoardScreenState extends State<BoardScreen> {
                           onTap: () {},
                           child: Icon(
                             Icons.favorite_border,
-                            color: Color(0xff9fc3a8),
+                            color: Color(0xff5B7B6E),
                           ),
                         ),
                       ),
@@ -129,15 +132,19 @@ class _BoardScreenState extends State<BoardScreen> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => PostAddScreen()));
-        },
-        label: Text('글쓰기'),
-        backgroundColor: Color(0xff9fc3a8),
-        icon: Icon(Icons.add),
-      ),
+      floatingActionButton: Builder(builder: (context) {
+        return user != null
+            ? FloatingActionButton.extended(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PostAddScreen()));
+                },
+                label: Text('글쓰기'),
+                backgroundColor: Color(0xff5B7B6E),
+                icon: Icon(Icons.add),
+              )
+            : Container();
+      }),
     );
   }
   //Future <void> _refreshPosts() async {}

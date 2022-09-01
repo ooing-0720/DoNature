@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:donation_nature/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:donation_nature/screen/mypage/likelist_screen.dart';
@@ -212,3 +210,4 @@ class MyPageHeaderState extends State<MyPageHeader> {
   // }
 
 }
+

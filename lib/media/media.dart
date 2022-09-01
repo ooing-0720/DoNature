@@ -11,10 +11,13 @@ class Media {
     // 접근 권한인데 갤럭시는 필요없다함?
     // PermissionRequest.getStoragePermission();
 
-    var image = await ImagePicker()
-        .pickImage(source: source, imageQuality: 50, maxWidth: 150);
+    var image = await ImagePicker().pickImage(
+      source: source,
 
-    //var stopwatch = Stopwatch()..start();
+      imageQuality: 70,
+      // maxWidth: 200
+    );
+
     io.File? imageFile = io.File(image!.path);
 
     final ref =
@@ -24,8 +27,6 @@ class Media {
 
     final url = await ref.getDownloadURL();
 
-    // print(stopwatch.elapsed);
-    // print("****************************************");
     return url;
   }
 
@@ -48,10 +49,19 @@ class Media {
   }
 
   // FireStore에서 이미지 찾기
-  Future downloadImage(String title) async {
+  Future<String> downloadImage(String imageUrl) async {
     final ref =
-        FirebaseStorage.instance.ref().child('post_image').child(title + 'jpg');
+        FirebaseStorage.instance.ref().child('post_image').child(imageUrl);
 
     final url = await ref.getDownloadURL();
+    return url;
+  }
+
+  Future deleteImage(String title) async {
+    FirebaseStorage.instance
+        .ref()
+        .child('post_image')
+        .child(title.hashCode.toString() + 'jpg')
+        .delete();
   }
 }

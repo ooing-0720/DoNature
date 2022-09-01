@@ -1,7 +1,6 @@
 import 'package:donation_nature/action/action.dart';
 import 'package:donation_nature/screen/info_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:svg_path_parser/svg_path_parser.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -289,3 +288,4 @@ class HomeScreenState extends State<HomeScreen>
 //   @override
 //   bool shouldRepaint(CustomPainter oldDelegate) => true;
 // }
+

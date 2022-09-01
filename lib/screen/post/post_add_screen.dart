@@ -35,7 +35,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
   List<String> locationGuList = [];
   String? _selectedDo = null;
   String? _selectedGu = null;
-
+  bool image = false;
   int selectedIndex = -1;
   var _editedPost = Post(
     title: '',
@@ -43,12 +43,17 @@ class _PostAddScreenState extends State<PostAddScreen> {
     writer: '',
     date: null,
     content: '',
-    imageUrl: '',
+    // imageUrl: '',
     locationSiDo: '',
     locationGuGunSi: '',
     tagDisaster: '', // 재난 태그
     tagMore: '', // 그 외 태그
   );
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +86,117 @@ class _PostAddScreenState extends State<PostAddScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                uploadImage(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SimpleDialog(
+                            children: [
+                              SimpleDialogOption(
+                                onPressed: () async {
+                                  // 카메라에서 가져오기
+                                  // 파이어베이스에 사진 업로드된 후에 글작성 버튼 눌러야함 - 5sec
+                                  _editedPost.imageUrl =
+                                      await _media.uploadImage(
+                                          ImageSource.camera,
+                                          titleEditingController.text.hashCode
+                                              .toString());
+
+                                  setState(() {
+                                    print(_editedPost.imageUrl);
+                                    image = true;
+
+                                    Navigator.pop(context);
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.photo_camera),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Text("카메라에서 가져오기")
+                                  ],
+                                ),
+                              ),
+                              SimpleDialogOption(
+                                onPressed: () async {
+                                  // 갤러리에서 가져오기 - 4sec
+                                  _editedPost.imageUrl =
+                                      await _media.uploadImage(
+                                          ImageSource.gallery,
+                                          titleEditingController.text.hashCode
+                                              .toString());
+
+                                  setState(() {
+                                    print(_editedPost.imageUrl);
+                                    image = true;
+                                    Navigator.pop(context);
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.image),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Text("갤러리에서 가져오기")
+                                  ],
+                                ),
+                              )
+                            ],
+                          );
+                        });
+                  },
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            border: Border.all(color: Colors.grey),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        height: 80,
+                        width: 80,
+                        child: Center(child: Icon(Icons.add_to_photos)),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                    child: _editedPost.imageUrl != null
+                        ? Stack(children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                          "${_editedPost.imageUrl}")),
+                                  color: Colors.transparent,
+                                  border: Border.all(color: Colors.grey),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              height: 400,
+                              width: MediaQuery.of(context).size.width,
+                            ),
+                            Positioned(
+                                child: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _editedPost.imageUrl = null;
+                                  print(_editedPost.imageUrl);
+                                });
+                              },
+                              icon: Icon(
+                                Icons.cancel,
+                                color: Colors.black.withOpacity(0.5),
+                                size: 18,
+                              ),
+                            ))
+                          ])
+                        : Container(
+                            child: Text("dd"),
+                          )),
                 Divider(
                   height: 20,
                   thickness: 1.5,
@@ -211,65 +326,6 @@ class _PostAddScreenState extends State<PostAddScreen> {
           ),
         ),
       ],
-    );
-  }
-
-  GestureDetector uploadImage() {
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return SimpleDialog(
-                children: [
-                  SimpleDialogOption(
-                    onPressed: () async {
-                      // 카메라에서 가져오기
-                      // 파이어베이스에 사진 업로드된 후에 글작성 버튼 눌러야함 - 5sec
-                      _editedPost.imageUrl = await _media.uploadImage(
-                          ImageSource.camera,
-                          titleEditingController.text.hashCode.toString());
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.photo_camera),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text("카메라에서 가져오기")
-                      ],
-                    ),
-                  ),
-                  SimpleDialogOption(
-                    onPressed: () async {
-                      // 갤러리에서 가져오기 - 4sec
-                      _editedPost.imageUrl = await _media.uploadImage(
-                          ImageSource.gallery,
-                          titleEditingController.text.hashCode.toString());
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.image),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text("갤러리에서 가져오기")
-                      ],
-                    ),
-                  )
-                ],
-              );
-            });
-      },
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.transparent,
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.all(Radius.circular(20))),
-        height: 80,
-        width: 80,
-        child: Center(child: Icon(Icons.add_to_photos)),
-      ),
     );
   }
 

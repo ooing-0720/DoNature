@@ -90,7 +90,15 @@ class PostService {
     await post.reference?.delete();
   }
 
-  // Future<bool> checkLikePost(User user, DocumentReference reference) {
-
-  // }
+  // 관심있어요
+  Future likePost(Post post, User user) async {
+    if (post.likeUsers!.contains(user.email) == false) {
+      // 유저의 관심 목록에 등록
+      post.likeUsers!.add(user.email);
+    } else {
+      // 유저의 관심 목록에서 제거
+      post.likeUsers!.remove(user.email);
+    }
+    await post.reference?.set(post.toJson());
+  }
 }

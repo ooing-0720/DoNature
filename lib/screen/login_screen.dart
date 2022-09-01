@@ -1,3 +1,4 @@
+import 'package:donation_nature/screen/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/screen/mypage/mypage_screen.dart';
@@ -48,7 +49,7 @@ class LoginScreenState extends State<LoginScreen> {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.all(50),
+              margin: EdgeInsets.all(10),
               child: SizedBox(
                   height: 200,
                   width: 300,
@@ -87,17 +88,32 @@ class LoginScreenState extends State<LoginScreen> {
               obscureText: true,
             ),
             SizedBox(height: 30.0),
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  minimumSize: Size(400, 40),
-                  primary: Color(0xff9fc3a8),
-                ),
-                child: Text('로그인'),
-                onPressed: () {
-                  if (_formkey.currentState!.validate()) {
-                    _login();
-                  }
-                }),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: () {
+                if (_formkey.currentState!.validate()) {
+                  _login();
+                }
+              },
+              child: Text('로그인'),
+              style: ElevatedButton.styleFrom(
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(30.0),
+                  ),
+                  primary: Color(0xff416E5C),
+                  minimumSize: const Size.fromHeight(50)),
+            ),
+            SizedBox(height: 10.0),
+            TextButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SignUpScreen()));
+              },
+              child: Text("회원가입"),
+              style: TextButton.styleFrom(
+                primary: Colors.grey, // foreground
+              ),
+            )
           ],
         ));
   }
@@ -113,8 +129,9 @@ class LoginScreenState extends State<LoginScreen> {
           email: _emailTextEditingController.text,
           password: _passwordTextEditingController.text,
         );
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const MyPageScreen()));
+        Navigator.pop(context);
+        // Navigator.push(context,
+        //     MaterialPageRoute(builder: (context) => const MyPageScreen()));
       } on FirebaseAuthException catch (e) {
         //logger.e(e);
         String message = '';

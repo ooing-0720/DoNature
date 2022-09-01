@@ -107,10 +107,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                   if (_profileNameValid) {
                     user?.updateDisplayName(nicknameTextEditingController.text);
                     user?.updatePhotoURL(_image);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyPageScreen()),
-                    );
+                    Navigator.pop(context);
                   }
                 },
                 child: Text('변경'),
@@ -237,6 +234,9 @@ class EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   ImageProvider _imageProvider() {
+    if (_image == 'default_profile')
+      return AssetImage('assets/images/default_profile.png');
+
     return Image.file(File(_image!)).image;
   }
 }

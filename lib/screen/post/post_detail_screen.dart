@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:donation_nature/board/provider/post_provider.dart';
@@ -127,11 +129,11 @@ class PostDetailScreen extends StatelessWidget {
               ),
               floatingActionButton: userIsWriter == false //본인이 작성한 글이 아니면 채팅 가능
                   ? FloatingActionButton.extended(
-                      onPressed: () {
+                      onPressed: () async {
                         List<String> users = [];
                         users.add(user.email!);
                         users.add(post.userEmail!);
-                        //  print(UserManage().getUser()!.email! + post.userEmail!);
+                        // print(UserManage().getUser()!.email! + post.userEmail!);
                         List<String> nicknames = [];
                         nicknames.add(user.displayName!);
                         nicknames.add(post.writer!);
@@ -139,7 +141,10 @@ class PostDetailScreen extends StatelessWidget {
                         ChattingRoom _chattingRoom = ChattingRoom(
                             user: users, nickname: nicknames, post: post);
 
-                        chatService.createChattingRoom(_chattingRoom.toJson());
+                        _chattingRoom.chatReference = await chatService
+                            .createChattingRoom(_chattingRoom.toJson());
+
+                        print(_chattingRoom.chatReference);
                       },
                       label: Text('채팅하기'),
                       backgroundColor: Color(0xff9fc3a8),

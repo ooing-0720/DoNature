@@ -41,7 +41,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                 });
               },
               child: FutureBuilder<List<ChattingRoom>>(
-                future: ChatService().getChattingRoom(user!),
+                future: ChatService().getChattingRooms(user!),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     List<ChattingRoom> rooms = snapshot.data!;

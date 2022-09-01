@@ -126,6 +126,8 @@ class _BoardScreenState extends State<BoardScreen> {
                   );
                 },
               );
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
             } else {
               return const Center(child: CircularProgressIndicator());
             }

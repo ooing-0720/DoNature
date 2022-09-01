@@ -133,13 +133,13 @@ class PostService {
   }
 
   // 채팅방이 만들어진 적이 있는지 확인
-  bool isChated(Post post, User user) {
-    if (post.chatUsers!.contains(user.email)) {
+  bool isChatted(Post post, User user) {
+    if (post.chatUsers == null || !post.chatUsers!.keys.contains(user.email)) {
+      // 처음 채팅하기를 누르는 거라면 -> 채팅방 생성
+      return false;
+    } else {
       // 이미 만들어지 채팅방이 있다면 -> 만들어진 채팅방으로 연결
       return true;
-    } else {
-      // 처음 채팅하기를 누르는 거라면 -> 채팅방 생성 creating
-      return false;
     }
   }
 }

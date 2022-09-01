@@ -90,9 +90,9 @@ class PostService {
     await post.reference?.delete();
   }
 
-  // 관심있어요
+  // 파이어베이스에 정보 변경
   Future likePost(Post post, User user) async {
-    if (post.likeUsers!.contains(user.email) == false) {
+    if (!isLiked(post, user)) {
       // 유저의 관심 목록에 등록
       post.likeUsers!.add(user.email);
     } else {
@@ -100,5 +100,16 @@ class PostService {
       post.likeUsers!.remove(user.email);
     }
     await post.reference?.set(post.toJson());
+  }
+
+  // 관심글인지 확인
+  bool isLiked(Post post, User user) {
+    if (post.likeUsers!.contains(user.email) == false) {
+      // 관심있어요 누르지 않은 경우(♡)
+      return false;
+    } else {
+      // 관심있어요 이미 누른 경우(♥)
+      return true;
+    }
   }
 }

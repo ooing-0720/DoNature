@@ -41,8 +41,8 @@ class Post {
     date = json['date']; // format 맞게 출력되는지 확인해야함
     content = json['content'];
     imageUrl = json['image_url'];
-    locationSiDo = json['location_si/do'];
-    locationGuGunSi = json['location_gu/gun/si'];
+    locationSiDo = json['location_sido'];
+    locationGuGunSi = json['location_gugunsi'];
     tagDisaster = json['tag_disaster'];
     tagMore = json['tag_more'];
     likeUsers = json['like_users'];
@@ -65,8 +65,8 @@ class Post {
     map['date'] = date;
     map['content'] = content;
     map['image_url'] = imageUrl;
-    map['location_si/do'] = locationSiDo;
-    map['location_gu/gun/si'] = locationGuGunSi;
+    map['location_sido'] = locationSiDo;
+    map['location_gugunsi'] = locationGuGunSi;
     map['tag_disaster'] = tagDisaster;
     map['tag_more'] = tagMore;
     map['like_users'] = likeUsers ?? [];

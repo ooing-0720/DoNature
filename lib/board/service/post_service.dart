@@ -48,24 +48,42 @@ class PostService {
 
   // Select All Matching Tags(위치 태그 구분)
   Future<List<Post>> selectPostsByLocation(
-      String? sido, String? gugunsi) async {
+      String? sido, String? gugunsi, String? disaster) async {
     CollectionReference<Map<String, dynamic>> collectionReference =
         FirebaseFirestore.instance.collection("bulletin_board");
     QuerySnapshot<Map<String, dynamic>> querySnapshot;
 
-    // if (sido == null) {
-    //   // 도 전체(도 선택 - 시 선택X)
-    //   querySnapshot = await collectionReference
-    //       .where('location_si/do', isEqualTo: sido)
-    //       .orderBy("date", descending: true)
-    //       .get();
-    // } else {
-    // 시 전체(도 선택 - 시 선택 - 구 선택X)
-    querySnapshot = await collectionReference
-        .where('location_si/do', isEqualTo: sido)
-        .where('location_gu/gun/si', isEqualTo: gugunsi)
-        .orderBy("date", descending: true)
-        .get();
+    if (disaster == null) {
+      // 재난태그 지정 안 한 경우
+      if (gugunsi == "전체") {
+        querySnapshot = await collectionReference
+            .where('location_si/do', isEqualTo: sido)
+            .orderBy("date", descending: true)
+            .get();
+      } else {
+        querySnapshot = await collectionReference
+            .where('location_si/do', isEqualTo: sido)
+            .where('location_gu/gun/si', isEqualTo: gugunsi)
+            .orderBy("date", descending: true)
+            .get();
+      }
+    } else {
+      // 재난태그 지정한 경우
+      if (gugunsi == "전체") {
+        querySnapshot = await collectionReference
+            .where('location_si/do', isEqualTo: sido)
+            .where('tag_disaster', isEqualTo: disaster)
+            .orderBy("date", descending: true)
+            .get();
+      } else {
+        querySnapshot = await collectionReference
+            .where('location_si/do', isEqualTo: sido)
+            .where('location_gu/gun/si', isEqualTo: gugunsi)
+            .where('tag_disaster', isEqualTo: disaster)
+            .orderBy("date", descending: true)
+            .get();
+      }
+    }
 
     List<Post> posts = [];
     for (var doc in querySnapshot.docs) {
@@ -104,7 +122,7 @@ class PostService {
 
   // 관심글인지 확인
   bool isLiked(Post post, User user) {
-    if (post.likeUsers!.contains(user.email) == false) {
+    if (post.likeUsers == null || !post.likeUsers!.contains(user.email)) {
       // 관심있어요 누르지 않은 경우(♡)
       return false;
     } else {

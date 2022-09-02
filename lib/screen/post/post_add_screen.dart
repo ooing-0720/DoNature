@@ -389,8 +389,8 @@ class _PostAddScreenState extends State<PostAddScreen> {
         onPressed: () {
           if (_formkey.currentState!.validate() &&
               selectedIndex != -1 &&
-              (_editedPost.locationSiDo != null ||
-                  _editedPost.locationGuGunSi != null)) {
+              (_editedPost.locationSiDo != '' &&
+                  _editedPost.locationGuGunSi != '')) {
             //validation 성공하면 폼 저장하기
             _formkey.currentState!.save();
             addPost();
@@ -399,7 +399,8 @@ class _PostAddScreenState extends State<PostAddScreen> {
                 .showSnackBar(SnackBar(content: Text('재난태그 지정필요')));
           } else if (_formkey.currentState!.validate() &&
               selectedIndex != -1 &&
-              _editedPost.locationSiDo == null) {
+              (_editedPost.locationSiDo == '' ||
+                  _editedPost.locationGuGunSi == '')) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text('위치태그 지정필요')));
           }

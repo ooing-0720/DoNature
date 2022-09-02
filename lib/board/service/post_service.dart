@@ -57,13 +57,13 @@ class PostService {
       // 재난태그 지정 안 한 경우
       if (gugunsi == "전체") {
         querySnapshot = await collectionReference
-            .where('location_si/do', isEqualTo: sido)
+            .where('location_sido', isEqualTo: sido)
             .orderBy("date", descending: true)
             .get();
       } else {
         querySnapshot = await collectionReference
-            .where('location_si/do', isEqualTo: sido)
-            .where('location_gu/gun/si', isEqualTo: gugunsi)
+            .where('location_sido', isEqualTo: sido)
+            .where('location_gugunsi', isEqualTo: gugunsi)
             .orderBy("date", descending: true)
             .get();
       }
@@ -71,14 +71,14 @@ class PostService {
       // 재난태그 지정한 경우
       if (gugunsi == "전체") {
         querySnapshot = await collectionReference
-            .where('location_si/do', isEqualTo: sido)
+            .where('location_sido', isEqualTo: sido)
             .where('tag_disaster', isEqualTo: disaster)
             .orderBy("date", descending: true)
             .get();
       } else {
         querySnapshot = await collectionReference
-            .where('location_si/do', isEqualTo: sido)
-            .where('location_gu/gun/si', isEqualTo: gugunsi)
+            .where('location_sido', isEqualTo: sido)
+            .where('location_gugunsi', isEqualTo: gugunsi)
             .where('tag_disaster', isEqualTo: disaster)
             .orderBy("date", descending: true)
             .get();

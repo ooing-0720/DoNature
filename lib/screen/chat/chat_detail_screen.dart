@@ -10,9 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:donation_nature/models/chat_model.dart';
 import 'package:donation_nature/models/chatMessageModel.dart';
 import 'package:provider/provider.dart';
-
-import 'chat_bubble.dart';
-import 'chat_provider.dart';
+import 'package:donation_nature/screen/user_manage.dart';
 
 class ChatDetailScreen extends StatefulWidget {
   final String userName;
@@ -31,17 +29,10 @@ class ChatDetailScreen extends StatefulWidget {
 }
 
 class _ChatDetailScreenState extends State<ChatDetailScreen> {
+  User? user = UserManage().getUser();
   TextEditingController controller = TextEditingController();
 
-  //채팅만든사람이 0-
-
-/*  List<ChatMessage> messages = [
-    ChatMessage(messageContent: "받는사람", messageType: "receiver"),
-    ChatMessage(messageContent: "받는사람2", messageType: "receiver"),
-    ChatMessage(messageContent: "보내는사람", messageType: "sender"),
-    ChatMessage(messageContent: "받는사람3", messageType: "receiver"),
-    ChatMessage(messageContent: "보내는사람2", messageType: "sender"),
-  ];*/
+//uid랑 비교
 
   @override
   Widget build(BuildContext context) {
@@ -69,11 +60,58 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     Expanded(
                       child: ListView.builder(
                           itemCount: chats.length,
+                          // physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(chats[index].messageText),
-                              //subtitle: Text(chats[index].time.toDate().toLocal().toString().substring(5,16)),
+                            bool isMe =
+                                true; //chats의 useruid와 chatmodel의 useruid 같으면 내가 보낸것, isMe=true
+                            if (chats[index].userUID != user!.uid) {
+                              isMe = false;
+                            }
+                            return Container(
+                              padding: EdgeInsets.only(
+                                  left: 12, right: 12, top: 8, bottom: 8),
+                              child: Align(
+                                alignment:
+                                    (isMe //messages[index].messageType == "receiver"
+                                        ? Alignment.topRight
+                                        : Alignment.topLeft),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color:
+                                        (isMe //messages[index].messageType == "receiver"
+                                            ? Color(0xff9fc3a8)
+                                            : Colors.grey.shade200),
+                                  ),
+                                  padding: EdgeInsets.all(12),
+                                  child: Text(
+                                    chats[index].messageText,
+                                    style:
+                                        (isMe //messages[index].messageType == "receiver"
+                                            ? TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.white)
+                                            : TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.black)),
+                                    //TextStyle(fontSize: 15),
+                                  ),
+                                ),
+                              ),
                             );
+                            // Align(
+                            //   alignment:
+                            //       isMe ? Alignment.topLeft : Alignment.topRight,
+                            //   child:
+                            ListTile(
+                                title: Text(chats[index].messageText),
+                                subtitle: Text(
+                                    "현재 uid: ${chats[index].userUID}" +
+                                        " user uid : ${user!.uid}" +
+                                        " isMe: ${isMe.toString()}")
+                                //subtitle: Text(chats[index].time.toDate().toLocal().toString().substring(5,16)),
+                                );
+                            // );
                           }),
                     ),
                     sendMessageField()
@@ -89,44 +127,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           ),
     );
   }
-
-  /*ListView chatBubble() {
-    var isMe = ChatModel().userUID != Provider.of<ChatProvider>(context).userUID;
-
-
-    return ListView.builder(
-      itemCount: chatModel.messageText.length,
-      shrinkWrap: true,
-      padding: EdgeInsets.only(top: 8, bottom: 8),
-      physics: NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
-        return Container(
-          padding: EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 8),
-          child: Align(
-            alignment: (isMe//messages[index].messageType == "receiver"
-                ? Alignment.topLeft
-                : Alignment.topRight),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: (isMe//messages[index].messageType == "receiver"
-                    ? Colors.grey.shade200
-                    : Color(0xff9fc3a8)),
-              ),
-              padding: EdgeInsets.all(12),
-              child: Text(
-                chatModel.messageText,
-                style: (isMe//messages[index].messageType == "receiver"
-                    ? TextStyle(fontSize: 15, color: Colors.black)
-                    : TextStyle(fontSize: 15, color: Colors.white)),
-                //TextStyle(fontSize: 15),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }*/
 
   Align sendMessageField() {
     return Align(
@@ -163,7 +163,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
               width: 10,
             ),
             FloatingActionButton(
-              onPressed: _onPressedSendingButton,
+              onPressed: controller.value.text.isNotEmpty
+                  ? _onPressedSendingButton
+                  : null,
               child: Icon(
                 Icons.send,
                 color: Colors.white,
@@ -203,6 +205,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     } catch (ex) {
       log('error)', error: ex.toString(), stackTrace: StackTrace.current);
     }
+
+    controller.clear();
   }
 
   Stream<List<ChatModel>> streamChat() {

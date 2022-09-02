@@ -191,11 +191,13 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
 
       widget.chattingRoom.updatedDate = Timestamp.now();
       widget.chattingRoom.updatedMsg = controller.text;
+      widget.chattingRoom.lastSenderUID = user.uid;
 
       await ChatService().updateChat(
           reference: widget.reference,
           updatedDate: Timestamp.now(),
-          updatedMsg: controller.text);
+          updatedMsg: controller.text,
+          lastSenderUID: user.uid);
 
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 

@@ -59,8 +59,11 @@ class _ChatListScreenState extends State<ChatListScreen> {
                             return userEmail == data.user!.first
                                 ? GestureDetector(
                                     onTap: () {
+                                      if (user!.uid.toString() == data.lastSenderUID){
+                                       ChatService().unreadMsg(reference: data.chatReference!);
+                                      }
                                       Navigator.push(
-                                          context,
+                                          context, 
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   ChatDetailScreen(
@@ -75,7 +78,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                               //       // userName:
                                               //       //     data.nickname!.last
                                               //           ),
-                                              ));
+                                              ) );
                                     },
                                     child: ListTile(
                                       contentPadding: EdgeInsets.symmetric(
@@ -130,10 +133,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                               userName: data.nickname!.first,
                                               reference: data.chatReference!,
                                             ),
-
-                                            // ChatDetailScreen(
-                                            //     userName:
-                                            //         data.nickname!.first),
                                           ));
                                     },
                                     child: ListTile(

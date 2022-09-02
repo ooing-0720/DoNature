@@ -78,6 +78,11 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                               ));
                                     },
                                     child: ListTile(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 8, horizontal: 8),
+                                      dense: false,
+                                      visualDensity: VisualDensity(
+                                          horizontal: -4, vertical: -4),
                                       leading: CircleAvatar(
                                         backgroundColor: Color(0xff9fc3a8),
                                         radius: 24,
@@ -86,15 +91,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                           color: Colors.white,
                                         ),
                                       ),
-                                      title: Text("${data.nickname!.last}"),
-
-                                      //채팅하기를 먼저 누른 사람이 0 sender, 글 올린 사람이 1 receiver
-                                      //user가 sender이면
-                                      //user가 receiver이면
-                                      // userEmail != data.
-                                      //Text("${data.user!.last}"),
-                                      //if user email == data.email[0] 유저가 sender 전부 1로 출력
-
+                                      title: Text("${data.postTitle}"),
                                       subtitle: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -105,7 +102,8 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  Text("제목: ${data.postTitle}"),
+                                                  Text(
+                                                      "${data.nickname!.last}"),
                                                   Text(
                                                       "마지막 메세지: ${data.updatedMsg}"),
                                                 ],

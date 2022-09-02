@@ -181,9 +181,14 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   }
 
   void _onPressedSendingButton() async {
-    final user = FirebaseAuth.instance.currentUser;
+    //final user = FirebaseAuth.instance.currentUser;
 
     try {
+
+      print("****************************************************");
+      print(user!.uid);
+      print("****************************************************");
+
       ChatModel chatModel = ChatModel(
           userUID: user!.uid,
           messageText: controller.text,
@@ -191,13 +196,13 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
 
       widget.chattingRoom.updatedDate = Timestamp.now();
       widget.chattingRoom.updatedMsg = controller.text;
-      widget.chattingRoom.lastSenderUID = user.uid;
+      //widget.chattingRoom.lastSenderUID = chatModel.userUID
 
       await ChatService().updateChat(
           reference: widget.reference,
           updatedDate: Timestamp.now(),
           updatedMsg: controller.text,
-          lastSenderUID: user.uid);
+          lastSenderUID: chatModel.userUID);
 
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 

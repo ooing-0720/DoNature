@@ -124,6 +124,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                   )
                                 : GestureDetector(
                                     onTap: () {
+                                      if (user!.uid.toString() == data.lastSenderUID){
+                                       ChatService().unreadMsg(reference: data.chatReference!);
+                                      }
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(

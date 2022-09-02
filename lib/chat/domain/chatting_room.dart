@@ -34,7 +34,7 @@ class ChattingRoom {
     updatedMsg = json['updated_msg'];
     postReference = json['post_reference'];
     updateMsgRead = json['update_msg_read'];
-    lastSenderUID = json['last_sender'];
+    lastSenderUID = json['last_sender_uid'];
   }
 
   ChattingRoom.fromQuerySnapshot(
@@ -54,7 +54,7 @@ class ChattingRoom {
     map['updated_msg'] = updatedMsg ?? '';
     map['post_reference'] = post?.reference?.id;
     map['updated_msg_read'] = false;
-    map['last_sender']=lastSenderUID?? '';
+    map['last_sender_uid']=lastSenderUID?? '';
 
     return map;
   }

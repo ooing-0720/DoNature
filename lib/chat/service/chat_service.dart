@@ -57,7 +57,7 @@ class ChatService {
         .doc(reference.id);
 
     collectionReference
-        .update({"updated_date": updatedDate, "updated_msg": updatedMsg});
+        .update({"updated_date": updatedDate, "updated_msg": updatedMsg, "last_sender_uid": lastSenderUID});
   }
 
   //DELETE

@@ -129,8 +129,9 @@ class LoginScreenState extends State<LoginScreen> {
           email: _emailTextEditingController.text,
           password: _passwordTextEditingController.text,
         );
-
-        Navigator.pop(context);
+        Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MyPageScreen()))
+            .then((value) => {setState(() {})});
         // Navigator.push(context,
         //     MaterialPageRoute(builder: (context) => const MyPageScreen()));
       } on FirebaseAuthException catch (e) {

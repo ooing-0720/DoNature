@@ -12,27 +12,6 @@ class EditProfileScreen extends StatefulWidget {
   State<EditProfileScreen> createState() => EditProfileScreenState();
 }
 
-// class EditProfileScreenState extends State<EditProfileScreen> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//       title: Text('프로필 수정',
-//           style: TextStyle(
-//             color: Colors.black,
-//           )),
-//       actions: [
-//         IconButton(
-//           onPressed: () {},
-//           icon: Icon(Icons.notifications),
-//         ),
-//       ],
-//     )
-//     body:
-//     );
-//   }
-// }
-
 class EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController nicknameTextEditingController = TextEditingController();
   TextEditingController numberTextEditingController = TextEditingController();

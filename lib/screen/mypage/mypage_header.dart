@@ -58,6 +58,21 @@ class MyPageHeaderState extends State<MyPageHeader> {
   }
 
   Widget buildMypageHeader(BuildContext context) {
+    // setState(() {
+    //   if (mounted) {
+    //     User? user = userManage.getUser();
+    //     if (user == null) {
+    //       userName = "";
+    //       userEmail = '';
+    //       userPhoto = 'default_profile';
+    //     } else {
+    //       userName = user.displayName! + '님';
+    //       userEmail = user.email!;
+    //       userPhoto = user.photoURL!;
+    //     }
+    //   }
+    // });
+
     return Container(
         // decoration: BoxDecoration(
         //   color: Color(0xffFFFFFF),
@@ -213,5 +228,6 @@ class MyPageHeaderState extends State<MyPageHeader> {
     if (userPhoto == 'default_profile')
       return AssetImage('assets/images/default_profile.png');
     return Image.file(File(userPhoto)).image;
+    // return Image.file(File(userPhoto)).image;
   }
 }

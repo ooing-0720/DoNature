@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donation_nature/alarm/service/alarm_serivce.dart';
 import 'package:donation_nature/board/domain/post.dart';
 import 'package:donation_nature/media/media.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -113,6 +114,7 @@ class PostService {
     if (!isLiked(post, user)) {
       // 유저의 관심 목록에 등록
       post.likeUsers!.add(user.email);
+      AlarmService.newLikeAlarm(user.displayName, post.title!, post.writerUID!);
     } else {
       // 유저의 관심 목록에서 제거
       post.likeUsers!.remove(user.email);

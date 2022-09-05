@@ -3,6 +3,7 @@ import 'dart:async';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:date_format/date_format.dart';
 // import 'package:donation_nature/board/provider/post_provider.dart';
+import 'package:donation_nature/alarm/service/alarm_serivce.dart';
 import 'package:donation_nature/board/service/post_service.dart';
 import 'package:donation_nature/chat/domain/chatting_room.dart';
 import 'package:donation_nature/chat/service/chat_service.dart';
@@ -184,6 +185,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
                           _chattingRoom.chatReference = await chatService
                               .createChattingRoom(_chattingRoom.toJson());
+                          AlarmService.createChattingRoomAlarm(user.uid, widget.post.writerUID);
                           widget.post.chatUsers![user.email] =
                               _chattingRoom.chatReference;
                           PostService().updatePost(

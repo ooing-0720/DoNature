@@ -17,6 +17,7 @@ class Post {
   List<dynamic>? likeUsers; // 관심 누른 유저 email 배열
   Map<dynamic, dynamic>? chatUsers; // 채팅하기 누른 유저 email 배열
   final DocumentReference? reference; // Firebase에서 document의 위치
+  String? writerUID;
 
   Post({
     this.title,
@@ -30,6 +31,7 @@ class Post {
     this.tagDisaster,
     this.tagMore,
     this.reference,
+    this.writerUID
   });
 
   // Firebase -> Dart(Flutter)
@@ -47,6 +49,7 @@ class Post {
     tagMore = json['tag_more'];
     likeUsers = json['like_users'];
     chatUsers = json['chat_users'];
+    writerUID = json['writer_uid'];
   }
 
   Post.fromQuerySnapshot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot)
@@ -71,6 +74,8 @@ class Post {
     map['tag_more'] = tagMore;
     map['like_users'] = likeUsers ?? [];
     map['chat_users'] = chatUsers ?? {};
+    map['writer_uid'] = writerUID;
+
 
     return map;
   }

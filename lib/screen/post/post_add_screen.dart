@@ -458,6 +458,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
                   _editedPost.userEmail = user?.email;
                   _editedPost.writer = user?.displayName;
                   _editedPost.date = Timestamp.now();
+                  _editedPost.writerUID = user?.uid;
 
                   // Firebase 연동
                   _postService.createPost(_editedPost.toJson());

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donation_nature/alarm/service/alarm_serivce.dart';
 import 'package:donation_nature/chat/domain/chatting_room.dart';
 import 'package:donation_nature/chat/service/chat_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -67,6 +68,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                             bool isMe =
                                 true; //chats의 useruid와 chatmodel의 useruid 같으면 내가 보낸것, isMe=true
                             if (chats[index].userUID != user!.uid) {
+                              AlarmService.newMsgAlarm(user!.uid);
                               isMe = false;
                             }
                             return Container(

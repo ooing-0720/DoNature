@@ -50,17 +50,17 @@ class _ChatListScreenState extends State<ChatListScreen> {
                       itemCount: rooms.length,
                       itemBuilder: (BuildContext context, int index) {
                         String userEmail = user!.email!; //현재 유저의 이메일
-
-                        ChattingRoom data = rooms[index]; //채팅 목록 각각
+                        ChattingRoom data = rooms[index]; //각각의 채팅방
                         // data.user!.first   //sender
                         return Card(
                           //상대방 이름 user list
                           child: Builder(builder: (context) {
                             return userEmail == data.user!.first
+                                //채팅하는 상대방 이름 띄우기
                                 ? GestureDetector(
                                     onTap: () {
                                       Navigator.push(
-                                          context, 
+                                          context,
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   ChatDetailScreen(
@@ -69,13 +69,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                                         data.nickname!.last,
                                                     reference:
                                                         data.chatReference!,
-                                                  )
-                                              //   ChatDetailScreen(
-                                              //  chat  data
-                                              //       // userName:
-                                              //       //     data.nickname!.last
-                                              //           ),
-                                              ) );
+                                                  )));
                                     },
                                     child: ListTile(
                                       contentPadding: EdgeInsets.symmetric(
@@ -107,7 +101,8 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                                   Text(
                                                       "마지막 메세지: ${data.updatedMsg}"),
                                                 ],
-                                              ), //공통으로
+                                              ),
+                                              //공통으로
                                               Spacer(),
                                               Text(
                                                 "${data.updatedDate?.toDate().toLocal().toString().substring(5, 16)}",
@@ -121,7 +116,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                   )
                                 : GestureDetector(
                                     onTap: () {
-                          
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -143,14 +137,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                         ),
                                       ),
                                       title: Text("${data.nickname!.first}"),
-
-                                      //채팅하기를 먼저 누른 사람이 0 sender, 글 올린 사람이 1 receiver
-                                      //user가 sender이면
-                                      //user가 receiver이면
-                                      // userEmail != data.
-                                      //Text("${data.user!.last}"),
-                                      //if user email == data.email[0] 유저가 sender 전부 1로 출력
-
                                       subtitle: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -190,156 +176,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
               ),
             ))
         :
-        //비회원이면 로그인 페이지로 이동하게
+        //비회원이면 로그인 페이지로 이동
         LoginScreen();
   }
 }
-
-// class ChatList extends StatefulWidget {
-//   late String name;
-//   late String messageText;
-//   late String time;
-//   late bool isMessageRead;
-
-//   //프로필사진 추가?
-//   @override
-//   State<ChatList> createState() => _ChatListState();
-// }
-
-// class _ChatListState extends State<ChatList> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return InkWell(
-//       onTap: () {
-//         Navigator.push(
-//             context,
-//             MaterialPageRoute(
-//                 builder: ((context) =>
-//                     ChatDetailScreen(userName: widget.name))));
-//         //디테일페이지로 이동
-//       },
-//       child: Container(
-//           padding: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
-//           child: Row(
-//             children: [
-//               Expanded(
-//                   child: Row(
-//                 children: [
-//                   SizedBox(
-//                     width: 16,
-//                   ),
-//                   Expanded(
-//                       child: Container(
-//                     color: Colors.transparent,
-//                     child: Column(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         Text(
-//                           widget.name,
-//                           style: TextStyle(fontSize: 16),
-//                         ),
-//                         SizedBox(
-//                           height: 6,
-//                         ),
-//                         Text(
-//                           widget.messageText,
-//                           style: TextStyle(
-//                               fontSize: 13,
-//                               color: Colors.grey.shade600,
-//                               fontWeight: widget.isMessageRead
-//                                   ? FontWeight.bold
-//                                   : FontWeight.normal),
-//                         ),
-//                       ],
-//                     ),
-//                   ))
-//                 ],
-//               )),
-//               Text(
-//                 widget.time,
-//                 style: TextStyle(
-//                     fontSize: 12,
-//                     fontWeight: widget.isMessageRead
-//                         ? FontWeight.bold
-//                         : FontWeight.normal),
-//               )
-//             ],
-//           )),
-//     );
-//   }
-// }
-
-// class _ChatListState extends State<ChatList> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return InkWell(
-//       onTap: () {
-//         Navigator.push(
-//             context,
-//             MaterialPageRoute(
-//                 builder: ((context) =>
-//                     ChatDetailScreen(userName: widget.name))));
-//         //디테일페이지로 이동
-//       },
-//             child: Container(
-//           padding: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
-//           child: Row(
-//             children: [
-//               Expanded(
-//                   child: Row(
-//                 children: [
-//                   Expanded(
-//                       child: Container(
-//                     color: Colors.transparent,
-//                     child: Row(
-//                       //crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         CircleAvatar(
-//                           backgroundColor: Color(0xff9fc3a8),
-//                           radius: 24,
-//                           child: Icon(
-//                             Icons.person,
-//                             color: Colors.white,
-//                           ),
-//                         ),
-//                         SizedBox(
-//                           width: 20,
-//                         ),
-//                         Column(
-//                           children: [
-//                             Text(
-//                               widget.name,
-//                               style: TextStyle(fontSize: 16),
-//                             ),
-//                             SizedBox(
-//                               height: 6,
-//                             ),
-//                             Text(
-//                               widget.messageText,
-//                               style: TextStyle(
-//                                   fontSize: 13,
-//                                   color: Colors.grey.shade600,
-//                                   fontWeight: widget.isMessageRead
-//                                       ? FontWeight.bold
-//                                       : FontWeight.normal),
-//                         ),
-//                       ],
-//                     ),
-//                 ]))
-//                   )],
-//               )),
-//               Text(
-//                 widget.time,
-//                 style: TextStyle(
-//                     fontSize: 12,
-//                     fontWeight: widget.isMessageRead
-//                         ? FontWeight.bold
-//                         : FontWeight.normal),
-//               )
-//             ],
-//           )),
-//     );
-//   }
-// }
-
-// */

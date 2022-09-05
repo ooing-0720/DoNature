@@ -19,6 +19,7 @@ List<String> locationDoList = [
 ];
 
 List<String> locationGuSeoulList = [
+  "전체",
   "종로구",
   "중구",
   "용산구",
@@ -47,6 +48,7 @@ List<String> locationGuSeoulList = [
 ];
 
 List<String> locationGuBusanList = [
+  "전체",
   "중구",
   "서구",
   "동구",
@@ -66,6 +68,7 @@ List<String> locationGuBusanList = [
 ];
 
 List<String> locationGuDaeguList = [
+  "전체",
   "중구",
   "동구",
   "서구",
@@ -77,6 +80,7 @@ List<String> locationGuDaeguList = [
 ];
 
 List<String> locationGuIncheonList = [
+  "전체",
   '중구',
   '동구',
   '미추홀구',
@@ -88,12 +92,13 @@ List<String> locationGuIncheonList = [
   '강화군',
   '옹진군'
 ];
-List<String> locationGuGwangjuList = ["동구", "서구", "남구", "북구", "광산구"];
-List<String> locationGuDaejeonList = ["동구", "중구", "서구", "유성구", "대덕구"];
+List<String> locationGuGwangjuList = ["전체", "동구", "서구", "남구", "북구", "광산구"];
+List<String> locationGuDaejeonList = ["전체", "동구", "중구", "서구", "유성구", "대덕구"];
 
-List<String> locationGuUlsanList = ["중구", "남구", "동구", "북구", "울주군"];
+List<String> locationGuUlsanList = ["전체", "중구", "남구", "동구", "북구", "울주군"];
 List<String> locationGuSejongList = ["전체"];
 List<String> locationSiGyeonggiList = [
+  "전체",
   "수원시",
   "고양시",
   "용인시",
@@ -127,6 +132,7 @@ List<String> locationSiGyeonggiList = [
   "연천군"
 ];
 List<String> locationSiGangwonList = [
+  "전체",
   "춘천시",
   "원주시",
   "강릉시",
@@ -147,6 +153,7 @@ List<String> locationSiGangwonList = [
   "양양군"
 ];
 List<String> locationSiChungbukList = [
+  "전체",
   "청주시",
   "충주시",
   "제천시",
@@ -160,6 +167,7 @@ List<String> locationSiChungbukList = [
   "단양군"
 ];
 List<String> locationSiChungnamList = [
+  "전체",
   "천안시",
   "공주시",
   "보령시",
@@ -177,6 +185,7 @@ List<String> locationSiChungnamList = [
   "태안군"
 ];
 List<String> locationSiJeonbukList = [
+  "전체",
   "전주시",
   "군산시",
   "익산시",
@@ -193,6 +202,7 @@ List<String> locationSiJeonbukList = [
   "부안군"
 ];
 List<String> locationSiJeonnamList = [
+  "전체",
   "목포시",
   "여수시",
   "순천시",
@@ -218,6 +228,7 @@ List<String> locationSiJeonnamList = [
 ];
 
 List<String> locationSiGyeongbukList = [
+  "전체",
   "포항시",
   "경주시",
   "김천시",
@@ -244,6 +255,7 @@ List<String> locationSiGyeongbukList = [
 ];
 
 List<String> locationSiGyeongnamList = [
+  "전체",
   "창원시",
   "진주시",
   "통영시",
@@ -264,4 +276,4 @@ List<String> locationSiGyeongnamList = [
   "합천군"
 ];
 
-List<String> locationSiJejuList = ["제주시", "서귀포시"];
+List<String> locationSiJejuList = ["전체", "제주시", "서귀포시"];

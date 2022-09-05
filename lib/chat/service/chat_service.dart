@@ -63,6 +63,4 @@ class ChatService {
   Future<void> deleteChattingRoom(DocumentReference reference) async {
     await reference.delete();
   }
-
-  
-      }
+}

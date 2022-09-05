@@ -148,7 +148,7 @@ class MyPageHeaderState extends State<MyPageHeader> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ActivitylistScreen()));
+                      builder: (context) => ActivityListScreen()));
             },
             child: _buildMypageMenuItem(Icons.view_list, "활동내역"),
           ),
@@ -156,7 +156,7 @@ class MyPageHeaderState extends State<MyPageHeader> {
           InkWell(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LikelistScreen()));
+                  MaterialPageRoute(builder: (context) => LikeListScreen()));
             },
             child: _buildMypageMenuItem(Icons.favorite, "관심목록"),
           )

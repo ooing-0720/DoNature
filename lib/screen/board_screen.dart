@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation_nature/board/provider/post_provider.dart';
 import 'package:donation_nature/board/service/post_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import './post/post_add_screen.dart';
 import './post/post_detail_screen.dart';
@@ -9,6 +10,7 @@ import 'package:donation_nature/board/domain/post.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/screen/user_manage.dart';
+import 'package:donation_nature/screen/board_search_screen.dart';
 
 class BoardScreen extends StatefulWidget {
   const BoardScreen({Key? key}) : super(key: key);
@@ -30,9 +32,6 @@ class _BoardScreenState extends State<BoardScreen> {
   @override
   Widget build(BuildContext context) {
     User? user = UserManage().getUser();
-    // PostService _postService = PostService();
-    // Future<List<Post>> posts = _postService.getPosts();
-    // final postProvider = Provider.of<PostProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -40,10 +39,11 @@ class _BoardScreenState extends State<BoardScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                showSearch(
-                  context: context,
-                  delegate: MySearchDelegate(),
-                );
+                //showSearch(context: context, delegate: MySearchDelegate());
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BoardSearchScreen()));
               },
               icon: Icon(Icons.search)),
           IconButton(
@@ -69,60 +69,119 @@ class _BoardScreenState extends State<BoardScreen> {
                   Post data = posts[index];
                   return Card(
                     child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PostDetailScreen(data),
-                            ));
-                      },
-                      child: ListTile(
-                        title: Text(
-                          "${data.title}",
-                          style: TextStyle(fontSize: 17.5),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "${data.date!.toDate().toLocal().toString().substring(5, 16)}",
-                              style: TextStyle(fontSize: 12),
-                            ),
-                            Transform(
-                              transform: new Matrix4.identity()..scale(0.95),
-                              child: Row(
-                                children: [
-                                  Chip(
-                                    label: Text(
-                                      "${data.tagDisaster}",
-                                      style: TextStyle(color: Colors.white),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PostDetailScreen(data),
+                              ));
+                        },
+                        child: user != null
+                            ?
+                            //user가 로그인 한 상태일 때
+                            ListTile(
+                                title: Text(
+                                  "${data.title}",
+                                  style: TextStyle(fontSize: 17.5),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${data.date!.toDate().toLocal().toString().substring(5, 16)}",
+                                      style: TextStyle(fontSize: 12),
                                     ),
-                                    backgroundColor: Color(0xff5B7B6E),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Chip(
-                                    label: Text(
-                                      "${data.locationSiDo}",
-                                      style: TextStyle(color: Colors.white),
+                                    Transform(
+                                      transform: new Matrix4.identity()
+                                        ..scale(0.95),
+                                      child: Row(
+                                        children: [
+                                          Chip(
+                                            label: Text(
+                                              "${data.tagDisaster}",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            backgroundColor: Color(0xff5B7B6E),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Chip(
+                                            label: Text(
+                                              "${data.locationSiDo}",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            backgroundColor: Color(0xff5B7B6E),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    backgroundColor: Color(0xff5B7B6E),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        trailing: GestureDetector(
-                          onTap: () {},
-                          child: Icon(
-                            Icons.favorite_border,
-                            color: Color(0xff5B7B6E),
-                          ),
-                        ),
-                      ),
-                    ),
+                                  ],
+                                ),
+                                // trailing: IconButton(
+                                //   icon: Icon(
+                                //     PostService().isLiked(data, user)
+                                //         ? Icons.favorite
+                                //         : Icons.favorite_border,
+                                //     color: Color(0xff5B7B6E),
+                                //   ),
+                                //   onPressed: () {
+                                //     setState(() {
+                                //       PostService().likePost(data, user);
+                                //       PostService().isLiked(data, user)
+                                //           ? ScaffoldMessenger.of(context)
+                                //               .showSnackBar(SnackBar(
+                                //                   content:
+                                //                       Text("관심 목록에 추가되었습니다.")))
+                                //           : ScaffoldMessenger.of(context)
+                                //               .showSnackBar(SnackBar(
+                                //                   content: Text("관심글 취소")));
+                              )
+                            : //user가 로그인 하지 않은 경우
+                            ListTile(
+                                title: Text(
+                                  "${data.title}",
+                                  style: TextStyle(fontSize: 17.5),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${data.date!.toDate().toLocal().toString().substring(5, 16)}",
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                    Transform(
+                                      transform: new Matrix4.identity()
+                                        ..scale(0.95),
+                                      child: Row(
+                                        children: [
+                                          Chip(
+                                            label: Text(
+                                              "${data.tagDisaster}",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            backgroundColor: Color(0xff5B7B6E),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Chip(
+                                            label: Text(
+                                              "${data.locationSiDo}",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            backgroundColor: Color(0xff5B7B6E),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )),
                   );
                 },
               );
@@ -149,43 +208,4 @@ class _BoardScreenState extends State<BoardScreen> {
       }),
     );
   }
-  //Future <void> _refreshPosts() async {}
-}
-
-class MySearchDelegate extends SearchDelegate {
-  MySearchDelegate()
-      : super(
-            searchFieldLabel: "검색",
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.search);
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      //검색어 지우는 기능
-      IconButton(
-        icon: const Icon(Icons.clear),
-        onPressed: () {
-          query = '';
-        },
-      ),
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    //뒤로가기
-    return IconButton(
-      icon: const Icon(Icons.arrow_back),
-      onPressed: () {
-        close(context, null);
-      },
-    );
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) => const Text('suggestions');
-  //검색결과 보여줌
-  @override
-  Widget buildResults(BuildContext context) => const Text('results');
 }

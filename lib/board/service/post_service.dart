@@ -47,7 +47,7 @@ class PostService {
   }
 
   // Select All Matching Tags(위치 태그 구분)
-  Future<List<Post>> selectPostsByLocation(
+  Future<List<Post>> selectPostsByTag(
       String? sido, String? gugunsi, String? disaster) async {
     CollectionReference<Map<String, dynamic>> collectionReference =
         FirebaseFirestore.instance.collection("bulletin_board");
@@ -137,7 +137,7 @@ class PostService {
         FirebaseFirestore.instance.collection("bulletin_board");
     QuerySnapshot<Map<String, dynamic>> querySnapshot;
     querySnapshot = await collectionReference
-        .where("likeUsers", arrayContains: user.email)
+        .where("like_users", arrayContains: user.email)
         .orderBy("date", descending: true)
         .get();
 

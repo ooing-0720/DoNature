@@ -378,7 +378,8 @@ class _PostEditScreenState extends State<PostEditScreen> {
                 .showSnackBar(SnackBar(content: Text('재난태그 지정필요')));
           } else if (_formkey.currentState!.validate() &&
               selectedIndex != -1 &&
-              widget.post.locationSiDo == null) {
+              (widget.post.locationSiDo == '' ||
+                  widget.post.locationGuGunSi == '')) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text('위치태그 지정필요')));
           }

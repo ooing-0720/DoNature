@@ -57,6 +57,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                   List<ChatModel> chats = asyncSnapshot.data!;
 
                   return Column(children: [
+                    //채팅 버블 - expanded
+
                     Expanded(
                       child: ListView.builder(
                           itemCount: chats.length,
@@ -70,61 +72,72 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                             return Container(
                               padding: EdgeInsets.only(
                                   left: 12, right: 12, top: 8, bottom: 8),
-                              child: Align(
-                                alignment:
-                                    (isMe //messages[index].messageType == "receiver"
+                              child: Column(
+                                children: [
+                                  Align(
+                                    alignment: (isMe
                                         ? Alignment.topRight
                                         : Alignment.topLeft),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color:
-                                        (isMe //messages[index].messageType == "receiver"
-                                            ? Color(0xff9fc3a8)
-                                            : Colors.grey.shade200),
+                                    child: Container(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          color: (isMe
+                                              ? Color(0xff9fc3a8)
+                                              : Colors.grey.shade200),
+                                        ),
+                                        padding: EdgeInsets.all(12),
+                                        child: Text(
+                                          chats[index].messageText,
+                                          style: (isMe
+                                              ? TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.white)
+                                              : TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.black)),
+
+                                          //TextStyle(fontSize: 15),
+                                        ),
+                                      ),
+                                      // Padding(
+                                      //     padding: EdgeInsets.only(
+                                      //   bottom: 5,
+                                      // )),
+                                    ),
                                   ),
-                                  padding: EdgeInsets.all(12),
-                                  child: Text(
-                                    chats[index].messageText,
-                                    style:
-                                        (isMe //messages[index].messageType == "receiver"
-                                            ? TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.white)
-                                            : TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.black)),
-                                    //TextStyle(fontSize: 15),
+                                  Container(
+                                    alignment: isMe
+                                        ? Alignment.centerRight
+                                        : Alignment.centerLeft,
+                                    padding: EdgeInsets.only(
+                                        left: 8, right: 8, bottom: 5, top: 5),
+                                    // margin: isMe
+                                    //     ? EdgeInsets.only(right: 10)
+                                    //     : EdgeInsets.only(
+                                    //         bottom: 10, left: 5),
+                                    //padding: EdgeInsets.only(bottom: 5),
+                                    child: Text(
+                                      chats[index]
+                                          .time
+                                          .toDate()
+                                          .toLocal()
+                                          .toString()
+                                          .substring(5, 16),
+                                      style: TextStyle(fontSize: 10),
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
                             );
-                            // Align(
-                            //   alignment:
-                            //       isMe ? Alignment.topLeft : Alignment.topRight,
-                            //   child:
-                            ListTile(
-                                title: Text(chats[index].messageText),
-                                subtitle: Text(
-                                    "현재 uid: ${chats[index].userUID}" +
-                                        " user uid : ${user!.uid}" +
-                                        " isMe: ${isMe.toString()}")
-                                //subtitle: Text(chats[index].time.toDate().toLocal().toString().substring(5,16)),
-                                );
-                            // );
                           }),
                     ),
+
                     sendMessageField()
                   ]);
                 }
-              })
-          // Padding(
-          //   padding: EdgeInsets.all(10),
-          //   child: Text(''),
-          // ),
-          // Stack(
-          // children: [chatBubble(), sendMessageField()],)
-          ),
+              })),
     );
   }
 
@@ -181,10 +194,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   }
 
   void _onPressedSendingButton() async {
-    //final user = FirebaseAuth.instance.currentUser;
+    final user = FirebaseAuth.instance.currentUser;
 
     try {
-
       ChatModel chatModel = ChatModel(
           userUID: user!.uid,
           messageText: controller.text,
@@ -196,8 +208,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
       await ChatService().updateChat(
           reference: widget.reference,
           updatedDate: Timestamp.now(),
-          updatedMsg: controller.text,
-          );
+          updatedMsg: controller.text);
 
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 

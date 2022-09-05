@@ -59,9 +59,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
                             return userEmail == data.user!.first
                                 ? GestureDetector(
                                     onTap: () {
-                                      if (user!.uid.toString() == data.lastSenderUID){
-                                       ChatService().unreadMsg(reference: data.chatReference!);
-                                      }
                                       Navigator.push(
                                           context, 
                                           MaterialPageRoute(
@@ -124,9 +121,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                   )
                                 : GestureDetector(
                                     onTap: () {
-                                      if (user!.uid.toString() == data.lastSenderUID){
-                                       ChatService().unreadMsg(reference: data.chatReference!);
-                                      }
+                          
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(

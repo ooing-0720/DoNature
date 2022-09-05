@@ -46,36 +46,23 @@ class ChatService {
   }
 
   // UPDATE
-  // 메세지 전송할 때마다 updatedMsg, updatedDate, lastSenderUID에 값 업데이트하고 넘겨줘야함
+  // 메세지 전송할 때마다 updatedMsg, updatedDate에 값 업데이트하고 넘겨줘야함
   Future updateChat(
       {required DocumentReference reference,
       required Timestamp updatedDate,
-      required String updatedMsg,
-      required String lastSenderUID}) async {
+      required String updatedMsg}) async {
     final collectionReference = FirebaseFirestore.instance
         .collection("chattingroom_list")
         .doc(reference.id);
 
     collectionReference
-        .update({"updated_date": updatedDate, "updated_msg": updatedMsg, "last_sender_uid": lastSenderUID});
+        .update({"updated_date": updatedDate, "updated_msg": updatedMsg});
   }
 
   //DELETE
   Future<void> deleteChattingRoom(DocumentReference reference) async {
     await reference.delete();
   }
-
-  //읽음 안 읽음
-  void unreadMsg(
-      {required DocumentReference reference}){
-
-    final collectionReference = FirebaseFirestore.instance
-        .collection("chattingroom_list")
-        .doc(reference.id); 
-
-      collectionReference
-          .update({"update_msg_read": true});
-      }
 
   
       }

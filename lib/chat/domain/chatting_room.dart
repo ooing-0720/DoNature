@@ -13,8 +13,6 @@ class ChattingRoom {
   Post? post; // 어떤 게시글 채팅인지
   String? postReference;
   DocumentReference? chatReference;
-  bool updateMsgRead = false;
-  String? lastSenderUID;
 
   
 
@@ -33,8 +31,6 @@ class ChattingRoom {
     updatedDate = json['updated_date'];
     updatedMsg = json['updated_msg'];
     postReference = json['post_reference'];
-    updateMsgRead = json['update_msg_read'];
-    lastSenderUID = json['last_sender_uid'];
   }
 
   ChattingRoom.fromQuerySnapshot(
@@ -53,8 +49,6 @@ class ChattingRoom {
     map['updated_date'] = updatedDate ?? Timestamp.now();
     map['updated_msg'] = updatedMsg ?? '';
     map['post_reference'] = post?.reference?.id;
-    map['updated_msg_read'] = false;
-    map['last_sender_uid']=lastSenderUID?? '';
 
     return map;
   }

@@ -150,6 +150,25 @@ class PostService {
     return posts;
   }
 
+  // 활동 목록 출력
+  Future<List<Post>> getWrittenPosts(User user) async {
+    CollectionReference<Map<String, dynamic>> collectionReference =
+        FirebaseFirestore.instance.collection("bulletin_board");
+    QuerySnapshot<Map<String, dynamic>> querySnapshot;
+    querySnapshot = await collectionReference
+        .where("user_email", isEqualTo: user.email)
+        .orderBy("date", descending: true)
+        .get();
+
+    List<Post> posts = [];
+    for (var doc in querySnapshot.docs) {
+      Post post = Post.fromQuerySnapshot(doc);
+      posts.add(post);
+    }
+
+    return posts;
+  }
+
   // 채팅방이 만들어진 적이 있는지 확인
   bool isChatted(Post post, User user) {
     if (post.chatUsers == null || !post.chatUsers!.keys.contains(user.email)) {

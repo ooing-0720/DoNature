@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class ChattingRoom {
   List<dynamic>? user; // 채팅방에 포함된 유저 2명의 이메일
   List<dynamic>? nickname; // 채팅방에 포함된 유저 2명의 닉네임
+  List<dynamic>? userUID; // 채팅방에 포함된 유저 2명의 UID
   List<dynamic>? profileImg; // 채팅방에 포함된 유저 2명의 프로필 사진
   String? postTitle; // 채팅이 생성된 게시글 제몰
   Timestamp? updatedDate; // 가장 최근에 메세지 보낸 시간
@@ -19,6 +20,7 @@ class ChattingRoom {
   ChattingRoom({
     this.user,
     this.nickname,
+    this.userUID,
     this.post,
     this.chatReference,
   });
@@ -26,6 +28,7 @@ class ChattingRoom {
   ChattingRoom.fromJson(dynamic json, this.chatReference) {
     user = json['user'];
     nickname = json['nickname'];
+    userUID = json['user_uid'];
     profileImg = json['profile_image'];
     postTitle = json['post_title'];
     updatedDate = json['updated_date'];
@@ -44,6 +47,7 @@ class ChattingRoom {
     final map = <String, dynamic>{};
     map['user'] = user;
     map['nickname'] = nickname;
+    map['user_uid'] = userUID;
     map['profile_image'] = profileImg ?? [];
     map['post_title'] = post!.title;
     map['updated_date'] = updatedDate ?? Timestamp.now();

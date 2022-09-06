@@ -68,8 +68,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                             bool isMe =
                                 true; //chats의 useruid와 chatmodel의 useruid 같으면 내가 보낸것, isMe=true
                             if (chats[index].userUID != user!.uid) {
-                              AlarmService.newMsgAlarm(user!.uid);
                               isMe = false;
+                              //AlarmService.newMsgAlarm(user!.uid);
                             }
                             return Container(
                               padding: EdgeInsets.only(
@@ -217,6 +217,14 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
       firestore
           .collection('/chattingroom_list/${widget.reference.id}/message_list')
           .add(chatModel.toMap());
+      List<dynamic>? userUID = widget.chattingRoom.userUID;
+      for(int i=0; i<2; i++){
+        if(userUID![i] != user.uid){
+          String otheruser = userUID[i];
+          AlarmService.newMsgAlarm(otheruser);
+        }
+      }
+      
     } catch (ex) {
       log('error)', error: ex.toString(), stackTrace: StackTrace.current);
     }
@@ -225,7 +233,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   }
 
   Stream<List<ChatModel>> streamChat() {
+    
     try {
+      
       final Stream<QuerySnapshot> snapshots = FirebaseFirestore.instance
           .collection('/chattingroom_list/${widget.reference.id}/message_list')
           .orderBy('time')

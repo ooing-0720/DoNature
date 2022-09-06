@@ -1,4 +1,4 @@
-import 'dart:async';
+/*import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -59,7 +59,7 @@ class AlarmScreen extends StatelessWidget {
                 } }));;
   }
 
-  Stream<List<AlarmModel>> streamAlarm(String userUID){
+  /*Stream<List<AlarmModel>> streamAlarm(String userUID){
     try {
       final Stream<QuerySnapshot> snapshots = FirebaseFirestore.instance
           .collection('/alarm/${userUID}/alarm_list')
@@ -78,6 +78,7 @@ class AlarmScreen extends StatelessWidget {
       log('error)', error: ex.toString(), stackTrace: StackTrace.current);
       return Stream.error(ex.toString());
     }
-  }
+  }*/
   }
 
+*/

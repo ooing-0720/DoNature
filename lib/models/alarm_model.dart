@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AlarmModel{
- // final String id;
   final String text;
   final Timestamp time;
 
   AlarmModel({
-      //this. id = '',
 	    this.text = '',
       Timestamp? time,
 	  }): time = time??Timestamp(0,0);
@@ -14,7 +12,6 @@ class AlarmModel{
 
   factory AlarmModel.fromMap({required Map<String,dynamic> map}){
 	    return AlarmModel(
-     // id: id,
       text: map['text']??'',
       time: map['time']??Timestamp(0, 0)
 	    );
@@ -26,4 +23,5 @@ class AlarmModel{
 	    data['time'] = time;
     return data;
 	  }
-    }
+
+}

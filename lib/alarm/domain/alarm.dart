@@ -1,25 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Alarm{
-  String? userUID; // 어떤 유저의 알람인지 uid저장
   DocumentReference? alarmReference;
+  String? userEmail;
+
 
   Alarm({
-  this.userUID,
-  this.alarmReference
+  this.alarmReference,
+  this.userEmail
+
 });
 
-
-Alarm.fromMap(dynamic json){
-  userUID = json['userUID'];
-}
-
-Map<String,dynamic>toJson(){
-  final map = <String, dynamic>{};
-  map['userUID'] = userUID;
-
-return map;
-}
+factory Alarm.fromMap({required Map<String,dynamic> map}){
+	    return Alarm(
+        userEmail:  map['userEmail']??''
+	    );
+	  } 
+	
+ Map<String,dynamic>toMap(){
+	    Map<String, dynamic> data = {};
+      data['userEmail'] = userEmail;
+    return data;
+	  }	 
 }
 
 

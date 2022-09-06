@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation_nature/alarm/domain/alarm.dart';
 import 'package:donation_nature/alarm/service/alarm_serivce.dart';
+import 'package:donation_nature/models/alarm_model.dart';
 import 'package:donation_nature/models/user_info_model.dart';
 import 'package:donation_nature/screen/user_manage.dart';
 import 'package:flutter/material.dart';
@@ -270,7 +271,6 @@ class SignUpScreenState extends State<SignUpScreen> {
   }
 
   join() async {
-    Alarm _alarm;
     String message = '';
     try {
       UserCredential userCredential = await FirebaseAuth.instance
@@ -296,8 +296,8 @@ class SignUpScreenState extends State<SignUpScreen> {
       FirebaseAuth.instance.currentUser?.sendEmailVerification();
      
       
-      _alarm = Alarm(userUID: FirebaseAuth.instance.currentUser!.uid);
-      _alarm.alarmReference = await AlarmService.createAlarmList(_alarm.toJson(), FirebaseAuth.instance.currentUser!.uid );
+      Alarm _alarm = Alarm(userEmail: FirebaseAuth.instance.currentUser!.email);
+      _alarm.alarmReference = await AlarmService.createAlarmList(_alarm.toMap(), FirebaseAuth.instance.currentUser!.uid );
 
   
     } on FirebaseAuthException catch (e) {

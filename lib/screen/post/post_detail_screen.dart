@@ -177,15 +177,19 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                           List<String> nicknames = [];
                           nicknames.add(user.displayName!);
                           nicknames.add(widget.post.writer!);
+                          List<String> userUID = [];
+                          userUID.add(user.uid);
+                          userUID.add(widget.post.writerUID!);
 
                           _chattingRoom = ChattingRoom(
                               user: users,
                               nickname: nicknames,
+                              userUID: userUID,
                               post: widget.post);
 
                           _chattingRoom.chatReference = await chatService
                               .createChattingRoom(_chattingRoom.toJson());
-                          AlarmService.createChattingRoomAlarm(user.uid, widget.post.writerUID);
+                          AlarmService.createChattingRoomAlarm(user.uid, widget.post.writerUID, user.displayName, widget.post.writer);
                           widget.post.chatUsers![user.email] =
                               _chattingRoom.chatReference;
                           PostService().updatePost(

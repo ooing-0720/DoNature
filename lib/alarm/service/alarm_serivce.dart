@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donation_nature/alarm/domain/alarm.dart';
 import 'package:donation_nature/models/alarm_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,30 +13,47 @@ class AlarmService {
 
   //생성
     static Future<DocumentReference> createAlarmList(
-      Map<String, dynamic> json, String userUID) async {
+      Map<String, dynamic> map, String userUID) async {
     var newAlarmRef = FirebaseFirestore.instance.collection("alarm").doc(userUID);
-    await newAlarmRef.set(json);
+    await newAlarmRef.set(map);
     return newAlarmRef;
   }
+
+  //알람 목록 출력
+    Future<List<Alarm>> getAlarms(String userUID) async {
+      CollectionReference<Map<String, dynamic>> collectionReference =
+        FirebaseFirestore.instance.collection('/alarm/${userUID}/alarm_list');
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await collectionReference.orderBy("date", descending: true).get();
+
+      List<Alarm> alarms = [];
+        for (var element in querySnapshot.docs) {
+          alarms.add(Alarm.fromMap(map: element.data() as Map<String, dynamic>));
+      }
+      return alarms;
+    }
+ 
   
 
   //새로운 채팅방 개설 시 알람
-  static void createChattingRoomAlarm(String userUID, String? otheruserUID)async{
-    AlarmModel alarmModel = AlarmModel(text: '${otheruserUID}님과의 채팅방이 생성되었습니다.', time: Timestamp.now());
-    FirebaseFirestore.instance.collection('alarm/${userUID}/alarm_list').add(alarmModel.toMap());
+  static void createChattingRoomAlarm(String userUID, String? writerUID, String? userName, String? writer)async{
+    AlarmModel alarmforUser = AlarmModel(text: '${writer}님과의 채팅방이 생성되었습니다.', time: Timestamp.now());
+    AlarmModel alarmforWriter = AlarmModel(text: '${userName}님과의 채팅방이 생성되었습니다.', time: Timestamp.now());
+    FirebaseFirestore.instance.collection('alarm/${userUID}/alarm_list').add(alarmforUser.toMap());
+    FirebaseFirestore.instance.collection('alarm/${writerUID}/alarm_list').add(alarmforWriter.toMap());
   }
 
 
   //채팅방에서 메세지가 왔을 시 알람
    static void newMsgAlarm(String userUID) {
-    AlarmModel alarmModel = AlarmModel(text: '새 메세지가 도착했습니다.', time: Timestamp.now());
-    FirebaseFirestore.instance.collection('alarm/${userUID}/alarm_list').add(alarmModel.toMap());
+    AlarmModel alarm= AlarmModel(text: '새 메세지가 도착했습니다.', time: Timestamp.now());
+    FirebaseFirestore.instance.collection('alarm/${userUID}/alarm_list').add(alarm.toMap());
   }
 
   //누군가가 내 글에 하트 눌렀을 시 알람
     static void newLikeAlarm(String? otheruser, String post, String userUID, ) {
-    AlarmModel alarmModel = AlarmModel(text: '${otheruser}님이 ${post}에 하트를 눌렀습니다', time: Timestamp.now());
-    FirebaseFirestore.instance.collection('alarm/${userUID}/alarm_list').add(alarmModel.toMap());
+    AlarmModel alarm = AlarmModel(text: '${otheruser}님이 ${post}에 하트를 눌렀습니다', time: Timestamp.now());
+    FirebaseFirestore.instance.collection('alarm/${userUID}/alarm_list').add(alarm.toMap());
   }
 
 

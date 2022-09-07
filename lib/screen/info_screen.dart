@@ -3,6 +3,7 @@ import 'package:donation_nature/API/repository/ultra_srt_ncst_repository.dart';
 import 'package:donation_nature/API/repository/wthr_wrn_liist_repository.dart';
 import 'package:donation_nature/action/action.dart';
 import 'package:donation_nature/permission/permission_request.dart';
+import 'package:donation_nature/screen/alarm_screen.dart';
 import 'package:flutter/material.dart';
 
 class InfoScreen extends StatelessWidget {
@@ -38,7 +39,12 @@ class InfoScreen extends StatelessWidget {
             )),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AlarmScreen()));
+            },
             icon: Icon(Icons.notifications),
           ),
         ],

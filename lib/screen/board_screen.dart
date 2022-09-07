@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation_nature/board/provider/post_provider.dart';
 import 'package:donation_nature/board/service/post_service.dart';
+import 'package:donation_nature/screen/alarm_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +48,12 @@ class _BoardScreenState extends State<BoardScreen> {
               },
               icon: Icon(Icons.search)),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AlarmScreen()));
+            },
             icon: Icon(Icons.notifications),
           ),
         ],

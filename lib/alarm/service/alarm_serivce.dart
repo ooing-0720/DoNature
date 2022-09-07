@@ -20,15 +20,15 @@ class AlarmService {
   }
 
   //알람 목록 출력
-    Future<List<Alarm>> getAlarms(String userUID) async {
+    static Future<List<AlarmModel>> getAlarms(String userUID) async {
       CollectionReference<Map<String, dynamic>> collectionReference =
         FirebaseFirestore.instance.collection('/alarm/${userUID}/alarm_list');
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await collectionReference.orderBy("date", descending: true).get();
 
-      List<Alarm> alarms = [];
+      List<AlarmModel> alarms = [];
         for (var element in querySnapshot.docs) {
-          alarms.add(Alarm.fromMap(map: element.data() as Map<String, dynamic>));
+          alarms.add(AlarmModel.fromMap(map: element.data() as Map<String, dynamic>));
       }
       return alarms;
     }
@@ -45,8 +45,8 @@ class AlarmService {
 
 
   //채팅방에서 메세지가 왔을 시 알람
-   static void newMsgAlarm(String userUID) {
-    AlarmModel alarm= AlarmModel(text: '새 메세지가 도착했습니다.', time: Timestamp.now());
+   static void newMsgAlarm(String userUID, String sender, String text) {
+    AlarmModel alarm= AlarmModel(text: '[새 메세지] ${sender}: ${text}', time: Timestamp.now());
     FirebaseFirestore.instance.collection('alarm/${userUID}/alarm_list').add(alarm.toMap());
   }
 

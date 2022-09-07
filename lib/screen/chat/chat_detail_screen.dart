@@ -69,7 +69,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                                 true; //chats의 useruid와 chatmodel의 useruid 같으면 내가 보낸것, isMe=true
                             if (chats[index].userUID != user!.uid) {
                               isMe = false;
-                              //AlarmService.newMsgAlarm(user!.uid);
                             }
                             return Container(
                               padding: EdgeInsets.only(
@@ -221,7 +220,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
       for(int i=0; i<2; i++){
         if(userUID![i] != user.uid){
           String otheruser = userUID[i];
-          AlarmService.newMsgAlarm(otheruser);
+          AlarmService.newMsgAlarm(otheruser, user.displayName!, controller.text);
         }
       }
       

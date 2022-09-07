@@ -1,3 +1,4 @@
+import 'package:donation_nature/screen/alarm_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:donation_nature/screen/mypage/mypage_header.dart';
 import 'package:donation_nature/screen/mypage/mypage_menu.dart';
@@ -20,7 +21,12 @@ class MyPageScreenState extends State<MyPageScreen> {
             )),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AlarmScreen()));
+            },
             icon: Icon(Icons.notifications),
           ),
         ],

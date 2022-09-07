@@ -82,112 +82,63 @@ class _BoardScreenState extends State<BoardScreen> {
                                 builder: (context) => PostDetailScreen(data),
                               ));
                         },
-                        child: user != null
-                            ?
-                            //user가 로그인 한 상태일 때
-                            ListTile(
-                                title: Text(
-                                  "${data.title}",
-                                  style: TextStyle(fontSize: 17.5),
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                        child: ListTile(
+                          title: Text(
+                            "${data.title}",
+                            style: TextStyle(fontSize: 17.5),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${data.date!.toDate().toLocal().toString().substring(5, 16)}",
+                                style: TextStyle(fontSize: 12),
+                              ),
+                              Transform(
+                                transform: new Matrix4.identity()..scale(0.95),
+                                child: Row(
                                   children: [
-                                    Text(
-                                      "${data.date!.toDate().toLocal().toString().substring(5, 16)}",
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                    Transform(
-                                      transform: new Matrix4.identity()
-                                        ..scale(0.95),
-                                      child: Row(
-                                        children: [
-                                          Chip(
-                                            label: Text(
-                                              "${data.tagDisaster}",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            backgroundColor: Color(0xff5B7B6E),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Chip(
-                                            label: Text(
-                                              "${data.locationSiDo}",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            backgroundColor: Color(0xff5B7B6E),
-                                          ),
-                                        ],
+                                    Chip(
+                                      label: Text(
+                                        "${data.tagDisaster}",
+                                        style: TextStyle(color: Colors.white),
                                       ),
+                                      backgroundColor: Color(0xff90B1A4),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Chip(
+                                      label: Text(
+                                        "${data.locationSiDo}",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      backgroundColor: Color(0xff90B1A4),
                                     ),
                                   ],
                                 ),
-                                // trailing: IconButton(
-                                //   icon: Icon(
-                                //     PostService().isLiked(data, user)
-                                //         ? Icons.favorite
-                                //         : Icons.favorite_border,
-                                //     color: Color(0xff5B7B6E),
-                                //   ),
-                                //   onPressed: () {
-                                //     setState(() {
-                                //       PostService().likePost(data, user);
-                                //       PostService().isLiked(data, user)
-                                //           ? ScaffoldMessenger.of(context)
-                                //               .showSnackBar(SnackBar(
-                                //                   content:
-                                //                       Text("관심 목록에 추가되었습니다.")))
-                                //           : ScaffoldMessenger.of(context)
-                                //               .showSnackBar(SnackBar(
-                                //                   content: Text("관심글 취소")));
-                              )
-                            : //user가 로그인 하지 않은 경우
-                            ListTile(
-                                title: Text(
-                                  "${data.title}",
-                                  style: TextStyle(fontSize: 17.5),
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "${data.date!.toDate().toLocal().toString().substring(5, 16)}",
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                    Transform(
-                                      transform: new Matrix4.identity()
-                                        ..scale(0.95),
-                                      child: Row(
-                                        children: [
-                                          Chip(
-                                            label: Text(
-                                              "${data.tagDisaster}",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            backgroundColor: Color(0xff5B7B6E),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Chip(
-                                            label: Text(
-                                              "${data.locationSiDo}",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            backgroundColor: Color(0xff5B7B6E),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )),
+                              ),
+                            ],
+                          ),
+                          // trailing: IconButton(
+                          //   icon: Icon(
+                          //     PostService().isLiked(data, user)
+                          //         ? Icons.favorite
+                          //         : Icons.favorite_border,
+                          //     color: Color(0xff5B7B6E),
+                          //   ),
+                          //   onPressed: () {
+                          //     setState(() {
+                          //       PostService().likePost(data, user);
+                          //       PostService().isLiked(data, user)
+                          //           ? ScaffoldMessenger.of(context)
+                          //               .showSnackBar(SnackBar(
+                          //                   content:
+                          //                       Text("관심 목록에 추가되었습니다.")))
+                          //           : ScaffoldMessenger.of(context)
+                          //               .showSnackBar(SnackBar(
+                          //                   content: Text("관심글 취소")));
+                        )),
                   );
                 },
               );
@@ -207,7 +158,7 @@ class _BoardScreenState extends State<BoardScreen> {
                       MaterialPageRoute(builder: (context) => PostAddScreen()));
                 },
                 label: Text('글쓰기'),
-                backgroundColor: Color(0xff5B7B6E),
+                backgroundColor: Color(0xff90B1A4),
                 icon: Icon(Icons.add),
               )
             : Container();

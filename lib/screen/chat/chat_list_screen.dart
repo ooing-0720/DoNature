@@ -31,10 +31,8 @@ class _ChatListScreenState extends State<ChatListScreen> {
               actions: [
                 IconButton(
                   onPressed: () {
-                    Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AlarmScreen()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => AlarmScreen()));
                   },
                   icon: Icon(Icons.notifications),
                 ),
@@ -61,8 +59,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
                         return Card(
                           //상대방 이름 user list
                           child: Builder(builder: (context) {
+                            //채팅하는 상대방 이름 띄우기
                             return userEmail == data.user!.first
-                                //채팅하는 상대방 이름 띄우기
+                                //내가 채팅하기를 눌렀을 때
+
                                 ? GestureDetector(
                                     onTap: () {
                                       Navigator.push(
@@ -78,49 +78,44 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                                   )));
                                     },
                                     child: ListTile(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 8, horizontal: 8),
-                                      dense: false,
-                                      visualDensity: VisualDensity(
-                                          horizontal: -4, vertical: -4),
-                                      leading: CircleAvatar(
-                                        backgroundColor: Color(0xff9fc3a8),
-                                        radius: 24,
-                                        child: Icon(
-                                          Icons.person,
-                                          color: Colors.white,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 8, horizontal: 8),
+                                        dense: false,
+                                        visualDensity: VisualDensity(
+                                            horizontal: -4, vertical: -4),
+                                        leading: circleAvartar(),
+                                        title: Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 3.0),
+                                          child: Text(
+                                            "${data.postTitle}",
+                                            style: TextStyle(fontSize: 18),
+                                          ),
                                         ),
-                                      ),
-                                      title: Text("${data.postTitle}"),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                      "${data.nickname!.last}"),
-                                                  Text(
-                                                      "마지막 메세지: ${data.updatedMsg}"),
-                                                ],
-                                              ),
-                                              //공통으로
-                                              Spacer(),
-                                              Text(
-                                                "${data.updatedDate?.toDate().toLocal().toString().substring(5, 16)}",
-                                                //style: TextStyle(fontSize: 10),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
+                                        subtitle: Row(
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text("${data.nickname!.last}"),
+                                                // SizedBox(
+                                                //   height: 2,
+                                                // ),
+                                                Text("${data.updatedMsg}"),
+                                              ],
+                                            ),
+                                            //공통으로
+                                            Spacer(),
+                                            Text(
+                                              "${data.updatedDate?.toDate().toLocal().toString().substring(5, 16)}",
+                                              //style: TextStyle(fontSize: 10),
+                                            ),
+                                          ],
+                                        )),
                                   )
-                                : GestureDetector(
+                                : //상대방이 채팅하기를 눌렀을 때
+                                GestureDetector(
                                     onTap: () {
                                       Navigator.push(
                                           context,
@@ -134,40 +129,41 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                           ));
                                     },
                                     child: ListTile(
-                                      leading: CircleAvatar(
-                                        backgroundColor: Color(0xff9fc3a8),
-                                        radius: 24,
-                                        child: Icon(
-                                          Icons.person,
-                                          color: Colors.white,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 8, horizontal: 8),
+                                        dense: false,
+                                        visualDensity: VisualDensity(
+                                            horizontal: -4, vertical: -4),
+                                        leading: circleAvartar(),
+                                        title: Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 3.0),
+                                          child: Text(
+                                            "${data.postTitle}",
+                                            style: TextStyle(fontSize: 18),
+                                          ),
                                         ),
-                                      ),
-                                      title: Text("${data.nickname!.first}"),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text("제목: ${data.postTitle}"),
-                                                  Text(
-                                                      "마지막 메세지: ${data.updatedMsg}"),
-                                                ],
-                                              ), //공통으로
-                                              Spacer(),
-                                              Text(
-                                                "${data.updatedDate?.toDate().toLocal().toString().substring(5, 16)}",
-                                                //style: TextStyle(fontSize: 10),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
+                                        subtitle: Row(
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text("${data.nickname!.first}"),
+                                                // SizedBox(
+                                                //   height: 2,
+                                                // ),
+                                                Text("${data.updatedMsg}"),
+                                              ],
+                                            ),
+                                            //공통으로
+                                            Spacer(),
+                                            Text(
+                                              "${data.updatedDate?.toDate().toLocal().toString().substring(5, 16)}",
+                                              //style: TextStyle(fontSize: 10),
+                                            ),
+                                          ],
+                                        )),
                                   );
                           }),
                         );
@@ -184,5 +180,16 @@ class _ChatListScreenState extends State<ChatListScreen> {
         :
         //비회원이면 로그인 페이지로 이동
         LoginScreen();
+  }
+
+  CircleAvatar circleAvartar() {
+    return CircleAvatar(
+      backgroundColor: Color(0xff90B1A4),
+      radius: 24,
+      child: Icon(
+        Icons.person,
+        color: Colors.white,
+      ),
+    );
   }
 }

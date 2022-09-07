@@ -49,6 +49,8 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
                       //searchLocation2(),
                       searchDisaster(),
                       ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Color(0xff90B1A4)),
                           key: _searchKey,
                           onPressed: () {
                             if (_selectedDo == null) {
@@ -97,24 +99,6 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
     );
   }
 
-  ExpansionTile searchLocation2() {
-    return ExpansionTile(
-        title: Container(
-          child: Text(
-            "지역 태그로 검색하기 ",
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          ),
-        ),
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: locationDropdown(),
-          ),
-        ]);
-  }
-
   Padding searchLocation() {
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -139,8 +123,8 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
       Widget item = Padding(
         padding: const EdgeInsets.only(left: 10, right: 5),
         child: ChoiceChip(
-          backgroundColor: Color(0xff9fc3a8),
-          selectedColor: Color.fromARGB(255, 7, 65, 29),
+          backgroundColor: Color(0xff90B1A4),
+          selectedColor: Color(0xff416E5C),
           selected: selectedIndex == i,
           onSelected: (bool value) {
             setState(() {
@@ -302,7 +286,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),
-                                          backgroundColor: Color(0xff5B7B6E),
+                                          backgroundColor: Color(0xff90B1A4),
                                         ),
                                         SizedBox(
                                           width: 5,
@@ -313,7 +297,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),
-                                          backgroundColor: Color(0xff5B7B6E),
+                                          backgroundColor: Color(0xff90B1A4),
                                         ),
                                       ],
                                     ),

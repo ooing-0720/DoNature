@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:donation_nature/action/action.dart';
+import 'package:donation_nature/screen/alarm_screen.dart';
 import 'package:donation_nature/screen/info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -85,7 +86,12 @@ class HomeScreenState extends State<HomeScreen> {
             )),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AlarmScreen()));
+            },
             icon: Icon(Icons.notifications),
           ),
         ],

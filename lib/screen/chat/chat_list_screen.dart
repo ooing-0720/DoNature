@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation_nature/chat/domain/chatting_room.dart';
+import 'package:donation_nature/screen/alarm_screen.dart';
 import 'package:donation_nature/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:donation_nature/models/chat_model.dart';
@@ -29,7 +30,12 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   )),
               actions: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AlarmScreen()));
+                  },
                   icon: Icon(Icons.notifications),
                 ),
               ],

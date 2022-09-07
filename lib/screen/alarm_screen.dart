@@ -1,84 +1,113 @@
-/*import 'dart:async';
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:donation_nature/alarm/service/alarm_serivce.dart';
+import 'package:donation_nature/models/alarm_model.dart';
+import 'package:donation_nature/screen/chat/chat_detail_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:donation_nature/screen/user_manage.dart';
 
-import '../models/alarm_model.dart';
+class AlarmScreen extends StatefulWidget {
+  const AlarmScreen({Key? key}) : super(key: key);
 
-class AlarmScreen extends StatelessWidget {
-  //final DocumentReference reference;
-  AlarmScreen({Key? key}) : super(key: key);
-  User? user;
+  @override
+  State<AlarmScreen> createState() => _AlarmScreenState();
+}
 
+class _AlarmScreenState extends State<AlarmScreen> {
+  GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+
+  @override
+  void initState() {
+    super.initState();
+    // _initPostData=
+  }
 
   @override
   Widget build(BuildContext context) {
-    List<AlarmModel> alarms =[];
+    User? user = UserManage().getUser();
     return Scaffold(
         appBar: AppBar(
-          title: Text('알람',
-              style: TextStyle(
-                color: Colors.black,
-              )),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.notifications),
-            ),
-          ],
+          title: Text("알람 목록"),
         ),
-        body: StreamBuilder<List<AlarmModel>>(
-          stream: streamAlarm(user!.uid),
-              builder: (context, asyncSnapshot) {
-                if (!asyncSnapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (asyncSnapshot.hasError) {
-                  return const Center(
-                    child: Text('오류 발생'),
-                  );
-                }else{
-                  List<AlarmModel> alarms = asyncSnapshot.data!;
+        body: RefreshIndicator(
+            child: FutureBuilder<List<AlarmModel>>(
+                future: AlarmService.getAlarms(user!.uid),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<AlarmModel> alarms = snapshot.data!;
 
-                  return Column(children: [
-                    Expanded(child: ListView.separated(
-          itemCount: alarms.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(alarms[index].text),
-              subtitle: Text(alarms[index].time.toDate().toLocal().toString().substring(5,16)),
-            );
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return Divider(thickness: 1);
-          },
-          shrinkWrap: true,
-        ))
-                  ],);
-                } }));;
+                    return ListView.builder(
+                      itemCount: alarms.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        AlarmModel data = alarms[index];
+
+                        return Card(
+                          child: GestureDetector(
+                            onTap: () {
+                              /*Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ChatDetailScreen(data),
+                                  ));*/
+                            },
+                            child: ListTile(
+                              title: Text(
+                                "${data.text}",
+                                style: TextStyle(fontSize: 17.5),
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${data.time.toDate().toLocal().toString().substring(5, 16)}",
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                  /*Transform(
+                                    transform: new Matrix4.identity()
+                                      ..scale(0.95),
+                                    child: Row(
+                                      children: [
+                                        Chip(
+                                          label: Text(
+                                            "${data.tagDisaster}",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          backgroundColor: Color(0xff5B7B6E),
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Chip(
+                                          label: Text(
+                                            "${data.locationSiDo}",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          backgroundColor: Color(0xff5B7B6E),
+                                        ),
+                                      ],
+                                    ),
+                                  ),*/
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    print('${snapshot.error}');
+                    return Text('${snapshot.error}');
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                }),
+            onRefresh: () {
+              return Future(() {
+                setState(() {});
+              });
+            }));
   }
-
-  /*Stream<List<AlarmModel>> streamAlarm(String userUID){
-    try {
-      final Stream<QuerySnapshot> snapshots = FirebaseFirestore.instance
-          .collection('/alarm/${userUID}/alarm_list')
-          .orderBy('time', descending: true)
-          .snapshots();
-      return snapshots.map((querySnapshot) {
-        List<AlarmModel> alarms = [];
-        for (var element in querySnapshot.docs) {
-          alarms.add(AlarmModel.fromMap(
-              //id: element.id,
-              map: element.data() as Map<String, dynamic>));
-        }
-        return alarms;
-      });
-    } catch (ex) {
-      log('error)', error: ex.toString(), stackTrace: StackTrace.current);
-      return Stream.error(ex.toString());
-    }
-  }*/
-  }
-
-*/
+}

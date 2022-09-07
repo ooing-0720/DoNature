@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:donation_nature/screen/mypage/edit_profile_screen.dart';
 import 'package:donation_nature/screen/signup_screen.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/screen/user_manage.dart';
 import 'package:donation_nature/screen/login_screen.dart';
 
@@ -14,9 +14,11 @@ class MyPageMenu extends StatefulWidget {
 
 class MyPageMenuState extends State<MyPageMenu> {
   UserManage userManage = UserManage();
+  User? user;
 
   @override
   Widget build(BuildContext context) {
+    user = userManage.getUser();
     return Container(
         decoration: BoxDecoration(
           color: Color(0xffFFFFFF),
@@ -28,23 +30,23 @@ class MyPageMenuState extends State<MyPageMenu> {
   Widget buildMypageListView() {
     return ListView(
       children: [
-        ListTile(
-          title: Container(
-              alignment: Alignment.centerLeft,
-              height: 20,
-              child: Text(
-                '알람',
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                ),
-              )),
-          onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SignUpScreen()));
-          },
-        ),
+        // ListTile(
+        //   title: Container(
+        //       alignment: Alignment.centerLeft,
+        //       height: 20,
+        //       child: Text(
+        //         '알람',
+        //         textAlign: TextAlign.start,
+        //         style: TextStyle(
+        //           fontSize: 15,
+        //           fontWeight: FontWeight.w400,
+        //         ),
+        //       )),
+        //   onTap: () {
+        //     Navigator.push(context,
+        //         MaterialPageRoute(builder: (context) => SignUpScreen()));
+        //   },
+        // ),
         ListTile(
           title: Container(
               alignment: Alignment.centerLeft,
@@ -58,8 +60,13 @@ class MyPageMenuState extends State<MyPageMenu> {
                 ),
               )),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => EditProfileScreen()));
+            (user == null)
+                ? Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()))
+                : Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditProfileScreen()));
           },
         ),
         ListTile(
@@ -76,8 +83,13 @@ class MyPageMenuState extends State<MyPageMenu> {
               )),
           // trailing: Icon(Icons.chevron_right),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => EditProfileScreen()));
+            (user == null)
+                ? Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()))
+                : Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditProfileScreen()));
           },
         ),
         // Divider(thickness: 1),
@@ -93,7 +105,10 @@ class MyPageMenuState extends State<MyPageMenu> {
                   fontWeight: FontWeight.w400,
                 ),
               )),
-          onTap: () => _LogoutDialog(),
+          onTap: () => (user == null)
+              ? Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()))
+              : _LogoutDialog(),
         ),
       ],
       shrinkWrap: true,

@@ -145,18 +145,26 @@ class MyPageHeaderState extends State<MyPageHeader> {
         children: [
           InkWell(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ActivityListScreen()));
+              (userName == '')
+                  ? Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()))
+                  : Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ActivityListScreen()));
             },
             child: _buildMypageMenuItem(Icons.view_list, "활동내역"),
           ),
           VerticalDivider(thickness: 2, color: Colors.grey),
           InkWell(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LikeListScreen()));
+              (userName == '')
+                  ? Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()))
+                  : Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LikeListScreen()));
             },
             child: _buildMypageMenuItem(Icons.favorite, "관심목록"),
           )

@@ -74,7 +74,7 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),
-                                          backgroundColor: Color(0xff5B7B6E),
+                                          backgroundColor: Color(0xff90B1A4),
                                         ),
                                         SizedBox(
                                           width: 5,
@@ -85,7 +85,7 @@ class _ActivityListScreenState extends State<ActivityListScreen> {
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),
-                                          backgroundColor: Color(0xff5B7B6E),
+                                          backgroundColor: Color(0xff90B1A4),
                                         ),
                                       ],
                                     ),

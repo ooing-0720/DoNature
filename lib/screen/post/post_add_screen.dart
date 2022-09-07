@@ -159,41 +159,47 @@ class _PostAddScreenState extends State<PostAddScreen> {
                                 BorderRadius.all(Radius.circular(20))),
                         height: 80,
                         width: 80,
-                        child: Center(child: Icon(Icons.add_to_photos)),
+                        child: Center(
+                          child: Icon(Icons.add_to_photos,
+                              color: Color(0xff90B1A4)),
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Container(
                     child: _editedPost.imageUrl != null
-                        ? Stack(children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          "${_editedPost.imageUrl}")),
-                                  color: Colors.transparent,
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                              height: 400,
-                              width: MediaQuery.of(context).size.width,
-                            ),
-                            Positioned(
-                                child: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _editedPost.imageUrl = null;
-                                  print(_editedPost.imageUrl);
-                                });
-                              },
-                              icon: Icon(
-                                Icons.cancel,
-                                color: Colors.black.withOpacity(0.5),
-                                size: 18,
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Stack(children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                            "${_editedPost.imageUrl}")),
+                                    color: Colors.transparent,
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                                height: 400,
+                                width: MediaQuery.of(context).size.width,
                               ),
-                            ))
-                          ])
+                              Positioned(
+                                  child: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _editedPost.imageUrl = null;
+                                    print(_editedPost.imageUrl);
+                                  });
+                                },
+                                icon: Icon(
+                                  Icons.cancel,
+                                  color: Colors.black.withOpacity(0.5),
+                                  size: 18,
+                                ),
+                              ))
+                            ]),
+                          )
                         : Container()),
                 Divider(
                   height: 20,
@@ -201,9 +207,9 @@ class _PostAddScreenState extends State<PostAddScreen> {
                 ),
                 Row(
                   children: [
-                    Chip(
-                      backgroundColor: Color(0xff9fc3a8),
-                      label: Text("위치", style: TextStyle(color: Colors.white)),
+                    Icon(
+                      Icons.place,
+                      color: Color(0xff90B1A4),
                     ),
                     SizedBox(
                       width: 15,
@@ -217,20 +223,21 @@ class _PostAddScreenState extends State<PostAddScreen> {
             SizedBox(
               height: 20,
             ),
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Row(
-                    children: [
-                      Icon(Icons.local_offer),
-                      SizedBox(width: 10),
-                      Text("재난 태그: ")
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     Padding(
+            //       padding: EdgeInsets.only(left: 10),
+            //       child: Row(
+            //         children: [
+            //           Icon(
+            //             Icons.local_offer,
+            //             color: Color(0xff90B1A4),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ],
+            // ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(children: disasterChips()),
@@ -405,7 +412,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
                 .showSnackBar(SnackBar(content: Text('위치태그 지정필요')));
           }
         },
-        style: ElevatedButton.styleFrom(primary: Color(0xff9fc3a8)),
+        style: ElevatedButton.styleFrom(primary: Color(0xff90B1A4)),
         child: Text("글쓰기"));
   }
 
@@ -415,8 +422,8 @@ class _PostAddScreenState extends State<PostAddScreen> {
       Widget item = Padding(
         padding: const EdgeInsets.only(left: 10, right: 5),
         child: ChoiceChip(
-          backgroundColor: Color(0xff9fc3a8),
-          selectedColor: Color.fromARGB(255, 7, 65, 29),
+          backgroundColor: Color(0xff90B1A4),
+          selectedColor: Color(0xff416E5C),
           selected: selectedIndex == i,
           onSelected: (bool value) {
             setState(() {
@@ -448,7 +455,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
             OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   minimumSize: Size(40, 40),
-                  primary: Color(0xff9fc3a8),
+                  primary: Color(0xff90B1A4),
                 ),
                 onPressed: () {
                   _editedPost.date = Timestamp.now();
@@ -487,7 +494,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
             OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   minimumSize: Size(40, 40),
-                  primary: Color(0xff9fc3a8),
+                  primary: Color(0xff90B1A4),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();

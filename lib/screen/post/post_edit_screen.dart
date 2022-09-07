@@ -142,34 +142,37 @@ class _PostEditScreenState extends State<PostEditScreen> {
                     ),
                     Container(
                         child: widget.post.imageUrl != null
-                            ? Stack(children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              "${widget.post.imageUrl}")),
-                                      color: Colors.transparent,
-                                      border: Border.all(color: Colors.grey),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20))),
-                                  height: 400,
-                                  width: MediaQuery.of(context).size.width,
-                                ),
-                                Positioned(
-                                    child: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      widget.post.imageUrl = null;
-                                      print(widget.post.imageUrl);
-                                    });
-                                  },
-                                  icon: Icon(
-                                    Icons.cancel,
-                                    color: Colors.black.withOpacity(0.5),
-                                    size: 18,
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Stack(children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                "${widget.post.imageUrl}")),
+                                        color: Colors.transparent,
+                                        border: Border.all(color: Colors.grey),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))),
+                                    height: 400,
+                                    width: MediaQuery.of(context).size.width,
                                   ),
-                                ))
-                              ])
+                                  Positioned(
+                                      child: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        widget.post.imageUrl = null;
+                                        //print(widget.post.imageUrl);
+                                      });
+                                    },
+                                    icon: Icon(
+                                      Icons.cancel,
+                                      color: Colors.black.withOpacity(0.5),
+                                      size: 18,
+                                    ),
+                                  ))
+                                ]),
+                              )
                             : Container()),
                     Divider(
                       height: 20,
@@ -178,7 +181,7 @@ class _PostEditScreenState extends State<PostEditScreen> {
                     Row(
                       children: [
                         Chip(
-                          backgroundColor: Color(0xff9fc3a8),
+                          backgroundColor: Color(0xff90B1A4),
                           label:
                               Text("위치", style: TextStyle(color: Colors.white)),
                         ),
@@ -384,7 +387,7 @@ class _PostEditScreenState extends State<PostEditScreen> {
                 .showSnackBar(SnackBar(content: Text('위치태그 지정필요')));
           }
         },
-        style: ElevatedButton.styleFrom(primary: Color(0xff9fc3a8)),
+        style: ElevatedButton.styleFrom(primary: Color(0xff90B1A4)),
         child: Text("글 수정하기"));
   }
 
@@ -394,8 +397,8 @@ class _PostEditScreenState extends State<PostEditScreen> {
       Widget item = Padding(
         padding: const EdgeInsets.only(left: 10, right: 5),
         child: ChoiceChip(
-          backgroundColor: Color(0xff9fc3a8),
-          selectedColor: Color.fromARGB(255, 7, 65, 29),
+          backgroundColor: Color(0xff90B1A4),
+          selectedColor: Color(0xff416E5C),
           selected: selectedIndex == i,
           onSelected: (bool value) {
             setState(() {

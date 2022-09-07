@@ -32,20 +32,38 @@ class ChatDetailScreen extends StatefulWidget {
 class _ChatDetailScreenState extends State<ChatDetailScreen> {
   User? user = UserManage().getUser();
   TextEditingController controller = TextEditingController();
+  ScrollController scrollController = ScrollController();
 
 //uid랑 비교
+  @override
+  void initState() {
+    setState(() {});
+    super.initState();
+  }
+
+  void scrollToBottom() {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+    } else {
+      Timer(Duration(milliseconds: 400), () => scrollToBottom());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Scaffold(
-          appBar: AppBar(
-            title: Text(widget.userName + '의 채팅'),
-          ),
-          body: StreamBuilder<List<ChatModel>>(
+    //시작할 때 가장 아래로 스크롤 내리기
+    WidgetsBinding.instance.addPostFrameCallback((_) => scrollToBottom());
+    return Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          title: Text(widget.userName + '의 채팅'),
+        ),
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: StreamBuilder<List<ChatModel>>(
               stream: streamChat(),
               builder: (context, asyncSnapshot) {
                 if (!asyncSnapshot.hasData) {
@@ -55,58 +73,72 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     child: Text('오류 발생'),
                   );
                 } else {
+                  if (scrollController.hasClients) {
+                    scrollController.animateTo(
+                        scrollController.position.maxScrollExtent,
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeOut);
+                  }
                   List<ChatModel> chats = asyncSnapshot.data!;
 
                   return Column(children: [
                     //채팅 버블 - expanded
-
                     Expanded(
                       child: ListView.builder(
-                          itemCount: chats.length,
-                          // physics: NeverScrollableScrollPhysics(),
+                          controller: scrollController,
+                          itemCount: chats.length + 1,
                           itemBuilder: (context, index) {
+                            if (index == chats.length) {
+                              return Container(
+                                height: 60,
+                              );
+                            }
                             bool isMe =
                                 true; //chats의 useruid와 chatmodel의 useruid 같으면 내가 보낸것, isMe=true
                             if (chats[index].userUID != user!.uid) {
                               isMe = false;
                             }
+
                             return Container(
                               padding: EdgeInsets.only(
-                                  left: 12, right: 12, top: 8, bottom: 8),
+                                  left: 12, right: 12, top: 4, bottom: 4),
                               child: Column(
-                                children: [
+                                children: <Widget>[
                                   Align(
                                     alignment: (isMe
                                         ? Alignment.topRight
                                         : Alignment.topLeft),
                                     child: Container(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          color: (isMe
-                                              ? Color(0xff9fc3a8)
-                                              : Colors.grey.shade200),
-                                        ),
-                                        padding: EdgeInsets.all(12),
-                                        child: Text(
-                                          chats[index].messageText,
-                                          style: (isMe
-                                              ? TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.white)
-                                              : TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.black)),
-
-                                          //TextStyle(fontSize: 15),
-                                        ),
+                                      constraints: BoxConstraints(
+                                          minWidth: 10,
+                                          maxWidth: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        color: (isMe
+                                            ? Color(0xff90B1A4)
+                                            : Colors.grey.shade200),
                                       ),
-                                      // Padding(
-                                      //     padding: EdgeInsets.only(
-                                      //   bottom: 5,
-                                      // )),
+                                      padding: EdgeInsets.all(12),
+                                      child: Text(
+                                        chats[index].messageText,
+                                        style: (isMe
+                                            ? TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.white)
+                                            : TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.black)),
+
+                                        //TextStyle(fontSize: 15),
+                                      ),
                                     ),
+                                    // Padding(
+                                    //     padding: EdgeInsets.only(
+                                    //   bottom: 5,
+                                    // )),
                                   ),
                                   Container(
                                     alignment: isMe
@@ -114,11 +146,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                                         : Alignment.centerLeft,
                                     padding: EdgeInsets.only(
                                         left: 8, right: 8, bottom: 5, top: 5),
-                                    // margin: isMe
-                                    //     ? EdgeInsets.only(right: 10)
-                                    //     : EdgeInsets.only(
-                                    //         bottom: 10, left: 5),
-                                    //padding: EdgeInsets.only(bottom: 5),
                                     child: Text(
                                       chats[index]
                                           .time
@@ -134,17 +161,16 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                             );
                           }),
                     ),
-
                     sendMessageField()
                   ]);
                 }
-              })),
-    );
+              }),
+        ));
   }
 
   Align sendMessageField() {
     return Align(
-      alignment: Alignment.bottomLeft,
+      alignment: Alignment.bottomCenter,
       child: Container(
         padding: EdgeInsets.only(left: 8, bottom: 8, top: 8),
         height: 60,
@@ -157,6 +183,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
             ),
             Expanded(
                 child: TextField(
+              maxLines: null,
               controller: controller,
               decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(10),
@@ -177,15 +204,59 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
               width: 10,
             ),
             FloatingActionButton(
-              onPressed: controller.value.text.isNotEmpty
-                  ? _onPressedSendingButton
-                  : null,
+              onPressed: () async {
+                if (controller.value.text.isNotEmpty) {
+                  final user = FirebaseAuth.instance.currentUser;
+                  print(controller.text);
+                  try {
+                    ChatModel chatModel = ChatModel(
+                        userUID: user!.uid,
+                        messageText: controller.text,
+                        time: Timestamp.now());
+
+                    widget.chattingRoom.updatedDate = Timestamp.now();
+                    widget.chattingRoom.updatedMsg = controller.text;
+
+                    await ChatService().updateChat(
+                        reference: widget.reference,
+                        updatedDate: Timestamp.now(),
+                        updatedMsg: controller.text);
+
+                    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+                    firestore
+                        .collection(
+                            '/chattingroom_list/${widget.reference.id}/message_list')
+                        .add(chatModel.toMap());
+                    setState(() {});
+                    List<dynamic>? userUID = widget.chattingRoom.userUID;
+                    for (int i = 0; i < 2; i++) {
+                      if (userUID![i] != user.uid) {
+                        String otheruser = userUID[i];
+                        AlarmService.newMsgAlarm(
+                            otheruser, user.displayName!, controller.text);
+                      }
+                    }
+                  } catch (ex) {
+                    log('error)',
+                        error: ex.toString(), stackTrace: StackTrace.current);
+                  }
+
+                  scrollController.animateTo(
+                      scrollController.position.maxScrollExtent,
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeOut);
+                  controller.clear();
+                } else {
+                  null;
+                }
+              },
               child: Icon(
                 Icons.send,
                 color: Colors.white,
                 size: 18,
               ),
-              backgroundColor: Color(0xff9fc3a8),
+              backgroundColor: Color(0xff90B1A4),
               elevation: 0,
             ),
           ],
@@ -194,47 +265,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     );
   }
 
-  void _onPressedSendingButton() async {
-    final user = FirebaseAuth.instance.currentUser;
-
-    try {
-      ChatModel chatModel = ChatModel(
-          userUID: user!.uid,
-          messageText: controller.text,
-          time: Timestamp.now());
-
-      widget.chattingRoom.updatedDate = Timestamp.now();
-      widget.chattingRoom.updatedMsg = controller.text;
-
-      await ChatService().updateChat(
-          reference: widget.reference,
-          updatedDate: Timestamp.now(),
-          updatedMsg: controller.text);
-
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-      firestore
-          .collection('/chattingroom_list/${widget.reference.id}/message_list')
-          .add(chatModel.toMap());
-      List<dynamic>? userUID = widget.chattingRoom.userUID;
-      for(int i=0; i<2; i++){
-        if(userUID![i] != user.uid){
-          String otheruser = userUID[i];
-          AlarmService.newMsgAlarm(otheruser, user.displayName!, controller.text);
-        }
-      }
-      
-    } catch (ex) {
-      log('error)', error: ex.toString(), stackTrace: StackTrace.current);
-    }
-
-    controller.clear();
-  }
-
   Stream<List<ChatModel>> streamChat() {
-    
     try {
-      
       final Stream<QuerySnapshot> snapshots = FirebaseFirestore.instance
           .collection('/chattingroom_list/${widget.reference.id}/message_list')
           .orderBy('time')

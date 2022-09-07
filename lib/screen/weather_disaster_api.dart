@@ -1,57 +1,62 @@
 import 'dart:ui';
-import 'package:donation_nature/API/domain/ultra_srt_ncst.dart';
+import 'package:donation_nature/screen/disaster_list.dart';
 import 'package:donation_nature/API/repository/ultra_srt_ncst_repository.dart';
 import 'package:donation_nature/API/repository/wthr_wrn_liist_repository.dart';
+import 'package:donation_nature/action/action.dart';
 import 'package:donation_nature/permission/permission_request.dart';
 
 class WthrReport {
-  final List<String> location = [
-    '서울',
-    '부산',
-    '대구',
-    '인천',
-    '광주',
-    '대전',
-    '울산',
-    '경기도',
-    '강원도',
-    '충청북도',
-    '충청남도',
-    '전라북도',
-    '전라남도',
-    '경상북도',
-    '경상남도',
-    '제주도',
-    '세종'
-  ];
-
-  Future<String?> getTemp() async {
+  Future<List<String>> getWthrInfo() async {
     PermissionRequest.determinePosition();
 
     UltraSrtNcstRepository ultraSrtNcstRepository = UltraSrtNcstRepository();
     var ultraSrtNcst = await ultraSrtNcstRepository.loadUltraSrtNcst();
 
-    return ultraSrtNcst!.T1H;
+    List<String> WthrInfoList = [
+      '${ultraSrtNcst?.T1H}',
+      '${ultraSrtNcst?.RN1}',
+      '${ultraSrtNcst?.REH}',
+      '${ultraSrtNcst?.PTY}'
+    ];
+
+    return WthrInfoList;
   }
 
-  Future<String?> getRainfall() async {
-    PermissionRequest.determinePosition();
-
-    UltraSrtNcstRepository ultraSrtNcstRepository = UltraSrtNcstRepository();
-    var ultraSrtNcst = await ultraSrtNcstRepository.loadUltraSrtNcst();
-
-    return ultraSrtNcst!.T1H;
+  String? getUserLocation() {
+    MainAction _mainAction = MainAction();
+    _mainAction.getAddress().then((String value) {
+      String result = value;
+      return (result.replaceAll(RegExp('[대한민국0-9\-]'), ''));
+    });
   }
 
-  Future<String?> getHumidity() async {
-    PermissionRequest.determinePosition();
+  // Future<List<bool>?> getDisasterAtUserLocation(String userLocation) async {
+  //   WthrWrnListRepository wthrWrnListRepository = WthrWrnListRepository();
+  //   var wthrWrnList = await wthrWrnListRepository.loadWthrWrnList();
 
-    UltraSrtNcstRepository ultraSrtNcstRepository = UltraSrtNcstRepository();
-    UltraSrtNcst? ultraSrtNcst =
-        await ultraSrtNcstRepository.loadUltraSrtNcst();
+  //   String userLo = '서울특별시 강남구';
+  //   List<bool> disasterAtUserLocation = [false, false, false, false, false];
 
-    return ultraSrtNcst!.T1H;
-  }
+  //   List<String> reportList = [
+  //     '폭염주의보: 서울',
+  //     // '${wthrWrnList?[0].FHWA} ${wthrWrnList?[0].HWA} ${wthrWrnList?[0].HWW}',
+  //     '${wthrWrnList?[0].FHRA} ${wthrWrnList?[0].HRA}',
+  //     '${wthrWrnList?[0].FTYA} ${wthrWrnList?[0].TYA}',
+  //     '${wthrWrnList?[0].FSWA}  ${wthrWrnList?[0].SWA}',
+  //     '${wthrWrnList?[0].FSTA}  ${wthrWrnList?[0].STA}'
+  //   ];
+
+  //   for (int i = 0; i < location.length; i++) {
+  //     if (userLo.contains(location[i])) {
+  //       for (int j = 0; j < reportList.length; j++) {
+  //         if (reportList[j].contains(location[i])) {
+  //           disasterAtUserLocation[j] = true;
+  //         }
+  //       }
+  //     }
+  //     return disasterAtUserLocation;
+  //   }
+  // }
 
   Future<List<String>> getWeatherReport() async {
     PermissionRequest.determinePosition();
@@ -60,7 +65,8 @@ class WthrReport {
     var wthrWrnList = await wthrWrnListRepository.loadWthrWrnList();
 
     List<String> reportList = [
-      '${wthrWrnList?[0].FHWA} ${wthrWrnList?[0].HWA} ${wthrWrnList?[0].HWW}d',
+      '폭염주의보: 서울',
+      // '${wthrWrnList?[0].FHWA} ${wthrWrnList?[0].HWA} ${wthrWrnList?[0].HWW}',
       '${wthrWrnList?[0].FHRA} ${wthrWrnList?[0].HRA}',
       '${wthrWrnList?[0].FTYA} ${wthrWrnList?[0].TYA}',
       '${wthrWrnList?[0].FSWA}  ${wthrWrnList?[0].SWA}',
@@ -71,32 +77,32 @@ class WthrReport {
     // 폭염, 호우, 태풍, 강풍, 풍랑
   }
 
-  List<Color>? ClassifyLocation(String str) {
+  List<Color>? classifyLocation(String str) {
     List<Color>? colors = [
-      Color.fromARGB(255, 223, 223, 223),
-      Color.fromARGB(255, 223, 223, 223),
-      Color.fromARGB(255, 223, 223, 223),
-      Color.fromARGB(255, 223, 223, 223),
-      Color.fromARGB(255, 223, 223, 223),
-      Color.fromARGB(255, 223, 223, 223),
-      Color.fromARGB(255, 223, 223, 223),
-      Color.fromARGB(255, 223, 223, 223),
-      Color.fromARGB(255, 223, 223, 223),
-      Color.fromARGB(255, 223, 223, 223),
-      Color.fromARGB(255, 223, 223, 223),
-      Color.fromARGB(255, 223, 223, 223),
-      Color.fromARGB(255, 223, 223, 223),
-      Color.fromARGB(255, 223, 223, 223),
-      Color.fromARGB(255, 223, 223, 223),
-      Color.fromARGB(255, 223, 223, 223),
-      Color.fromARGB(255, 223, 223, 223)
+      Color.fromARGB(255, 223, 223, 223).withOpacity(0.0),
+      Color.fromARGB(255, 223, 223, 223).withOpacity(0.0),
+      Color.fromARGB(255, 223, 223, 223).withOpacity(0.0),
+      Color.fromARGB(255, 223, 223, 223).withOpacity(0.0),
+      Color.fromARGB(255, 223, 223, 223).withOpacity(0.0),
+      Color.fromARGB(255, 223, 223, 223).withOpacity(0.0),
+      Color.fromARGB(255, 223, 223, 223).withOpacity(0.0),
+      Color.fromARGB(255, 223, 223, 223).withOpacity(0.0),
+      Color.fromARGB(255, 223, 223, 223).withOpacity(0.0),
+      Color.fromARGB(255, 223, 223, 223).withOpacity(0.0),
+      Color.fromARGB(255, 223, 223, 223).withOpacity(0.0),
+      Color.fromARGB(255, 223, 223, 223).withOpacity(0.0),
+      Color.fromARGB(255, 223, 223, 223).withOpacity(0.0),
+      Color.fromARGB(255, 223, 223, 223).withOpacity(0.0),
+      Color.fromARGB(255, 223, 223, 223).withOpacity(0.0),
+      Color.fromARGB(255, 223, 223, 223).withOpacity(0.0),
+      Color.fromARGB(255, 223, 223, 223).withOpacity(0.0)
     ];
 
     for (int i = 0; i < location.length; i++) {
       if (str.contains(location[i])) {
-        colors[i] = Color(0xff416E5C);
+        colors[i] = Color.fromARGB(255, 94, 94, 94);
       } else {
-        colors[i] = Color.fromARGB(255, 223, 223, 223);
+        colors[i] = Color.fromARGB(255, 223, 223, 223).withOpacity(0.0);
       }
     }
     return colors;

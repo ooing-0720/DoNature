@@ -248,8 +248,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     join();
-
-
                   }
                 },
                 child: Text('회원가입'),
@@ -286,20 +284,15 @@ class SignUpScreenState extends State<SignUpScreen> {
           // user?.updatePhoneNumber(_numberTextEditingController.text);
           user?.updatePhotoURL('default_profile');
           Navigator.pop(context);
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()));
         }
         return value;
-
       });
 
       FirebaseAuth.instance.currentUser?.sendEmailVerification();
-     
-      
-      Alarm _alarm = Alarm(userEmail: FirebaseAuth.instance.currentUser!.email);
-      _alarm.alarmReference = await AlarmService.createAlarmList(_alarm.toMap(), FirebaseAuth.instance.currentUser!.uid );
 
-  
+      Alarm _alarm = Alarm(userEmail: FirebaseAuth.instance.currentUser!.email);
+      _alarm.alarmReference = await AlarmService.createAlarmList(
+          _alarm.toMap(), FirebaseAuth.instance.currentUser!.uid);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         setState(() {

@@ -68,18 +68,17 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       scrollDirection: Axis.vertical,
                       child: Row(
                         children: [
-                          // Icon(Icons.local_offer, color: Color(0xff90B1A4)),
                           Chip(
                             label: Text(widget.post.tagDisaster!,
                                 style: TextStyle(color: Colors.white)),
-                            backgroundColor: Color(0xff90B1A4),
+                            backgroundColor: Color(0xff9fc3a8),
                           ),
                           SizedBox(
                             width: 10,
                           ),
                           Icon(
                             Icons.place,
-                            color: Color(0xff90B1A4),
+                            color: Color(0xff9fc3a8),
                           ),
                           Chip(
                             label: Text(
@@ -87,7 +86,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                     " " +
                                     widget.post.locationGuGunSi!,
                                 style: TextStyle(color: Colors.white)),
-                            backgroundColor: Color(0xff90B1A4),
+                            backgroundColor: Color(0xff9fc3a8),
                           ),
                           Spacer(),
                           userIsWriter == true
@@ -100,7 +99,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                     PostService().isLiked(widget.post, user)
                                         ? Icons.favorite
                                         : Icons.favorite_border,
-                                    color: Color(0xff90B1A4),
+                                    color: Color(0xff5B7B6E),
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -139,24 +138,15 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                     width: MediaQuery.of(context).size.width,
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 10,
-                                ),
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  child: Text(
-                                    widget.post.content!,
-                                    style: TextStyle(fontSize: 15),
-                                  ),
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: Text(widget.post.content!),
                                 ),
                               ],
                             )
                           : Column(
                               children: [
-                                Text(
-                                  widget.post.content!,
-                                  style: TextStyle(fontSize: 15),
-                                ),
+                                Text(widget.post.content!),
                               ],
                             ),
                     ))
@@ -216,7 +206,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         }
                       },
                       label: Text('채팅하기'),
-                      backgroundColor: Color(0xff90B1A4),
+                      backgroundColor: Color(0xff9fc3a8),
                       icon: Icon(Icons.chat_bubble),
                     )
                   : Container(),
@@ -256,7 +246,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         Chip(
                           label: Text(widget.post.tagDisaster!,
                               style: TextStyle(color: Colors.white)),
-                          backgroundColor: Color(0xff90B1A4),
+                          backgroundColor: Color(0xff9fc3a8),
                         ),
                         SizedBox(
                           width: 10,
@@ -271,7 +261,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                   " " +
                                   widget.post.locationGuGunSi!,
                               style: TextStyle(color: Colors.white)),
-                          backgroundColor: Color(0xff90B1A4),
+                          backgroundColor: Color(0xff9fc3a8),
                         ),
                         Spacer(),
                       ],
@@ -298,24 +288,15 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                   width: MediaQuery.of(context).size.width,
                                 ),
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
                               Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: Text(
-                                  widget.post.content!,
-                                  style: TextStyle(fontSize: 15),
-                                ),
+                                padding: const EdgeInsets.only(bottom: 5),
+                                child: Text(widget.post.content!),
                               ),
                             ],
                           )
                         : Column(
                             children: [
-                              Text(
-                                widget.post.content!,
-                                style: TextStyle(fontSize: 15),
-                              ),
+                              Text(widget.post.content!),
                             ],
                           ),
                   ))
@@ -340,7 +321,6 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           children: [
             Icon(
               Icons.edit,
-              //color: Color(0xff416E5C),
               color: Colors.black,
             ),
             Text(
@@ -364,7 +344,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     OutlinedButton(
                         style: OutlinedButton.styleFrom(
                           minimumSize: Size(40, 40),
-                          primary: Color(0xff90B1A4),
+                          primary: Color(0xff9fc3a8),
                         ),
                         onPressed: () {
                           Navigator.of(ctx).pop();
@@ -378,7 +358,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     OutlinedButton(
                         style: OutlinedButton.styleFrom(
                           minimumSize: Size(40, 40),
-                          primary: Color(0xff90B1A4),
+                          primary: Color(0xff9fc3a8),
                         ),
                         onPressed: () {
                           Navigator.of(ctx).pop();
@@ -390,13 +370,13 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         },
         child: Row(
           children: [
-            Icon(Icons.delete, color: Colors.black),
-            //color: Color(0xff90B1A4)),
+            Icon(
+              Icons.delete,
+              color: Colors.black,
+            ),
             Text(
               "삭제",
-              style: TextStyle(color: Colors.black
-                  //Color(0xff90B1A4)
-                  ),
+              style: TextStyle(color: Colors.black),
             ),
           ],
         ));

@@ -75,7 +75,7 @@ class _LikeListScreenState extends State<LikeListScreen> {
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),
-                                          backgroundColor: Color(0xff90B1A4),
+                                          backgroundColor: Color(0xff5B7B6E),
                                         ),
                                         SizedBox(
                                           width: 5,
@@ -86,7 +86,7 @@ class _LikeListScreenState extends State<LikeListScreen> {
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),
-                                          backgroundColor: Color(0xff90B1A4),
+                                          backgroundColor: Color(0xff5B7B6E),
                                         ),
                                       ],
                                     ),

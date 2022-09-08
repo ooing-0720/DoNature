@@ -24,7 +24,7 @@ class MainAction {
       nowPosition['latitude'] = 37.566;
       nowPosition['longitude'] = 126.978;
     }
-    print(nowPosition);
+    // print(nowPosition);
     return nowPosition;
   }
 

@@ -1,10 +1,11 @@
 import 'package:donation_nature/alarm/service/alarm_serivce.dart';
 import 'package:donation_nature/models/alarm_model.dart';
+import 'package:donation_nature/screen/login_screen.dart';
 import 'package:donation_nature/screen/mypage/mypage_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/screen/user_manage.dart';
-import 'package:donation_nature/main.dart' as main;
+import 'package:donation_nature/screen/main_screen.dart' as main;
 
 class AlarmScreen extends StatefulWidget {
   const AlarmScreen({Key? key}) : super(key: key);
@@ -32,60 +33,68 @@ class _AlarmScreenState extends State<AlarmScreen> {
   @override
   Widget build(BuildContext context) {
     User? user = UserManage().getUser();
-    return WillPopScope(
-        onWillPop: () async {
-          return mustPop;
-        },
-        child: Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.pop(context);
-                  main.openAlarmScreen = false;
-                },
-              ),
-              title: Text("알람 목록"),
-            ),
-            body: RefreshIndicator(
-              onRefresh: () {
-                return Future(() {
-                  setState(() {});
-                });
-              },
-              child: FutureBuilder<List<AlarmModel>>(
-                  future: AlarmService.getAlarms(user!.uid),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      List<AlarmModel> alarms = snapshot.data!;
-                      return ListView.builder(
-                        itemCount: alarms.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          AlarmModel data = alarms[index];
 
-                          return Card(
-                            child: GestureDetector(
-                              child: ListTile(
-                                title: Text(
-                                  "${data.text}",
-                                  style: TextStyle(fontSize: 17.5),
+    return
+        //user != null
+        //     ?
+        WillPopScope(
+            onWillPop: () async {
+              return mustPop;
+            },
+            child: Scaffold(
+                appBar: AppBar(
+                  leading: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      main.openAlarmScreen = false;
+                    },
+                  ),
+                  title: Text("알람 목록"),
+                ),
+                body: RefreshIndicator(
+                  onRefresh: () {
+                    return Future(() {
+                      setState(() {});
+                    });
+                  },
+                  child: FutureBuilder<List<AlarmModel>>(
+                      future: AlarmService.getAlarms(user!.uid),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          List<AlarmModel> alarms = snapshot.data!;
+                          return ListView.builder(
+                            itemCount: alarms.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              AlarmModel data = alarms[index];
+
+                              return Card(
+                                child: GestureDetector(
+                                  child: ListTile(
+                                    title: Text(
+                                      "${data.text}",
+                                      style: TextStyle(fontSize: 17.5),
+                                    ),
+                                    subtitle: Text(
+                                      "${data.time.toDate().toLocal().toString().substring(5, 16)}",
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ),
                                 ),
-                                subtitle: Text(
-                                  "${data.time.toDate().toLocal().toString().substring(5, 16)}",
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ),
-                            ),
+                              );
+                            },
                           );
-                        },
-                      );
-                    } else if (snapshot.hasError) {
-                      print('${snapshot.error}');
-                      return Text('${snapshot.error}');
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  }),
-            )));
+                        } else if (snapshot.hasError) {
+                          print('${snapshot.error}');
+                          return Text('${snapshot.error}');
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      }),
+                )));
+    // :
+    // //비회원이면 로그인 페이지로 이동
+    // LoginScreen();
   }
 }

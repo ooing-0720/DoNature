@@ -76,7 +76,6 @@ class HomeScreenState extends State<HomeScreen> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text("DONATURE"),
-        
         elevation: 0,
       ),
       body:
@@ -157,8 +156,8 @@ class HomeScreenState extends State<HomeScreen> {
                                   //       'assets/images/background_drought.jpg'), // 배경 이미지
                                   // ),
                                   ),
-                              width: 200,
-                              margin: EdgeInsets.symmetric(horizontal: 3.0),
+                              // width: 200,
+                              // margin: EdgeInsets.symmetric(horizontal: 1.0),
 
                               // decoration: BoxDecoration(
                               //   color: Colors.wh,
@@ -167,6 +166,7 @@ class HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 children: [
                                   Flexible(
+                                    fit: FlexFit.loose,
                                     child: Image.asset(i_images[itemIndex],
                                         fit: BoxFit.fill),
                                   )
@@ -184,7 +184,7 @@ class HomeScreenState extends State<HomeScreen> {
                             width: 5.0,
                             height: 5.0,
                             margin: EdgeInsets.symmetric(
-                                vertical: 5.0, horizontal: 2.0),
+                                vertical: 4.0, horizontal: 3.0),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: currentPos == index

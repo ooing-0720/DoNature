@@ -181,4 +181,11 @@ class PostService {
       return true;
     }
   }
+
+  Future<void> isDone(Post post) async {
+    if (!post.isDone) {
+      post.isDone = true;
+      await post.reference!.set(post.toJson());
+    }
+  }
 }

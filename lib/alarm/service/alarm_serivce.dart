@@ -58,4 +58,16 @@ class AlarmService {
 
 
 
+  //알람 읽음 처리
+  static void readAlarm({required String userUID}){
+    CollectionReference<Map<String, dynamic>> collectionReference =
+        FirebaseFirestore.instance.collection('/alarm/${userUID}/alarm_list');
+
+    collectionReference.where("read", isEqualTo: false).get().then((QuerySnapshot qs) {
+     qs.docs.forEach((element) { element.reference.update({"read":true});});
+    });  
+    
+  }
+
+
 }

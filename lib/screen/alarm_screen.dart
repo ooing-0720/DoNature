@@ -24,20 +24,19 @@ class _AlarmScreenState extends State<AlarmScreen> {
   void initState() {
     super.initState();
     main.openAlarmScreen = true;
-    AlarmService.readAlarm(
-      userUID: user!.uid,
-    );
+
+    if (user != null) {
+      AlarmService.readAlarm(
+        userUID: user!.uid,
+      );
+    }
     // _initPostData=
   }
 
   @override
   Widget build(BuildContext context) {
-    User? user = UserManage().getUser();
-
-    return
-        //user != null
-        //     ?
-        WillPopScope(
+    return user != null
+        ? WillPopScope(
             onWillPop: () async {
               return mustPop;
             },
@@ -92,9 +91,8 @@ class _AlarmScreenState extends State<AlarmScreen> {
                               child: CircularProgressIndicator());
                         }
                       }),
-                )));
-    // :
+                )))
+        : LoginScreen();
     // //비회원이면 로그인 페이지로 이동
-    // LoginScreen();
   }
 }

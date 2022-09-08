@@ -31,8 +31,9 @@ class HomeScreenState extends State<HomeScreen> {
   List<String> WthrInfoList = ['', '', '', ''];
   List<String> reportList = ['', '', '', '', ''];
   List<bool>? disasterAtUserLocation = [false, false, false, false, false];
-  bool loading = false;
+  bool loading = true;
   var i_images = List<String>.empty(growable: true);
+  AnimationController? animateController;
 
   WthrReport wthrReport = WthrReport();
 
@@ -45,13 +46,12 @@ class HomeScreenState extends State<HomeScreen> {
 
   Future<void> getWeatherData() async {
     setState(() {
-      loading = false;
+      loading = true;
     });
 
     WthrInfoList = await wthrReport.getWthrInfo();
     result = await _mainAction.getAddress();
     userLocation = result.replaceAll(RegExp('[대한민국0-9\-]'), '');
-
     // reportList = await wthrReport.getWeatherReport();
 
     // wthrReport.getWthrInfo().then((List<String> value) {
@@ -72,8 +72,6 @@ class HomeScreenState extends State<HomeScreen> {
     //     reportList = value;
     //   });
     // });
-
-    // userLocation = '서울특별시 강남구';
     // reportList = [
     //   '폭염주의보: 서울',
     //   // '${wthrWrnList?[0].FHWA} ${wthrWrnList?[0].HWA} ${wthrWrnList?[0].HWW}',
@@ -103,19 +101,20 @@ class HomeScreenState extends State<HomeScreen> {
         ],
         elevation: 0,
       ),
-      body: loading
-          ? Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(
-                      Color.fromARGB(255, 127, 127, 127), BlendMode.darken),
-                  image: AssetImage(background), // 배경 이미지
-                ),
-              ),
-              child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10)))
-          : Container(
+      body:
+          // loading
+          //     ? Container(
+          //         decoration: BoxDecoration(
+          //           image: DecorationImage(
+          //             fit: BoxFit.cover,
+          //             colorFilter: ColorFilter.mode(
+          //                 Color.fromARGB(255, 127, 127, 127), BlendMode.darken),
+          //             image: AssetImage(background), // 배경 이미지
+          //           ),
+          //         ),
+          //         child: BackdropFilter(
+          //             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10))):
+          Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
@@ -157,7 +156,7 @@ class HomeScreenState extends State<HomeScreen> {
                       FutureBuilder<List<String>>(
                         future: myFuture,
                         builder: (ctx, snapshot) {
-                          if (snapshot.hasData) {
+                          if (snapshot.hasData && loading == false) {
                             reportList = snapshot.data!;
                             for (int i = 0; i < location.length; i++) {
                               if (userLocation.contains(location[i])) {
@@ -174,6 +173,7 @@ class HomeScreenState extends State<HomeScreen> {
                                 i++) {
                               if (disasterAtUserLocation![i]) {
                                 i_images.add(images[i]);
+
                                 label += ' ' + labels[i];
                               }
                             }

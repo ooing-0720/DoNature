@@ -64,59 +64,67 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       height: 20,
                       thickness: 1.5,
                     ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Row(
-                        children: [
-                          // Icon(Icons.local_offer, color: Color(0xff90B1A4)),
-                          Chip(
-                            label: Text(widget.post.tagDisaster!,
-                                style: TextStyle(color: Colors.white)),
-                            backgroundColor: Color(0xff90B1A4),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Icon(
-                            Icons.place,
-                            color: Color(0xff90B1A4),
-                          ),
-                          Chip(
-                            label: Text(
-                                widget.post.locationSiDo! +
-                                    " " +
-                                    widget.post.locationGuGunSi!,
-                                style: TextStyle(color: Colors.white)),
-                            backgroundColor: Color(0xff90B1A4),
-                          ),
-                          Spacer(),
-                          userIsWriter == true
-                              ? Row(children: [
+                    Row(
+                      children: [
+                        // Icon(Icons.local_offer, color: Color(0xff90B1A4)),
+                        Chip(
+                          label: Text(widget.post.tagMore!,
+                              style: TextStyle(color: Colors.white)),
+                          backgroundColor: Color(0xff90B1A4),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Chip(
+                          label: Text(widget.post.tagDisaster!,
+                              style: TextStyle(color: Colors.white)),
+                          backgroundColor: Color(0xff90B1A4),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Icon(
+                          Icons.place,
+                          color: Color(0xff90B1A4),
+                        ),
+                        Chip(
+                          label: Text(
+                              widget.post.locationSiDo! +
+                                  " " +
+                                  widget.post.locationGuGunSi!,
+                              style: TextStyle(color: Colors.white)),
+                          backgroundColor: Color(0xff90B1A4),
+                        ),
+                        Spacer(),
+                        userIsWriter == true
+                            ? Transform.scale(
+                                scale: 0.8,
+                                child: Row(children: [
                                   deleteButton(context),
                                   editButton(context)
-                                ])
-                              : IconButton(
-                                  icon: Icon(
-                                    PostService().isLiked(widget.post, user)
-                                        ? Icons.favorite
-                                        : Icons.favorite_border,
-                                    color: Color(0xff90B1A4),
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      PostService().likePost(widget.post, user);
-                                      PostService().isLiked(widget.post, user)
-                                          ? ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  content:
-                                                      Text("관심 목록에 추가되었습니다.")))
-                                          : null;
-                                      //문구를 뭐라고 해야할까
-                                    });
-                                  },
+                                ]),
+                              )
+                            : IconButton(
+                                icon: Icon(
+                                  PostService().isLiked(widget.post, user)
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color: Color(0xff90B1A4),
                                 ),
-                        ],
-                      ),
+                                onPressed: () {
+                                  setState(() {
+                                    PostService().likePost(widget.post, user);
+                                    PostService().isLiked(widget.post, user)
+                                        ? ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                content:
+                                                    Text("관심 목록에 추가되었습니다.")))
+                                        : null;
+                                    //문구를 뭐라고 해야할까
+                                  });
+                                },
+                              ),
+                      ],
                     ),
                     Divider(
                       height: 20,
@@ -199,7 +207,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
                           _chattingRoom.chatReference = await chatService
                               .createChattingRoom(_chattingRoom.toJson());
-                          AlarmService.createChattingRoomAlarm(user.uid, widget.post.writerUID, user.displayName, widget.post.writer);
+                          AlarmService.createChattingRoomAlarm(
+                              user.uid,
+                              widget.post.writerUID,
+                              user.displayName,
+                              widget.post.writer);
                           widget.post.chatUsers![user.email] =
                               _chattingRoom.chatReference;
                           PostService().updatePost(
@@ -249,33 +261,38 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     height: 20,
                     thickness: 1.5,
                   ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Row(
-                      children: [
-                        Chip(
-                          label: Text(widget.post.tagDisaster!,
-                              style: TextStyle(color: Colors.white)),
-                          backgroundColor: Color(0xff90B1A4),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Icon(
-                          Icons.place,
-                          color: Color(0xff9fc3a8),
-                        ),
-                        Chip(
-                          label: Text(
-                              widget.post.locationSiDo! +
-                                  " " +
-                                  widget.post.locationGuGunSi!,
-                              style: TextStyle(color: Colors.white)),
-                          backgroundColor: Color(0xff90B1A4),
-                        ),
-                        Spacer(),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      Chip(
+                        label: Text(widget.post.tagMore!,
+                            style: TextStyle(color: Colors.white)),
+                        backgroundColor: Color(0xff90B1A4),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Chip(
+                        label: Text(widget.post.tagDisaster!,
+                            style: TextStyle(color: Colors.white)),
+                        backgroundColor: Color(0xff90B1A4),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Icon(
+                        Icons.place,
+                        color: Color(0xff90B1A4),
+                      ),
+                      Chip(
+                        label: Text(
+                            widget.post.locationSiDo! +
+                                " " +
+                                widget.post.locationGuGunSi!,
+                            style: TextStyle(color: Colors.white)),
+                        backgroundColor: Color(0xff90B1A4),
+                      ),
+                      Spacer(),
+                    ],
                   ),
                   Divider(
                     height: 20,

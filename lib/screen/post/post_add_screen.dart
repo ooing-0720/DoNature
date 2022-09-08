@@ -31,12 +31,13 @@ class _PostAddScreenState extends State<PostAddScreen> {
 
   Media _media = Media();
   User? user = UserManage().getUser();
-
+  List<String> tagMoreList = ['나눔하기', '나눔받기', '알리기'];
   List<String> locationGuList = [];
   String? _selectedDo = null;
   String? _selectedGu = null;
   bool image = false;
-  int selectedIndex = -1;
+  int selectedDisasterIndex = -1;
+  int selectedTagIndex = -1;
   var _editedPost = Post(
     title: '',
     userEmail: '',
@@ -79,6 +80,45 @@ class _PostAddScreenState extends State<PostAddScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             titleForm(),
+            Divider(
+              height: 20,
+              thickness: 1.5,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 5, right: 5),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.label,
+                    color: Color(0xff90B1A4),
+                  ),
+                  SizedBox(width: 12),
+                  Wrap(
+                    spacing: 12,
+                    children: List<Widget>.generate(
+                      tagMoreList.length,
+                      (int index) {
+                        return ChoiceChip(
+                          backgroundColor: Color(0xff90B1A4),
+                          selectedColor: Color(0xff416E5C),
+                          label: Text(
+                            tagMoreList[index],
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          selected: selectedTagIndex == index,
+                          onSelected: (bool selected) {
+                            setState(() {
+                              selectedTagIndex = selected ? index : -1;
+                              _editedPost.tagMore = tagMoreList[index];
+                            });
+                          },
+                        );
+                      },
+                    ).toList(),
+                  ),
+                ],
+              ),
+            ),
             Divider(
               height: 20,
               thickness: 1.5,
@@ -395,21 +435,27 @@ class _PostAddScreenState extends State<PostAddScreen> {
     return ElevatedButton(
         onPressed: () {
           if (_formkey.currentState!.validate() &&
-              selectedIndex != -1 &&
+              selectedDisasterIndex != -1 &&
+              selectedTagIndex != -1 &&
               (_editedPost.locationSiDo != '' &&
                   _editedPost.locationGuGunSi != '')) {
             //validation 성공하면 폼 저장하기
             _formkey.currentState!.save();
             addPost();
-          } else if (_formkey.currentState!.validate() && selectedIndex == -1) {
+          } else if (_formkey.currentState!.validate() &&
+              selectedDisasterIndex == -1) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text('재난태그 지정필요')));
           } else if (_formkey.currentState!.validate() &&
-              selectedIndex != -1 &&
+              selectedDisasterIndex != -1 &&
               (_editedPost.locationSiDo == '' ||
                   _editedPost.locationGuGunSi == '')) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text('위치태그 지정필요')));
+          } else if (_formkey.currentState!.validate() &&
+              selectedTagIndex == -1) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text('태그 지정필요')));
           }
         },
         style: ElevatedButton.styleFrom(primary: Color(0xff90B1A4)),
@@ -424,11 +470,11 @@ class _PostAddScreenState extends State<PostAddScreen> {
         child: ChoiceChip(
           backgroundColor: Color(0xff90B1A4),
           selectedColor: Color(0xff416E5C),
-          selected: selectedIndex == i,
+          selected: selectedDisasterIndex == i,
           onSelected: (bool value) {
             setState(() {
-              selectedIndex = i;
-              _editedPost.tagDisaster = disasterList[selectedIndex];
+              selectedDisasterIndex = i;
+              _editedPost.tagDisaster = disasterList[selectedDisasterIndex];
             });
           },
           label: Text(

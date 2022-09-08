@@ -28,15 +28,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   style: TextStyle(
                     color: Colors.black,
                   )),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => AlarmScreen()));
-                  },
-                  icon: Icon(Icons.notifications),
-                ),
-              ],
+            
             ),
             body: RefreshIndicator(
               onRefresh: () {
@@ -102,7 +94,12 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                                 // SizedBox(
                                                 //   height: 2,
                                                 // ),
-                                                Text("${data.updatedMsg}"),
+                                                Text(
+                                                  "${data.updatedMsg}",
+                                                  maxLines: 3,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
                                               ],
                                             ),
                                             //공통으로
@@ -153,7 +150,12 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                                 // SizedBox(
                                                 //   height: 2,
                                                 // ),
-                                                Text("${data.updatedMsg}"),
+                                                Text(
+                                                  "${data.updatedMsg}",
+                                                  maxLines: 3,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
                                               ],
                                             ),
                                             //공통으로

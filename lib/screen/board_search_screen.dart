@@ -24,12 +24,15 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
   //재난태그 지정 안되고 지역 시, 군구로 찾을 수 있음
   //재난태그 지정 안되고 지역 시로 찾을 수 있음
   //->지역 시 는 무조건 들어가야됨 or 전체
+  List<String> tagMoreList = ['나눔하기', '나눔받기', '알리기'];
   List<String> locationGuList = [];
   String? _selectedDo = null;
   String? _selectedGu = null;
-  int? selectedIndex = -1;
+  int selectedDisasterIndex = -1;
+  int selectedTagIndex = -1;
   GlobalKey _searchKey = GlobalKey();
   String? tagDisaster = null;
+  String? tagMore = null;
 
   @override
   Widget build(BuildContext context) {
@@ -45,28 +48,43 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
                   flex: 4,
                   child: Column(
                     children: [
+                      searchTag(),
+                      // Divider(
+                      //   height: 20,
+                      //   thickness: 1.5,
+                      // ),
                       searchLocation(),
                       //searchLocation2(),
+                      // Divider(
+                      //   height: 20,
+                      //   thickness: 1.5,
+                      // ),
                       searchDisaster(),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Color(0xff90B1A4)),
-                          key: _searchKey,
-                          onPressed: () {
-                            if (_selectedDo == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("시/도를 선택해주세요")));
-                            } else {
+                      SizedBox(
+                        height: 50,
+                      ),
+                      Center(
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Color(0xff90B1A4)),
+                            key: _searchKey,
+                            onPressed: () {
+                              // if (_selectedDo == null) {
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //       SnackBar(content: Text("시/도를 선택해주세요")));
+                              // } else {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: ((context) => SearchResultScreen(
                                           _selectedDo,
                                           _selectedGu,
-                                          tagDisaster))));
-                            }
-                          },
-                          child: Text("검색"))
+                                          tagDisaster,
+                                          tagMore))));
+                              //
+                            },
+                            child: Text("검색")),
+                      )
                     ],
                   ),
                 ),
@@ -74,6 +92,48 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
             );
           },
         ));
+  }
+
+  ExpansionTile searchTag() {
+    return ExpansionTile(
+      title: Container(
+        child: Text(
+          "태그로 검색하기 ",
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      ),
+
+      children: [
+        Wrap(
+          spacing: 12,
+          children: List<Widget>.generate(
+            tagMoreList.length,
+            (int index) {
+              return ChoiceChip(
+                backgroundColor: Color(0xff90B1A4),
+                selectedColor: Color(0xff416E5C),
+                label: Text(
+                  tagMoreList[index],
+                  style: TextStyle(color: Colors.white),
+                ),
+                selected: selectedTagIndex == index,
+                onSelected: (bool selected) {
+                  setState(() {
+                    selectedTagIndex = selected ? index : -1;
+                    tagMore = selected ? tagMoreList[index] : null;
+                  });
+                },
+              );
+            },
+          ).toList(),
+        ),
+      ],
+      //     ),
+      //   ),
+      // ),
+    );
   }
 
   ExpansionTile searchDisaster() {
@@ -99,19 +159,22 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
     );
   }
 
-  Padding searchLocation() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "지역 태그로 검색하기",
-            style: TextStyle(fontSize: 16),
+  ExpansionTile searchLocation() {
+    return ExpansionTile(
+      title: Container(
+        child: Text(
+          "재난 태그로 검색하기 ",
+          style: TextStyle(
+            color: Colors.black,
           ),
-          locationDropdown(),
-        ],
+        ),
       ),
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0),
+          child: locationDropdown(),
+        ),
+      ],
     );
   }
 
@@ -125,12 +188,12 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
         child: ChoiceChip(
           backgroundColor: Color(0xff90B1A4),
           selectedColor: Color(0xff416E5C),
-          selected: selectedIndex == i,
+          selected: selectedDisasterIndex == i,
           onSelected: (bool value) {
             setState(() {
               //selectedIndex = i;
-              selectedIndex = value ? i : null;
-              tagDisaster = value ? disasterList[selectedIndex!] : null;
+              selectedDisasterIndex = value ? i : -1;
+              tagDisaster = value ? disasterList[selectedDisasterIndex] : null;
             });
           },
           label: Text(
@@ -228,7 +291,9 @@ class SearchResultScreen extends StatefulWidget {
   String? _selectedDo;
   String? _selectedGu;
   String? tagDisaster;
-  SearchResultScreen(this._selectedDo, this._selectedGu, this.tagDisaster);
+  String? tagMore;
+  SearchResultScreen(
+      this._selectedDo, this._selectedGu, this.tagDisaster, this.tagMore);
   @override
   State<SearchResultScreen> createState() => _SearchResultScreenState();
 }
@@ -242,8 +307,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
           builder: (BuildContext context, StateSetter setState) {
         return RefreshIndicator(
             child: FutureBuilder<List<Post>>(
-                future: PostService().selectPostsByTag(
-                    widget._selectedDo, widget._selectedGu, widget.tagDisaster),
+                future: PostService().selectPostsByTag(widget._selectedDo,
+                    widget._selectedGu, widget.tagDisaster, widget.tagMore),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     List<Post> findPosts = snapshot.data!;
@@ -280,6 +345,17 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                       ..scale(0.95),
                                     child: Row(
                                       children: [
+                                        Chip(
+                                          label: Text(
+                                            "${data.tagMore}",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          backgroundColor: Color(0xff90B1A4),
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
                                         Chip(
                                           label: Text(
                                             "${data.tagDisaster}",

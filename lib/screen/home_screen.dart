@@ -76,15 +76,7 @@ class HomeScreenState extends State<HomeScreen> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text("DONATURE"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AlarmScreen()));
-            },
-            icon: Icon(Icons.notifications),
-          )
-        ],
+        
         elevation: 0,
       ),
       body:

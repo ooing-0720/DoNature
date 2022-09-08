@@ -28,15 +28,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   style: TextStyle(
                     color: Colors.black,
                   )),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => AlarmScreen()));
-                  },
-                  icon: Icon(Icons.notifications),
-                ),
-              ],
+            
             ),
             body: RefreshIndicator(
               onRefresh: () {

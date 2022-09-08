@@ -47,6 +47,7 @@ class _BoardScreenState extends State<BoardScreen> {
                         builder: (context) => BoardSearchScreen()));
               },
               icon: Icon(Icons.search)),
+
           IconButton(
             onPressed: () {
               Navigator.push(context,
@@ -54,6 +55,7 @@ class _BoardScreenState extends State<BoardScreen> {
             },
             icon: Icon(Icons.notifications),
           ),
+
         ],
       ),
       body: RefreshIndicator(

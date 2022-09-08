@@ -35,7 +35,9 @@ class WthrWrnList {
     //  t6: 특보발효현황내용
     List<String> t6 = json['t6'].substring(2).split('\r\no');
     final map = {
-      for (var item in t6) item.split(':')[0].trim(): item.split(':')[1].trim(),
+      for (var item in t6)
+        if (item.contains(':'))
+          item.split(':')[0].trim(): item.split(':')[1].trim(),
     };
 
     /* BAD

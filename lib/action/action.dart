@@ -6,15 +6,33 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
 class MainAction {
-  Future<String> getAddress() async {
+  Future<Map<String, double>> getPosition() async {
     // original return type is Future<String>
-    PermissionRequest.determinePosition();
+    var permissionValue = PermissionRequest.determinePosition();
+    var latitude, longitude;
+    var nowPosition = {'latitude': 0.0, 'longitude': 0.0};
 
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    if (permissionValue == true) {
+      // 위치 권한 허용한 경우 -> 현재 위치
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
 
-    var latitude = position.latitude;
-    var longitude = position.longitude;
+      nowPosition['latitude'] = position.latitude;
+      nowPosition['longitude'] = position.longitude;
+    } else {
+      // 위치 권한 거부한 경우 -> 임의 지정
+      nowPosition['latitude'] = 37.566;
+      nowPosition['longitude'] = 126.978;
+    }
+    print(nowPosition);
+    return nowPosition;
+  }
+
+  Future<String> getAddress() async {
+    var position = await getPosition();
+    var latitude = position['latitude'];
+    var longitude = position['longitude'];
+
     final url = Uri.parse(
         'https://maps.googleapis.com/maps/api/geocode/json?sensor=false&language=ko&latlng=$latitude,$longitude&key=$geoCodingKey');
 

@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         future: Init.instance.initialize(context),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return MaterialApp(home: SplashScreen());
+            return SplashScreen();
           } else if (snapshot.hasError) {
             print('error');
             return MaterialApp(home: SplashScreen()); // 초기 로딩 에러 시 Error Screen
@@ -83,6 +83,7 @@ class Init {
     var location = result.split(' ');
     Static.userLocation = location[1] + ' ' + location[2] + ' ' + location[3];
     Static.reportList = await wthrReport.getWeatherReport();
+
     // 초기 로딩 완료 시 띄울 앱 첫 화면
 
     return MainScreen();

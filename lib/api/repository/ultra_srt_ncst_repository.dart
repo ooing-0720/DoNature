@@ -10,7 +10,7 @@ import 'package:date_format/date_format.dart';
 class UltraSrtNcstRepository {
   var serviceKey = ultraSrtNcstServiceKey;
 
-  Future<UltraSrtNcst?> loadUltraSrtNcst() async {
+  Future<dynamic?> loadUltraSrtNcst() async {
     var position = await MainAction().getPosition();
 
     var latitude = position['latitude'];
@@ -27,7 +27,14 @@ class UltraSrtNcstRepository {
     // 현재 날짜, 시간을 포맷에 맞게 변환
     var dateNow = DateTime.now();
     var dateStr = formatDate(dateNow, [yyyy, mm, dd]).toString();
-    var timeStr = formatDate(dateNow, [HH, '00']).toString();
+    var timeStr;
+
+    if (dateNow.minute < 40) {
+      timeStr = (dateNow.hour - 1).toString().padLeft(2, '0') + '00';
+    } else {
+      timeStr = formatDate(dateNow, [HH, '00']).toString();
+    }
+    print(timeStr);
 
     var url = Uri.parse(
         "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?serviceKey=$serviceKey&numOfRows=10&pageNo=1&dataType=JSON&base_date=$dateStr&base_time=$timeStr&nx=$nx&ny=$ny");
@@ -38,6 +45,7 @@ class UltraSrtNcstRepository {
     if (response.statusCode == 200) {
       final body = convert.utf8.decode(response.bodyBytes);
       Map<String, dynamic> jsonResult = convert.json.decode(body);
+      // final jsonCode = jsonResult['response']['header'];
       final jsonUltraSrtNcst = jsonResult['response']['body']['items'];
 
       // List<dynamic> list = jsonUltraSrtNcst['item'];

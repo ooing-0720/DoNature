@@ -49,40 +49,102 @@ class PostService {
 
   // Select All Matching Tags(위치 태그 구분)
   Future<List<Post>> selectPostsByTag(
-      String? sido, String? gugunsi, String? disaster) async {
+      String? sido, String? gugunsi, String? disaster, String? tagMore) async {
     CollectionReference<Map<String, dynamic>> collectionReference =
         FirebaseFirestore.instance.collection("bulletin_board");
     QuerySnapshot<Map<String, dynamic>> querySnapshot;
 
-    if (disaster == null) {
-      // 재난태그 지정 안 한 경우
-      if (gugunsi == "전체") {
-        querySnapshot = await collectionReference
-            .where('location_sido', isEqualTo: sido)
-            .orderBy("date", descending: true)
-            .get();
+    // Filtering
+    if (sido == null) {
+      if (disaster == null) {
+        if (tagMore == null) {
+          querySnapshot =
+              await collectionReference.orderBy("date", descending: true).get();
+        } else {
+          querySnapshot = await collectionReference
+              .where('tag_more', isEqualTo: tagMore)
+              .orderBy('date', descending: true)
+              .get();
+        }
       } else {
-        querySnapshot = await collectionReference
-            .where('location_sido', isEqualTo: sido)
-            .where('location_gugunsi', isEqualTo: gugunsi)
-            .orderBy("date", descending: true)
-            .get();
+        if (tagMore == null) {
+          querySnapshot = await collectionReference
+              .where('tag_disaster', isEqualTo: disaster)
+              .orderBy('date', descending: true)
+              .get();
+        } else {
+          querySnapshot = await collectionReference
+              .where('tag_disaster', isEqualTo: disaster)
+              .where('tag_more', isEqualTo: tagMore)
+              .orderBy('date', descending: true)
+              .get();
+        }
       }
     } else {
-      // 재난태그 지정한 경우
-      if (gugunsi == "전체") {
-        querySnapshot = await collectionReference
-            .where('location_sido', isEqualTo: sido)
-            .where('tag_disaster', isEqualTo: disaster)
-            .orderBy("date", descending: true)
-            .get();
+      if (gugunsi == null) {
+        if (disaster == null) {
+          if (tagMore == null) {
+            querySnapshot = await collectionReference
+                .where('location_sido', isEqualTo: sido)
+                .orderBy('date', descending: true)
+                .get();
+          } else {
+            querySnapshot = await collectionReference
+                .where('location_sido', isEqualTo: sido)
+                .where('tag_more', isEqualTo: tagMore)
+                .orderBy('date', descending: true)
+                .get();
+          }
+        } else {
+          if (tagMore == null) {
+            querySnapshot = await collectionReference
+                .where('location_sido', isEqualTo: sido)
+                .where('tag_disaster', isEqualTo: disaster)
+                .orderBy('date', descending: true)
+                .get();
+          } else {
+            querySnapshot = await collectionReference
+                .where('location_sido', isEqualTo: sido)
+                .where('tag_disaster', isEqualTo: disaster)
+                .where('tag_more', isEqualTo: tagMore)
+                .orderBy('date', descending: true)
+                .get();
+          }
+        }
       } else {
-        querySnapshot = await collectionReference
-            .where('location_sido', isEqualTo: sido)
-            .where('location_gugunsi', isEqualTo: gugunsi)
-            .where('tag_disaster', isEqualTo: disaster)
-            .orderBy("date", descending: true)
-            .get();
+        if (disaster == null) {
+          if (tagMore == null) {
+            querySnapshot = await collectionReference
+                .where('location_sido', isEqualTo: sido)
+                .where('location_gugunsi', isEqualTo: gugunsi)
+                .orderBy('date', descending: true)
+                .get();
+          } else {
+            querySnapshot = await collectionReference
+                .where('location_sido', isEqualTo: sido)
+                .where('location_gugunsi', isEqualTo: gugunsi)
+                .where('tag_more', isEqualTo: tagMore)
+                .orderBy('date', descending: true)
+                .get();
+          }
+        } else {
+          if (tagMore == null) {
+            querySnapshot = await collectionReference
+                .where('location_sido', isEqualTo: sido)
+                .where('location_gugunsi', isEqualTo: gugunsi)
+                .where('tag_disaster', isEqualTo: disaster)
+                .orderBy('date', descending: true)
+                .get();
+          } else {
+            querySnapshot = await collectionReference
+                .where('location_sido', isEqualTo: sido)
+                .where('location_gugunsi', isEqualTo: gugunsi)
+                .where('tag_disaster', isEqualTo: disaster)
+                .where('tag_more', isEqualTo: tagMore)
+                .orderBy('date', descending: true)
+                .get();
+          }
+        }
       }
     }
 
@@ -182,6 +244,7 @@ class PostService {
     }
   }
 
+  // 나눔 완료되었는지
   Future<void> isDone(Post post) async {
     if (!post.isDone) {
       post.isDone = true;

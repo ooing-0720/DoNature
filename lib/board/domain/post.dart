@@ -13,26 +13,25 @@ class Post {
   String? locationSiDo; // 시/도
   String? locationGuGunSi; // 구/군/시
   String? tagDisaster; // 재난 태그
-  String? tagMore; // 그 외 태그
+  String? tagMore; // 나눔하기, 나눔받기, 알리기
   List<dynamic>? likeUsers; // 관심 누른 유저 email 배열
   Map<dynamic, dynamic>? chatUsers; // 채팅하기 누른 유저 email 배열
   final DocumentReference? reference; // Firebase에서 document의 위치
   String? writerUID;
 
-  Post({
-    this.title,
-    this.userEmail,
-    this.writer,
-    this.date,
-    this.content,
-    this.imageUrl,
-    this.locationSiDo,
-    this.locationGuGunSi,
-    this.tagDisaster,
-    this.tagMore,
-    this.reference,
-    this.writerUID
-  });
+  Post(
+      {this.title,
+      this.userEmail,
+      this.writer,
+      this.date,
+      this.content,
+      this.imageUrl,
+      this.locationSiDo,
+      this.locationGuGunSi,
+      this.tagDisaster,
+      this.tagMore,
+      this.reference,
+      this.writerUID});
 
   // Firebase -> Dart(Flutter)
   // READ
@@ -40,7 +39,8 @@ class Post {
     title = json['title'];
     userEmail = json['user_email'];
     writer = json['writer'];
-    date = json['date']; // format 맞게 출력되는지 확인해야함
+    date = json['date'];
+    isDone = json['is_done'];
     content = json['content'];
     imageUrl = json['image_url'];
     locationSiDo = json['location_sido'];
@@ -67,6 +67,7 @@ class Post {
     map['writer'] = writer;
     map['date'] = date;
     map['content'] = content;
+    map['is_done'] = isDone;
     map['image_url'] = imageUrl;
     map['location_sido'] = locationSiDo;
     map['location_gugunsi'] = locationGuGunSi;
@@ -75,7 +76,6 @@ class Post {
     map['like_users'] = likeUsers ?? [];
     map['chat_users'] = chatUsers ?? {};
     map['writer_uid'] = writerUID;
-
 
     return map;
   }

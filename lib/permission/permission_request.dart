@@ -7,27 +7,27 @@ import 'package:permission_handler/permission_handler.dart';
 // 권한 요청 클래스
 class PermissionRequest {
   // 위치 정보 사용 허가 여부
-  static Future<Position> determinePosition() async {
+  static Future<bool> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      return Future.error("Location Services are disabled.");
+      return false;
     }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        return Future.error("Location permissions are denied.");
+        return false;
       }
       if (permission == LocationPermission.deniedForever) {
-        return Future.error("Location permissions are permanently denined.");
+        return false;
       }
     }
 
-    return await Geolocator.getCurrentPosition();
+    return true;
   }
 
   // 갤러리, 파일 접근 권한

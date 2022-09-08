@@ -27,9 +27,13 @@ class PostEditScreen extends StatefulWidget {
 class _PostEditScreenState extends State<PostEditScreen> {
   late TextEditingController titleEditingController;
   late TextEditingController contentEditingController;
-  int selectedIndex = -1;
+  List<String> tagMoreList = ['나눔하기', '나눔받기', '알리기'];
+
+  int selectedDisasterIndex = -1;
+  int selectedTagIndex = -1;
   List<String> locationGuList = [];
   String? _selectedDo = null;
+
   String? _selectedGu = null;
   final GlobalKey<FormState> _formkey = GlobalKey();
   Media _media = Media();
@@ -57,6 +61,45 @@ class _PostEditScreenState extends State<PostEditScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 titleEditForm(),
+                Divider(
+                  height: 20,
+                  thickness: 1.5,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 5, right: 5),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.label,
+                        color: Color(0xff90B1A4),
+                      ),
+                      SizedBox(width: 12),
+                      Wrap(
+                        spacing: 12,
+                        children: List<Widget>.generate(
+                          tagMoreList.length,
+                          (int index) {
+                            return ChoiceChip(
+                              backgroundColor: Color(0xff90B1A4),
+                              selectedColor: Color(0xff416E5C),
+                              label: Text(
+                                tagMoreList[index],
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              selected: selectedTagIndex == index,
+                              onSelected: (bool selected) {
+                                setState(() {
+                                  selectedTagIndex = selected ? index : -1;
+                                  widget.post.tagMore = tagMoreList[index];
+                                });
+                              },
+                            );
+                          },
+                        ).toList(),
+                      ),
+                    ],
+                  ),
+                ),
                 Divider(
                   height: 20,
                   thickness: 1.5,
@@ -180,10 +223,9 @@ class _PostEditScreenState extends State<PostEditScreen> {
                     ),
                     Row(
                       children: [
-                        Chip(
-                          backgroundColor: Color(0xff90B1A4),
-                          label:
-                              Text("위치", style: TextStyle(color: Colors.white)),
+                        Icon(
+                          Icons.place,
+                          color: Color(0xff90B1A4),
                         ),
                         SizedBox(
                           width: 15,
@@ -196,20 +238,6 @@ class _PostEditScreenState extends State<PostEditScreen> {
                 contentEditForm(),
                 SizedBox(
                   height: 20,
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Row(
-                        children: [
-                          Icon(Icons.local_offer),
-                          SizedBox(width: 10),
-                          Text("재난 태그: ")
-                        ],
-                      ),
-                    ),
-                  ],
                 ),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -370,21 +398,27 @@ class _PostEditScreenState extends State<PostEditScreen> {
     return ElevatedButton(
         onPressed: () {
           if (_formkey.currentState!.validate() &&
-              selectedIndex != -1 &&
-              (widget.post.locationSiDo != null ||
-                  widget.post.locationGuGunSi != null)) {
+              selectedDisasterIndex != -1 &&
+              selectedTagIndex != -1 &&
+              (widget.post.locationSiDo != '' &&
+                  widget.post.locationGuGunSi != '')) {
             //validation 성공하면 폼 저장하기
             _formkey.currentState!.save();
             editPost();
-          } else if (_formkey.currentState!.validate() && selectedIndex == -1) {
+          } else if (_formkey.currentState!.validate() &&
+              selectedDisasterIndex == -1) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text('재난태그 지정필요')));
           } else if (_formkey.currentState!.validate() &&
-              selectedIndex != -1 &&
+              selectedDisasterIndex != -1 &&
               (widget.post.locationSiDo == '' ||
                   widget.post.locationGuGunSi == '')) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text('위치태그 지정필요')));
+          } else if (_formkey.currentState!.validate() &&
+              selectedTagIndex == -1) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text('태그 지정필요')));
           }
         },
         style: ElevatedButton.styleFrom(primary: Color(0xff90B1A4)),
@@ -399,11 +433,11 @@ class _PostEditScreenState extends State<PostEditScreen> {
         child: ChoiceChip(
           backgroundColor: Color(0xff90B1A4),
           selectedColor: Color(0xff416E5C),
-          selected: selectedIndex == i,
+          selected: selectedDisasterIndex == i,
           onSelected: (bool value) {
             setState(() {
-              selectedIndex = i;
-              widget.post.tagDisaster = disasterList[selectedIndex];
+              selectedDisasterIndex = i;
+              widget.post.tagDisaster = disasterList[selectedDisasterIndex];
             });
           },
           label: Text(

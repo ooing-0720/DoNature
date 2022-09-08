@@ -33,7 +33,7 @@ class _BoardScreenState extends State<BoardScreen> {
   @override
   Widget build(BuildContext context) {
     User? user = UserManage().getUser();
-
+    bool done = false;
     return Scaffold(
       appBar: AppBar(
         title: Text("나눔게시판"),
@@ -49,10 +49,8 @@ class _BoardScreenState extends State<BoardScreen> {
               icon: Icon(Icons.search)),
           IconButton(
             onPressed: () {
-              Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AlarmScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AlarmScreen()));
             },
             icon: Icon(Icons.notifications),
           ),
@@ -98,6 +96,16 @@ class _BoardScreenState extends State<BoardScreen> {
                                 transform: new Matrix4.identity()..scale(0.95),
                                 child: Row(
                                   children: [
+                                    Chip(
+                                      label: Text(
+                                        "${data.tagMore}",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      backgroundColor: Color(0xff90B1A4),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
                                     Chip(
                                       label: Text(
                                         "${data.tagDisaster}",

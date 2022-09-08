@@ -102,7 +102,12 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                                 // SizedBox(
                                                 //   height: 2,
                                                 // ),
-                                                Text("${data.updatedMsg}"),
+                                                Text(
+                                                  "${data.updatedMsg}",
+                                                  maxLines: 3,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
                                               ],
                                             ),
                                             //공통으로
@@ -153,7 +158,12 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                                 // SizedBox(
                                                 //   height: 2,
                                                 // ),
-                                                Text("${data.updatedMsg}"),
+                                                Text(
+                                                  "${data.updatedMsg}",
+                                                  maxLines: 3,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
                                               ],
                                             ),
                                             //공통으로

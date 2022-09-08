@@ -65,8 +65,7 @@ class WthrReport {
     var wthrWrnList = await wthrWrnListRepository.loadWthrWrnList();
 
     List<String> reportList = [
-      '폭염주의보: 서울',
-      // '${wthrWrnList?[0].FHWA} ${wthrWrnList?[0].HWA} ${wthrWrnList?[0].HWW}',
+      '${wthrWrnList?[0].FHWA} ${wthrWrnList?[0].HWA} ${wthrWrnList?[0].HWW}',
       '${wthrWrnList?[0].FHRA} ${wthrWrnList?[0].HRA}',
       '${wthrWrnList?[0].FTYA} ${wthrWrnList?[0].TYA}',
       '${wthrWrnList?[0].FSWA}  ${wthrWrnList?[0].SWA}',

@@ -24,7 +24,7 @@ class AlarmService {
       CollectionReference<Map<String, dynamic>> collectionReference =
         FirebaseFirestore.instance.collection('/alarm/${userUID}/alarm_list');
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await collectionReference.orderBy("date", descending: true).get();
+        await collectionReference.orderBy("time", descending: true).get();
 
       List<AlarmModel> alarms = [];
         for (var element in querySnapshot.docs) {

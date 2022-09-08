@@ -47,15 +47,6 @@ class _BoardScreenState extends State<BoardScreen> {
                         builder: (context) => BoardSearchScreen()));
               },
               icon: Icon(Icons.search)),
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AlarmScreen()));
-            },
-            icon: Icon(Icons.notifications),
-          ),
         ],
       ),
       body: RefreshIndicator(

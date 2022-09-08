@@ -7,12 +7,12 @@ class WthrWrnListRepository {
   var serviceKey = wthrWrnServiceKey;
 
   Future<List<WthrWrnList>?> loadWthrWrnList() async {
-    // var url = Uri.parse(
-    //     "http://apis.data.go.kr/1360000/WthrWrnInfoService/getPwnStatus?serviceKey=$serviceKey&numOfRows=10&pageNo=1&dataType=JSON");
+    var url = Uri.parse(
+        "http://apis.data.go.kr/1360000/WthrWrnInfoService/getPwnStatus?serviceKey=$serviceKey&numOfRows=10&pageNo=1&dataType=JSON");
 
     // device: IPv4 / emulator: 10.0.2.2
 
-    var url = Uri.parse("http://10.0.2.2:8080/WthrWrnInfoService");
+    // var url = Uri.parse("http://10.0.2.2:8080/WthrWrnInfoService");
 
     var response = await http.get(url);
 

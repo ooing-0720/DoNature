@@ -1,4 +1,5 @@
 import 'package:donation_nature/firebase_options.dart';
+import 'package:donation_nature/screen/alarm_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:donation_nature/screen/info_screen.dart';
@@ -18,11 +19,13 @@ void main() async {
   );
 }
 
+bool openAlarmScreen = false;
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   static const String _title = 'DONATURE';
-
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -57,15 +60,20 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    InfoScreen(),
     ChatListScreen(),
     BoardScreen(),
+    AlarmScreen(),
     MyPageScreen(),
   ];
+
+  
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+         if(_selectedIndex == 3){
+        openAlarmScreen = true;
+      } 
     });
   }
 
@@ -82,16 +90,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             label: '홈',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.library_books_outlined),
-            label: '재난',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.chat_outlined),
             label: '채팅',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.library_books_outlined),
             label: '나눔',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: '알림',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),

@@ -19,12 +19,7 @@ class LoginScreenState extends State<LoginScreen> {
               style: TextStyle(
                 color: Colors.black,
               )),
-          actions: [
-            IconButton(
-              onPressed: () => _login(),
-              icon: Icon(Icons.notifications),
-            ),
-          ],
+          
         ),
         body: SingleChildScrollView(
           child:

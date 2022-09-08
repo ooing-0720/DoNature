@@ -37,15 +37,6 @@ class InfoScreen extends StatelessWidget {
             style: TextStyle(
               color: Colors.black,
             )),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AlarmScreen()));
-            },
-            icon: Icon(Icons.notifications),
-          ),
-        ],
       ),
       body: Center(
         child: ElevatedButton(

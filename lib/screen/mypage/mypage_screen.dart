@@ -13,7 +13,7 @@ class MyPageScreen extends StatefulWidget {
   
 }
 
-bool openAlarmScreen = false;
+
 User? user;
 class MyPageScreenState extends State<MyPageScreen> {
   @override
@@ -24,19 +24,7 @@ class MyPageScreenState extends State<MyPageScreen> {
             style: TextStyle(
               color: Colors.black,
             )),
-        actions: [
-          IconButton(
-            onPressed: () {
-              openAlarmScreen = true;
-              Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AlarmScreen()));
 
-            },
-            icon: Icon(Icons.notifications),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(children: [MyPageHeader(), MyPageMenu()]),

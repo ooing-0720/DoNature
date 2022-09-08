@@ -1,5 +1,9 @@
 import 'package:donation_nature/action/action.dart';
 import 'package:donation_nature/firebase_options.dart';
+import 'package:donation_nature/screen/api_info.dart';
+import 'package:donation_nature/screen/main_screen.dart';
+import 'package:donation_nature/screen/splash_screen.dart';
+import 'package:donation_nature/screen/weather_disaster_api.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:donation_nature/screen/info_screen.dart';
@@ -21,13 +25,11 @@ void main() async {
   );
 }
 
-bool openAlarmScreen = false;
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   static const String _title = 'DONATURE';
-  
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -69,64 +71,21 @@ class Init {
   Future<Widget> initialize(BuildContext context) async {
     // await Future.delayed(Duration(milliseconds: 1000));
 
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
-    InfoScreen(),
-    ChatListScreen(),
-    BoardScreen(),
-    MyPageScreen(),
-  ];
+    // . . .
+    // 초기 로딩 작성
+    // . . .
 
-  
+    WthrReport wthrReport = WthrReport();
+    MainAction _mainAction = MainAction();
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-         if(_selectedIndex == 3){
-        openAlarmScreen = true;
-      } 
-    });
-  }
+    Static.wthrInfoList = await wthrReport.getWthrInfo();
+    String? result = await _mainAction.getAddress();
+    var location = result.split(' ');
+    Static.userLocation = location[1] + ' ' + location[2] + ' ' + location[3];
+    Static.reportList = await wthrReport.getWeatherReport();
+    // 초기 로딩 완료 시 띄울 앱 첫 화면
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '홈',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.library_books_outlined),
-            label: '재난',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_outlined),
-            label: '채팅',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.library_books_outlined),
-            label: '나눔',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: '내 정보',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xff003300),
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-      ),
-    );
+    return MainScreen();
   }
 }
 

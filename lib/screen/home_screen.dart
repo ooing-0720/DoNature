@@ -9,6 +9,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:donation_nature/screen/alarm_screen.dart';
+import 'api_info.dart';
 import 'weather_disaster_api.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,29 +20,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  bool _isPlaying = false;
-  MainAction _mainAction = MainAction();
-  String userLocation = "";
-  String result = "";
   int currentPos = 0;
-  String? temp = '';
-  String label = ' 로딩중입니다';
-  Future<List<String>>? myFuture;
+
+  String label = '';
+
   String background = 'assets/images/background_positive.jpg';
-  List<String> WthrInfoList = ['', '', '', ''];
-  List<String> reportList = ['', '', '', '', ''];
+
   List<bool>? disasterAtUserLocation = [false, false, false, false, false];
   bool loading = true;
   var i_images = List<String>.empty(growable: true);
-  AnimationController? animateController;
-
-  WthrReport wthrReport = WthrReport();
 
   @override
   void initState() {
     super.initState();
+    print(Static.userLocation! + 'dddd');
     getWeatherData();
-    myFuture = wthrReport.getWeatherReport();
   }
 
   Future<void> getWeatherData() async {
@@ -49,35 +42,28 @@ class HomeScreenState extends State<HomeScreen> {
       loading = true;
     });
 
-    WthrInfoList = await wthrReport.getWthrInfo();
-    result = await _mainAction.getAddress();
-    userLocation = result.replaceAll(RegExp('[대한민국0-9\-]'), '');
-    // reportList = await wthrReport.getWeatherReport();
+    for (int i = 0; i < location.length; i++) {
+      if (Static.userLocation!.contains(location[i])) {
+        for (int j = 0; j < Static.reportList!.length; j++) {
+          if (Static.reportList![j].contains(location[i])) {
+            disasterAtUserLocation![j] = true;
+          }
+        }
+      }
+    }
 
-    // wthrReport.getWthrInfo().then((List<String> value) {
-    //   setState(() {
-    //     WthrInfoList = value;
-    //   });
-    // });
-
-    // _mainAction.getAddress().then((String value) {
-    //   setState(() {
-    //     result = value;
-    //     userLocation = result.replaceAll(RegExp('[대한민국0-9\-]'), '');
-    //   });
-    // });
-
-    // wthrReport.getWeatherReport().then((List<String> value) {
-    //   setState(() {
-    //     reportList = value;
-    //   });
-    // });
-    // reportList = [
-    //   '폭염주의보: 서울',
-    //   // '${wthrWrnList?[0].FHWA} ${wthrWrnList?[0].HWA} ${wthrWrnList?[0].HWW}',
-    //   '', '', '', '풍랑주의보: 서울'
-    // ];
-
+    for (int i = 0; i < disasterAtUserLocation!.length; i++) {
+      if (disasterAtUserLocation![i]) {
+        i_images.insert(0, images[i]);
+        label += ' ' + labels[i];
+      }
+    }
+    if (i_images.length == 0) {
+      i_images.add('assets/images/earth.png');
+    }
+    if (label == '') {
+      label = ' 현재 발효된 특보가 없습니다';
+    }
     setState(() {
       loading = false;
     });
@@ -129,7 +115,7 @@ class HomeScreenState extends State<HomeScreen> {
                               color: Color.fromARGB(255, 149, 182, 169),
                             ),
                             Text(
-                              userLocation,
+                              Static.userLocation!,
                               style: TextStyle(
                                 color: Color.fromARGB(255, 181, 189, 186),
                                 fontSize: 22,
@@ -141,93 +127,53 @@ class HomeScreenState extends State<HomeScreen> {
                       Text(dateFormat.format(DateTime.now()),
                           style: TextStyle(
                               color: Color.fromARGB(255, 181, 189, 186))),
-                      Text('기온 ${WthrInfoList[0]} 습도 ${WthrInfoList[1]}',
+                      Text(
+                          '기온 ${Static.wthrInfoList![0]} 습도 ${Static.wthrInfoList![1]}',
                           style: TextStyle(
                               color: Color.fromARGB(255, 181, 189, 186))),
                       SizedBox(height: 30),
-                      FutureBuilder<List<String>>(
-                        future: myFuture,
-                        builder: (ctx, snapshot) {
-                          if (snapshot.hasData && loading == false) {
-                            reportList = snapshot.data!;
-                            for (int i = 0; i < location.length; i++) {
-                              if (userLocation.contains(location[i])) {
-                                for (int j = 0; j < reportList.length; j++) {
-                                  if (reportList[j].contains(location[i])) {
-                                    disasterAtUserLocation![j] = true;
-                                  }
-                                }
-                              }
-                            }
+                      CarouselSlider.builder(
+                        itemCount: i_images.length,
+                        options: CarouselOptions(
+                            viewportFraction: 1,
+                            // autoPlay: true,
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                currentPos = index;
+                                // background = background_images[index];
+                              });
+                            }),
+                        itemBuilder: (context, itemIndex, realIndex) {
+                          return Container(
+                              decoration: BoxDecoration(
+                                  // color: Color.fromARGB(173, 170, 170, 170)
+                                  //     .withOpacity(0.5),
+                                  // borderRadius: BorderRadius.all(
+                                  //   Radius.circular(10),
+                                  // )
+                                  // image: DecorationImage(
+                                  //   fit: BoxFit.cover,
+                                  //   image: AssetImage(
+                                  //       'assets/images/background_drought.jpg'), // 배경 이미지
+                                  // ),
+                                  ),
+                              width: 200,
+                              margin: EdgeInsets.symmetric(horizontal: 3.0),
 
-                            for (int i = 0;
-                                i < disasterAtUserLocation!.length;
-                                i++) {
-                              if (disasterAtUserLocation![i]) {
-                                i_images.add(images[i]);
+                              // decoration: BoxDecoration(
+                              //   color: Colors.wh,
+                              // ),
 
-                                label += ' ' + labels[i];
-                              }
-                            }
-                            if (i_images.length == 0) {
-                              i_images.add('assets/images/earth.png');
-                            }
-                            if (label == ' 로딩중입니다') {
-                              label = ' 현재 발효된 특보가 없습니다';
-                            }
-                            return CarouselSlider.builder(
-                              itemCount: i_images.length,
-                              options: CarouselOptions(
-                                  viewportFraction: 1,
-                                  // autoPlay: true,
-                                  onPageChanged: (index, reason) {
-                                    setState(() {
-                                      currentPos = index;
-                                      // background = background_images[index];
-                                    });
-                                  }),
-                              itemBuilder: (context, itemIndex, realIndex) {
-                                return Container(
-                                    decoration: BoxDecoration(
-                                        // color: Color.fromARGB(173, 170, 170, 170)
-                                        //     .withOpacity(0.5),
-                                        // borderRadius: BorderRadius.all(
-                                        //   Radius.circular(10),
-                                        // )
-                                        // image: DecorationImage(
-                                        //   fit: BoxFit.cover,
-                                        //   image: AssetImage(
-                                        //       'assets/images/background_drought.jpg'), // 배경 이미지
-                                        // ),
-                                        ),
-                                    width: 200,
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 3.0),
+                              child: Column(
+                                children: [
+                                  Flexible(
+                                    child: Image.asset(i_images[itemIndex],
+                                        fit: BoxFit.fill),
+                                  )
 
-                                    // decoration: BoxDecoration(
-                                    //   color: Colors.wh,
-                                    // ),
-
-                                    child: Column(
-                                      children: [
-                                        Image.asset(i_images[itemIndex],
-                                            fit: BoxFit.fill),
-
-                                        // Text(labels[itemIndex])
-                                      ],
-                                    ));
-                              },
-                            );
-                          } else if (snapshot.hasError) {
-                            setState() {
-                              label = '예기치 못한 에러가 발생했습니다.';
-                            }
-
-                            return Image.asset('assets/images/loading.png',
-                                width: 50, height: 50);
-                          } else {
-                            return CircularProgressIndicator();
-                          }
+                                  // Text(labels[itemIndex])
+                                ],
+                              ));
                         },
                       ),
                       Row(

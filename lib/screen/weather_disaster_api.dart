@@ -14,8 +14,8 @@ class WthrReport {
 
     List<String> WthrInfoList = [
       '${ultraSrtNcst?.T1H}',
-      '${ultraSrtNcst?.RN1}',
       '${ultraSrtNcst?.REH}',
+      '${ultraSrtNcst?.RN1}',
       '${ultraSrtNcst?.PTY}'
     ];
 

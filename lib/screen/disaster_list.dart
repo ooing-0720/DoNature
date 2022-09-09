@@ -1,4 +1,9 @@
 List<String> disasterList = ["가뭄", "폭염", "홍수", "태풍", "호우", "강풍", "기타"];
+Map disasterScript = {
+  '가뭄': 'ㅇㅇㅇ',
+  '폭염': '222',
+  '홍수': '33',
+};
 List<String> images = [
   'assets/images/heatwave.png',
   'assets/images/heavyrain.png',

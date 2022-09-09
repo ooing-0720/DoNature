@@ -13,6 +13,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/screen/user_manage.dart';
 import 'package:donation_nature/screen/board_search_screen.dart';
 
+import './postListTile.dart';
+
 class BoardScreen extends StatefulWidget {
   const BoardScreen({Key? key}) : super(key: key);
 
@@ -33,7 +35,6 @@ class _BoardScreenState extends State<BoardScreen> {
   @override
   Widget build(BuildContext context) {
     User? user = UserManage().getUser();
-    bool done = false;
     return Scaffold(
       appBar: AppBar(
         title: Text("나눔게시판"),
@@ -47,7 +48,6 @@ class _BoardScreenState extends State<BoardScreen> {
                         builder: (context) => BoardSearchScreen()));
               },
               icon: Icon(Icons.search)),
-
           IconButton(
             onPressed: () {
               Navigator.push(context,
@@ -55,7 +55,6 @@ class _BoardScreenState extends State<BoardScreen> {
             },
             icon: Icon(Icons.notifications),
           ),
-
         ],
       ),
       body: RefreshIndicator(
@@ -74,81 +73,7 @@ class _BoardScreenState extends State<BoardScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   Post data = posts[index];
                   return Card(
-                    child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PostDetailScreen(data),
-                              ));
-                        },
-                        child: ListTile(
-                          title: Text(
-                            "${data.title}",
-                            style: TextStyle(fontSize: 17.5),
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${data.date!.toDate().toLocal().toString().substring(5, 16)}",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                              Transform(
-                                transform: new Matrix4.identity()..scale(0.95),
-                                child: Row(
-                                  children: [
-                                    Chip(
-                                      label: Text(
-                                        "${data.tagMore}",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      backgroundColor: Color(0xff90B1A4),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Chip(
-                                      label: Text(
-                                        "${data.tagDisaster}",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      backgroundColor: Color(0xff90B1A4),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Chip(
-                                      label: Text(
-                                        "${data.locationSiDo}",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      backgroundColor: Color(0xff90B1A4),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          // trailing: IconButton(
-                          //   icon: Icon(
-                          //     PostService().isLiked(data, user)
-                          //         ? Icons.favorite
-                          //         : Icons.favorite_border,
-                          //     color: Color(0xff5B7B6E),
-                          //   ),
-                          //   onPressed: () {
-                          //     setState(() {
-                          //       PostService().likePost(data, user);
-                          //       PostService().isLiked(data, user)
-                          //           ? ScaffoldMessenger.of(context)
-                          //               .showSnackBar(SnackBar(
-                          //                   content:
-                          //                       Text("관심 목록에 추가되었습니다.")))
-                          //           : ScaffoldMessenger.of(context)
-                          //               .showSnackBar(SnackBar(
-                          //                   content: Text("관심글 취소")));
-                        )),
+                    child: postListTile(context, data),
                   );
                 },
               );

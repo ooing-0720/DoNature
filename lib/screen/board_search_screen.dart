@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/screen/user_manage.dart';
 import 'package:donation_nature/screen/disaster_list.dart';
 import 'package:donation_nature/screen/location_list.dart';
+import './postListTile.dart';
 
 class BoardSearchScreen extends StatefulWidget {
   const BoardSearchScreen({Key? key}) : super(key: key);
@@ -19,11 +20,6 @@ class BoardSearchScreen extends StatefulWidget {
 }
 
 class _BoardSearchScreenState extends State<BoardSearchScreen> {
-  //재난태그 지정되고 지역 시, 군구 로 찾을 수 있음
-  //재난태그 지정되고 지역 시로 찾을 수 있음
-  //재난태그 지정 안되고 지역 시, 군구로 찾을 수 있음
-  //재난태그 지정 안되고 지역 시로 찾을 수 있음
-  //->지역 시 는 무조건 들어가야됨 or 전체
   List<String> tagMoreList = ['나눔하기', '나눔받기', '알리기'];
   List<String> locationGuList = [];
   String? _selectedDo = null;
@@ -49,16 +45,7 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
                   child: Column(
                     children: [
                       searchTag(),
-                      // Divider(
-                      //   height: 20,
-                      //   thickness: 1.5,
-                      // ),
                       searchLocation(),
-                      //searchLocation2(),
-                      // Divider(
-                      //   height: 20,
-                      //   thickness: 1.5,
-                      // ),
                       searchDisaster(),
                       SizedBox(
                         height: 50,
@@ -69,10 +56,6 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
                                 primary: Color(0xff90B1A4)),
                             key: _searchKey,
                             onPressed: () {
-                              // if (_selectedDo == null) {
-                              //   ScaffoldMessenger.of(context).showSnackBar(
-                              //       SnackBar(content: Text("시/도를 선택해주세요")));
-                              // } else {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -98,7 +81,7 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
     return ExpansionTile(
       title: Container(
         child: Text(
-          "태그로 검색하기 ",
+          "글 종류로 검색하기 ",
           style: TextStyle(
             color: Colors.black,
           ),
@@ -163,7 +146,7 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
     return ExpansionTile(
       title: Container(
         child: Text(
-          "재난 태그로 검색하기 ",
+          "위치 태그로 검색하기 ",
           style: TextStyle(
             color: Colors.black,
           ),
@@ -318,71 +301,98 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         Post data = findPosts[index];
 
-                        return Card(
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        PostDetailScreen(data),
-                                  ));
-                            },
-                            child: ListTile(
-                              title: Text(
-                                "${data.title}",
-                                style: TextStyle(fontSize: 17.5),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${data.date!.toDate().toLocal().toString().substring(5, 16)}",
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                  Transform(
-                                    transform: new Matrix4.identity()
-                                      ..scale(0.95),
-                                    child: Row(
-                                      children: [
-                                        Chip(
-                                          label: Text(
-                                            "${data.tagMore}",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                          backgroundColor: Color(0xff90B1A4),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Chip(
-                                          label: Text(
-                                            "${data.tagDisaster}",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                          backgroundColor: Color(0xff90B1A4),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Chip(
-                                          label: Text(
-                                            "${data.locationSiDo}",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                          backgroundColor: Color(0xff90B1A4),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
+                        return Card(child: postListTile(context, data)
+
+                            // GestureDetector(
+                            //   onTap: () {
+                            //     Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //           builder: (context) =>
+                            //               PostDetailScreen(data),
+                            //         ));
+                            //   },
+                            //   child: ListTile(
+                            //     title: Text(
+                            //       "${data.title}",
+                            //       style: TextStyle(fontSize: 17.5),
+                            //     ),
+                            //     subtitle: Column(
+                            //       crossAxisAlignment: CrossAxisAlignment.start,
+                            //       children: [
+                            //         Text(
+                            //           "${data.date!.toDate().toLocal().toString().substring(5, 16)}",
+                            //           style: TextStyle(fontSize: 12),
+                            //         ),
+                            //         Row(children: [
+                            //           Transform(
+                            //             transform: new Matrix4.identity()
+                            //               ..scale(0.95),
+                            //             child: Row(
+                            //               children: [
+                            //                 Chip(
+                            //                   label: Text(
+                            //                     "${data.tagMore}",
+                            //                     style: TextStyle(
+                            //                         color: Colors.white),
+                            //                   ),
+                            //                   backgroundColor: Color(0xff90B1A4),
+                            //                 ),
+                            //                 SizedBox(
+                            //                   width: 5,
+                            //                 ),
+                            //                 Chip(
+                            //                   label: Text(
+                            //                     "${data.tagDisaster}",
+                            //                     style: TextStyle(
+                            //                         color: Colors.white),
+                            //                   ),
+                            //                   backgroundColor: Color(0xff90B1A4),
+                            //                 ),
+                            //                 SizedBox(
+                            //                   width: 5,
+                            //                 ),
+                            //                 Chip(
+                            //                   label: Text(
+                            //                     "${data.locationSiDo}",
+                            //                     style: TextStyle(
+                            //                         color: Colors.white),
+                            //                   ),
+                            //                   backgroundColor: Color(0xff90B1A4),
+                            //                 ),
+                            //               ],
+                            //             ),
+                            //           ),
+                            //           Spacer(),
+                            //           Builder(builder: (context) {
+                            //             return data.isDone
+                            //                 ? Container(
+                            //                     decoration: BoxDecoration(
+                            //                         color: Color.fromARGB(
+                            //                             255, 106, 106, 106),
+                            //                         borderRadius:
+                            //                             BorderRadius.all(
+                            //                                 Radius.circular(
+                            //                                     3.0))),
+                            //                     child: Padding(
+                            //                       padding:
+                            //                           const EdgeInsets.all(4.0),
+                            //                       child: Text(
+                            //                         "나눔완료",
+                            //                         style: TextStyle(
+                            //                             color: Colors.white,
+                            //                             fontSize: 14),
+                            //                       ),
+                            //                     ),
+                            //                   )
+                            //                 : Container();
+                            //           }),
+                            //         ]),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+                            );
                       },
                     );
                   } else if (snapshot.hasError) {

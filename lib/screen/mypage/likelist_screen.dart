@@ -4,6 +4,7 @@ import 'package:donation_nature/screen/user_manage.dart';
 import 'package:donation_nature/board/service/post_service.dart';
 import '../post/post_detail_screen.dart';
 import 'package:donation_nature/board/domain/post.dart';
+import '../postListTile.dart';
 
 class LikeListScreen extends StatefulWidget {
   const LikeListScreen({Key? key}) : super(key: key);
@@ -43,58 +44,7 @@ class _LikeListScreenState extends State<LikeListScreen> {
                         Post data = findPosts[index];
 
                         return Card(
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        PostDetailScreen(data),
-                                  ));
-                            },
-                            child: ListTile(
-                              title: Text(
-                                "${data.title}",
-                                style: TextStyle(fontSize: 17.5),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${data.date!.toDate().toLocal().toString().substring(5, 16)}",
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                  Transform(
-                                    transform: new Matrix4.identity()
-                                      ..scale(0.95),
-                                    child: Row(
-                                      children: [
-                                        Chip(
-                                          label: Text(
-                                            "${data.tagDisaster}",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                          backgroundColor: Color(0xff90B1A4),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Chip(
-                                          label: Text(
-                                            "${data.locationSiDo}",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                          backgroundColor: Color(0xff90B1A4),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          child: postListTile(context, data),
                         );
                       },
                     );

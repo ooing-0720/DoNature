@@ -4,7 +4,7 @@ List<String> images = [
   'assets/images/heavyrain.png',
   'assets/images/tornado.png',
   'assets/images/wind.png',
-  'assets/images/tornado.png',
+  'assets/images/windwave.png',
 ];
 List<String> background_images = [
   'assets/images/background_heatwave.jpg',

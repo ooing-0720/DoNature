@@ -33,7 +33,6 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    print(Static.userLocation! + 'dddd');
     getWeatherData();
   }
 
@@ -54,7 +53,7 @@ class HomeScreenState extends State<HomeScreen> {
 
     for (int i = 0; i < disasterAtUserLocation!.length; i++) {
       if (disasterAtUserLocation![i]) {
-        i_images.insert(0, images[i]);
+        i_images.add(images[i]);
         label += ' ' + labels[i];
       }
     }
@@ -184,7 +183,7 @@ class HomeScreenState extends State<HomeScreen> {
                             width: 5.0,
                             height: 5.0,
                             margin: EdgeInsets.symmetric(
-                                vertical: 4.0, horizontal: 3.0),
+                                vertical: 10.0, horizontal: 3.0),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: currentPos == index
@@ -213,29 +212,43 @@ class HomeScreenState extends State<HomeScreen> {
 
   Widget alertBox() {
     return Container(
-      margin: EdgeInsets.only(top: 30),
-      padding: EdgeInsets.all(20),
-      width: MediaQuery.of(context).size.width * 0.80,
-      decoration: BoxDecoration(
-        color: Color.fromARGB(173, 170, 170, 170).withOpacity(0.1),
-        borderRadius: BorderRadius.all(
-          Radius.circular(10),
-        ),
-      ),
-      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Icon(
-          Icons.warning_amber,
-          color: Color.fromARGB(255, 149, 182, 169),
-        ),
-        Text(
-          label,
-          style: TextStyle(
-            color: Color.fromARGB(255, 181, 189, 186),
-            fontSize: 20,
-            fontWeight: FontWeight.w300,
+        margin: EdgeInsets.only(top: 30),
+        padding: EdgeInsets.all(20),
+        width: MediaQuery.of(context).size.width * 0.80,
+        decoration: BoxDecoration(
+          color: Color.fromARGB(173, 170, 170, 170).withOpacity(0.1),
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
           ),
-        )
-      ]),
-    );
+        ),
+        child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Icon(
+                Icons.warning_amber,
+                color: Color.fromARGB(255, 149, 182, 169),
+              ),
+              Text(
+                label,
+                style: TextStyle(
+                  color: Color.fromARGB(255, 181, 189, 186),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w300,
+                ),
+              )
+            ])
+            // Flexible(
+            //     child: RichText(
+            //         overflow: TextOverflow.ellipsis,
+            //         maxLines: 1,
+            //         text: TextSpan(
+            //           text: label,
+            //           style: TextStyle(
+            //             color: Color.fromARGB(255, 181, 189, 186),
+            //             fontSize: 20,
+            //             fontWeight: FontWeight.w300,
+            //           ),
+            //         )))
+            ));
   }
 }

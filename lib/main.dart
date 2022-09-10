@@ -78,8 +78,10 @@ class Init {
     WthrReport wthrReport = WthrReport();
     MainAction _mainAction = MainAction();
 
-    Static.wthrInfoList = await wthrReport.getWthrInfo();
-    String? result = await _mainAction.getAddress();
+    final position = await _mainAction.getPosition();
+
+    Static.wthrInfoList = await wthrReport.getWthrInfo(position);
+    String? result = await _mainAction.getAddress(position);
     var location = result.split(' ');
     Static.userLocation = location[1] + ' ' + location[2] + ' ' + location[3];
     Static.reportList = await wthrReport.getWeatherReport();

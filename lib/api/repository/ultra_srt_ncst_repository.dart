@@ -10,8 +10,8 @@ import 'package:date_format/date_format.dart';
 class UltraSrtNcstRepository {
   var serviceKey = ultraSrtNcstServiceKey;
 
-  Future<dynamic?> loadUltraSrtNcst() async {
-    var position = await MainAction().getPosition();
+  Future<dynamic?> loadUltraSrtNcst(Map<dynamic, dynamic> position) async {
+    // var position = await MainAction().getPosition();
 
     var latitude = position['latitude'];
     var longitude = position['longitude'];

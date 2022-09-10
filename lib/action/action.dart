@@ -8,9 +8,11 @@ import 'package:http/http.dart' as http;
 class MainAction {
   Future<Map<String, double>> getPosition() async {
     // original return type is Future<String>
-    var permissionValue = PermissionRequest.determinePosition();
+    var permissionValue = await PermissionRequest.determinePosition();
     var latitude, longitude;
     var nowPosition = {'latitude': 0.0, 'longitude': 0.0};
+
+    print(permissionValue == true ? 'true' : 'false');
 
     if (permissionValue == true) {
       // 위치 권한 허용한 경우 -> 현재 위치
@@ -28,8 +30,8 @@ class MainAction {
     return nowPosition;
   }
 
-  Future<String> getAddress() async {
-    var position = await getPosition();
+  Future<String> getAddress(Map<dynamic, dynamic> position) async {
+    // var position = await getPosition();
     var latitude = position['latitude'];
     var longitude = position['longitude'];
 
@@ -41,6 +43,7 @@ class MainAction {
     Map<String, dynamic> jsonResult = convert.json.decode(body);
     final address = jsonResult['results'][0]['formatted_address'];
 
+    print(address);
     return address;
   }
 }

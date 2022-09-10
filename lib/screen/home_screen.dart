@@ -24,7 +24,7 @@ class HomeScreenState extends State<HomeScreen> {
 
   String label = '';
 
-  String background = 'assets/images/background_positive.jpg';
+  String background = 'assets/images/background_default.jpg';
 
   List<bool>? disasterAtUserLocation = [false, false, false, false, false];
   bool loading = true;

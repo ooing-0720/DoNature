@@ -20,10 +20,12 @@ class AlarmService {
     return newAlarmRef;
   }
 
-  //알람 목록 출력
+  //알람 목록 출력 및 알람 읽음 처리
   static Future<List<AlarmModel>> getAlarms(String userUID) async {
     CollectionReference<Map<String, dynamic>> collectionReference =
         FirebaseFirestore.instance.collection('/alarm/${userUID}/alarm_list');
+
+    //알람 목록 출력
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await collectionReference.orderBy("time", descending: true).get();
 
@@ -32,8 +34,19 @@ class AlarmService {
       var alarm =
           AlarmModel.fromMap(map: element.data() as Map<String, dynamic>);
       alarms.add(alarm);
-      //alarms.add(AlarmModel.fromMap(map: element.data() as Map<String, dynamic>));
+
+    //알람 읽음 처리
+    collectionReference
+        .where("read", isEqualTo: false)
+        .get()
+        .then((QuerySnapshot qs) {
+      for (var element in qs.docs) {
+        element.reference.update({"read": true});
+      }
+    });
+     
     }
+
     return alarms;
   }
 
@@ -50,6 +63,7 @@ class AlarmService {
     FirebaseFirestore.instance
         .collection('alarm/${writerUID}/alarm_list')
         .add(alarmforWriter.toMap());
+   // isUnreadAlarm(userUID: userUID);
   }
 
   //채팅방에서 메세지가 왔을 시 알람
@@ -59,33 +73,44 @@ class AlarmService {
     FirebaseFirestore.instance
         .collection('alarm/${userUID}/alarm_list')
         .add(alarm.toMap());
+    //isUnreadAlarm(userUID: userUID);
   }
 
   //누군가가 내 글에 하트 눌렀을 시 알람
-  static void newLikeAlarm(
-    String? otheruser,
-    String post,
-    String userUID,
-  ) {
+  static void newLikeAlarm(String? otheruser,String post,String userUID) {
     AlarmModel alarm = AlarmModel(
         text: '${otheruser}님이 \'${post}\'에 하트를 눌렀습니다.', time: Timestamp.now());
     FirebaseFirestore.instance
         .collection('alarm/${userUID}/alarm_list')
         .add(alarm.toMap());
+    //isUnreadAlarm(userUID: userUID);
   }
 
-  //알람 읽음 처리
-  static void readAlarm({required String userUID}) {
-    CollectionReference<Map<String, dynamic>> collectionReference =
-        FirebaseFirestore.instance.collection('/alarm/${userUID}/alarm_list');
 
-    collectionReference
-        .where("read", isEqualTo: false)
-        .get()
-        .then((QuerySnapshot qs) {
-      for (var element in qs.docs) {
-        element.reference.update({"read": true});
-      }
-    });
-  }
+
+//  //안 읽은 알람 유무에 따라 알람 아이콘 표시
+//   static Future<String> isUnreadAlarm({required String userUID})async{
+//     CollectionReference<Map<String, dynamic>> collectionReference =
+//         FirebaseFirestore.instance.collection('/alarm/${userUID}/alarm_list');
+
+//     QuerySnapshot<Map<String, dynamic>> querySnapshot = await collectionReference
+//         .where("read", isEqualTo: false)
+//         .get();
+
+//     String alarm = '없음';
+//     //안 읽은 알람이 없을 경우 false
+//     if(querySnapshot.size == 0) {
+//       //alarmIcon = Icon(Icons.notifications);
+//       print(alarm);
+//     }
+//     else{
+//           //안 읽은 알람이 있을 경우 true
+//     //alarmIcon = Icon(Icons.notifications_on);
+//     alarm = '있음';
+//     print(alarm);
+//     }
+//   return alarm;
+// }
+
 }
+

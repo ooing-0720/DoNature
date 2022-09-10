@@ -5,6 +5,7 @@ import 'package:donation_nature/media/media.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:http/http.dart';
+import 'package:donation_nature/screen/main_screen.dart' as main_screen;
 
 class PostService {
   // PostServicer를 factory 생성자로 만들어서 싱글톤으로 사용

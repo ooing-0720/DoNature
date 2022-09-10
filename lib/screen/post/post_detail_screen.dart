@@ -39,151 +39,147 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             if (widget.post.tagMore != '알리기') isNanum = true; //나눔글일 때
             return Scaffold(
                 appBar: AppBar(),
-                body: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                child: Text(
-                                  widget.post.title!,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30),
-                                ),
+                body: Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: Text(
+                                widget.post.title!,
+                                maxLines: 1,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 30),
                               ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(dateTime
-                                  .toLocal()
-                                  .toString()
-                                  .substring(5, 16)),
-                            ],
-                          ),
-                          Divider(
-                            height: 20,
-                            thickness: 1.5,
-                          ),
-                          Row(
-                            children: [
-                              // Icon(Icons.local_offer, color: Color(0xff90B1A4)),
-                              Chip(
-                                label: Text(widget.post.tagMore!,
-                                    style: TextStyle(color: Colors.white)),
-                                backgroundColor: Color(0xff90B1A4),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Chip(
-                                label: Text(widget.post.tagDisaster!,
-                                    style: TextStyle(color: Colors.white)),
-                                backgroundColor: Color(0xff90B1A4),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Icon(
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                                dateTime.toLocal().toString().substring(5, 16)),
+                          ],
+                        ),
+                        Divider(
+                          height: 20,
+                          thickness: 1.5,
+                        ),
+                        Row(
+                          children: [
+                            // Icon(Icons.local_offer, color: Color(0xff90B1A4)),
+                            Chip(
+                              label: Text(widget.post.tagMore!,
+                                  style: TextStyle(color: Colors.white)),
+                              backgroundColor: Color(0xff90B1A4),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Chip(
+                              label: Text(widget.post.tagDisaster!,
+                                  style: TextStyle(color: Colors.white)),
+                              backgroundColor: Color(0xff90B1A4),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+
+                            Chip(
+                              avatar: Icon(
                                 Icons.place,
-                                color: Color(0xff90B1A4),
+                                color: Colors.white,
+                                size: 17,
                               ),
-                              Chip(
-                                label: Text(
-                                    widget.post.locationSiDo! +
-                                        " " +
-                                        widget.post.locationGuGunSi!,
-                                    style: TextStyle(color: Colors.white)),
-                                backgroundColor: Color(0xff90B1A4),
-                              ),
-                              Spacer(),
-                              if (userIsWriter == true &&
-                                  widget.post.isDone ==
-                                      false) //글 작성자가 본인이고 나눔 완료 전일 때
-                                Transform.scale(
-                                  scale: 0.8,
-                                  child: Row(children: [
-                                    deleteButton(context),
-                                    editButton(context)
-                                  ]),
-                                )
-                              else if (userIsWriter == false) //글 작성자가 본인이 아닐 때
-                                IconButton(
-                                  icon: Icon(
-                                    PostService().isLiked(widget.post, user)
-                                        ? Icons.favorite
-                                        : Icons.favorite_border,
-                                    color: Color(0xff90B1A4),
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      PostService().likePost(widget.post, user);
-                                      PostService().isLiked(widget.post, user)
-                                          ? ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  content:
-                                                      Text("관심 목록에 추가되었습니다.")))
-                                          : null;
-                                    });
-                                  },
+                              label: Text(
+                                  widget.post.locationSiDo! +
+                                      " " +
+                                      widget.post.locationGuGunSi!,
+                                  style: TextStyle(color: Colors.white)),
+                              backgroundColor: Color(0xff90B1A4),
+                            ),
+                            Spacer(),
+                            if (userIsWriter == true &&
+                                widget.post.isDone ==
+                                    false) //글 작성자가 본인이고 나눔 완료 전일 때
+                              Transform.scale(
+                                scale: 0.8,
+                                child: Row(children: [
+                                  deleteButton(context),
+                                  editButton(context)
+                                ]),
+                              )
+                            else if (userIsWriter == false) //글 작성자가 본인이 아닐 때
+                              IconButton(
+                                icon: Icon(
+                                  PostService().isLiked(widget.post, user)
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color: Color(0xff90B1A4),
                                 ),
-                            ],
-                          ),
-                          Divider(
-                            height: 20,
-                            thickness: 1.5,
-                          ),
-                          Expanded(
-                              child: SingleChildScrollView(
-                            child: widget.post.imageUrl != null
-                                ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Center(
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      "${widget.post.imageUrl}"),
-                                                  fit: BoxFit.cover)),
-                                          height: 400,
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                        ),
+                                onPressed: () {
+                                  setState(() {
+                                    PostService().likePost(widget.post, user);
+                                    PostService().isLiked(widget.post, user)
+                                        ? ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                content:
+                                                    Text("관심 목록에 추가되었습니다.")))
+                                        : null;
+                                  });
+                                },
+                              ),
+                          ],
+                        ),
+                        Divider(
+                          height: 20,
+                          thickness: 1.5,
+                        ),
+                        Expanded(
+                            child: SingleChildScrollView(
+                          child: widget.post.imageUrl != null
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Center(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: NetworkImage(
+                                                    "${widget.post.imageUrl}"),
+                                                fit: BoxFit.cover)),
+                                        height: 400,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                       ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 10),
-                                        child: Text(
-                                          widget.post.content!,
-                                          style: TextStyle(fontSize: 15),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : Column(
-                                    children: [
-                                      Text(
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 10),
+                                      child: Text(
                                         widget.post.content!,
                                         style: TextStyle(fontSize: 15),
                                       ),
-                                    ],
-                                  ),
-                          ))
-                        ],
-                      ),
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  children: [
+                                    Text(
+                                      widget.post.content!,
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                  ],
+                                ),
+                        ))
+                      ],
                     ),
-                  ],
+                  ),
                 ),
                 floatingActionButton: userIsWriter ==
                         false //본인이 작성한 글이 아니면 채팅 가능
@@ -338,7 +334,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         backgroundColor: Color(0xff90B1A4),
                       ),
                       SizedBox(
-                        width: 10,
+                        width: 5,
                       ),
                       Chip(
                         label: Text(widget.post.tagDisaster!,
@@ -348,9 +344,18 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       SizedBox(
                         width: 5,
                       ),
-                      Icon(
-                        Icons.place,
-                        color: Color(0xff90B1A4),
+                      Chip(
+                        avatar: Icon(
+                          Icons.place,
+                          color: Colors.white,
+                          size: 17,
+                        ),
+                        label: Text(
+                            widget.post.locationSiDo! +
+                                " " +
+                                widget.post.locationGuGunSi!,
+                            style: TextStyle(color: Colors.white)),
+                        backgroundColor: Color(0xff90B1A4),
                       ),
                       Chip(
                         label: Text(

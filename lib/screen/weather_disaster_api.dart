@@ -6,11 +6,11 @@ import 'package:donation_nature/action/action.dart';
 import 'package:donation_nature/permission/permission_request.dart';
 
 class WthrReport {
-  Future<List<String>> getWthrInfo() async {
-    PermissionRequest.determinePosition();
+  Future<List<String>> getWthrInfo(Map<dynamic, dynamic> position) async {
+    // PermissionRequest.determinePosition();
 
     UltraSrtNcstRepository ultraSrtNcstRepository = UltraSrtNcstRepository();
-    var ultraSrtNcst = await ultraSrtNcstRepository.loadUltraSrtNcst();
+    var ultraSrtNcst = await ultraSrtNcstRepository.loadUltraSrtNcst(position);
 
     List<String> WthrInfoList = [
       '${ultraSrtNcst?.T1H}',
@@ -21,7 +21,7 @@ class WthrReport {
 
     return WthrInfoList;
   }
-
+/*
   String? getUserLocation() {
     MainAction _mainAction = MainAction();
     _mainAction.getAddress().then((String value) {
@@ -29,7 +29,7 @@ class WthrReport {
       return (result.replaceAll(RegExp('[대한민국0-9\-]'), ''));
     });
   }
-
+*/
   // Future<List<bool>?> getDisasterAtUserLocation(String userLocation) async {
   //   WthrWrnListRepository wthrWrnListRepository = WthrWrnListRepository();
   //   var wthrWrnList = await wthrWrnListRepository.loadWthrWrnList();
@@ -59,7 +59,7 @@ class WthrReport {
   // }
 
   Future<List<String>> getWeatherReport() async {
-    PermissionRequest.determinePosition();
+    //PermissionRequest.determinePosition();
 
     WthrWrnListRepository wthrWrnListRepository = WthrWrnListRepository();
     var wthrWrnList = await wthrWrnListRepository.loadWthrWrnList();

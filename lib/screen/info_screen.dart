@@ -54,6 +54,7 @@ import 'package:donation_nature/screen/weather_disaster_api.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
+import './disaster_info_list.dart';
 
 class InfoScreen extends StatefulWidget {
   @override
@@ -666,34 +667,64 @@ class _InfoScreenState extends State<InfoScreen> with TickerProviderStateMixin {
               ),
             ),
           ]),
-          Row(children: [
-            Icon(
-              Icons.warning_amber,
-              color: Color.fromARGB(255, 149, 182, 169),
-            ),
-            Text(
-              '폭염이란?',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 20,
-                // fontWeight: FontWeight.w300,
+          Column(
+            children: [
+              Row(children: [
+                Icon(
+                  Icons.warning_amber,
+                  color: Color.fromARGB(255, 149, 182, 169),
+                ),
+                Text(
+                  '폭염이란?',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 20,
+                    // fontWeight: FontWeight.w300,
+                  ),
+                ),
+              ]),
+              Container(
+                width: double.infinity,
+                child: Text(
+                  disasterInfoList[index],
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 14,
+                  ),
+                ),
               ),
-            ),
-          ]),
-          Row(children: [
-            Icon(
-              Icons.warning_amber,
-              color: Color.fromARGB(255, 149, 182, 169),
-            ),
-            Text(
-              '행동강령',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 20,
-                // fontWeight: FontWeight.w300,
+            ],
+          ),
+          Column(
+            children: [
+              Row(children: [
+                Icon(
+                  Icons.warning_amber,
+                  color: Color.fromARGB(255, 149, 182, 169),
+                ),
+                Container(
+                  child: Text(
+                    '행동강령',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 20,
+                      // fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                ),
+              ]),
+              Container(
+                width: double.infinity,
+                child: Text(
+                  disasterResponseList[index],
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 14,
+                  ),
+                ),
               ),
-            ),
-          ])
+            ],
+          )
         ]));
 
     // Flexible(

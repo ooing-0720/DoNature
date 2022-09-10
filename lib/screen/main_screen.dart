@@ -1,3 +1,4 @@
+import 'package:donation_nature/alarm/service/alarm_serivce.dart';
 import 'package:donation_nature/firebase_options.dart';
 import 'package:donation_nature/screen/alarm_screen.dart';
 import 'package:donation_nature/screen/chat/chat_list_screen.dart';
@@ -19,8 +20,8 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-bool openAlarmScreen = false;
 User? user = UserManage().getUser();
+Icon alarmIcon = Icon(Icons.notifications);
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
@@ -34,17 +35,47 @@ class _MainScreenState extends State<MainScreen> {
     MyPageScreen(),
   ];
 
+
+
+
+
+  
+  
+
+
+
+void initState(){
+        
+      }
+
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      if (_selectedIndex == 3) {
-        openAlarmScreen = true;
-      }
     });
   }
 
-  @override
+
+  // Future alarmIcon(User? user) async {
+  //   if (user != null){
+  //   bool isunreadalarm = await AlarmService.isUnreadAlarm(userUID: user.uid);
+  //   print(isunreadalarm);
+  //   if(isunreadalarm == false){
+  //       //안 읽은 알람 없음
+  //       print('안 읽은 알람 없음');
+  //      // alarmIcon = Icons.notifications as Icons;
+  //     }
+  //     else{
+  //       //안 읽은 알람 있음
+  //       print('안 읽은 알람 있음');
+  //     }
+  //   }
+
+  // }
+
+   @override
   Widget build(BuildContext context) {
+   // alarmIcon(user);
     return Scaffold(
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -65,7 +96,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
-            label: '알림',
+            label: '알람',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),

@@ -5,7 +5,7 @@ import 'package:donation_nature/screen/mypage/mypage_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/screen/user_manage.dart';
-import 'package:donation_nature/screen/main_screen.dart' as main;
+//import 'package:donation_nature/screen/main_screen.dart' as main;
 
 class AlarmScreen extends StatefulWidget {
   const AlarmScreen({Key? key}) : super(key: key);
@@ -19,42 +19,33 @@ class _AlarmScreenState extends State<AlarmScreen> {
       GlobalKey<RefreshIndicatorState>();
 
   User? user = UserManage().getUser();
-  bool mustPop = true;
+
   @override
   void initState() {
     super.initState();
-    main.openAlarmScreen = true;
+    
+    
+  }
 
-    if (user != null) {
-      AlarmService.readAlarm(
-        userUID: user!.uid,
-      );
-    }
-    // _initPostData=
+  @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    super.setState(fn);
   }
 
   @override
   Widget build(BuildContext context) {
     return user != null
-        ? WillPopScope(
-            onWillPop: () async {
-              return mustPop;
-            },
-            child: Scaffold(
+        ? Scaffold(
                 appBar: AppBar(
-                  leading: IconButton(
-                    icon: Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      main.openAlarmScreen = false;
-                    },
-                  ),
                   title: Text("알람 목록"),
                 ),
                 body: RefreshIndicator(
                   onRefresh: () {
                     return Future(() {
-                      setState(() {});
+                      setState(() {
+                         
+                      });
                     });
                   },
                   child: FutureBuilder<List<AlarmModel>>(
@@ -91,8 +82,8 @@ class _AlarmScreenState extends State<AlarmScreen> {
                               child: CircularProgressIndicator());
                         }
                       }),
-                )))
+                ))
         : LoginScreen();
-    // //비회원이면 로그인 페이지로 이동
+    //비회원이면 로그인 페이지로 이동
   }
 }

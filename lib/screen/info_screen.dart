@@ -105,11 +105,11 @@ class _InfoScreenState extends State<InfoScreen> with TickerProviderStateMixin {
 
   // active button's foreground color
   Color _foregroundOn = Colors.white;
-  Color _foregroundOff = Colors.black;
+  Color _foregroundOff = Colors.grey;
 
   // active button's background color
-  Color _backgroundOn = Color(0xff416E5C).withOpacity(0.3);
-  Color _backgroundOff = Color(0xff90B1A4);
+  Color _backgroundOn = Color(0xff416E5C);
+  Color _backgroundOff = Colors.grey.withOpacity(0.5);
 
   // scroll controller for the TabBar
   ScrollController _scrollController = new ScrollController();
@@ -227,7 +227,8 @@ class _InfoScreenState extends State<InfoScreen> with TickerProviderStateMixin {
                               )),
                         )));
                   })),
-          Expanded(
+
+          Flexible(
               // this will host our Tab Views
               child: TabBarView(
             // and it is controlled by the controller
@@ -466,11 +467,21 @@ class _InfoScreenState extends State<InfoScreen> with TickerProviderStateMixin {
 //               ])));
 //   }
 
-  Widget disasterInfo(int index) {
-    return Container(
-      child: Column(children: [Text(Static.reportList![0]), Text('폭염내용')]),
-    );
-  }
+  // Widget disasterInfo(int index) {
+  //   print(Static.reportList![index]);
+  //   return Container(
+  //     child: Column(children: [
+  //       Text('현재 상황'),
+  //       if (Static.reportList![index].contains('null')) ...[
+  //         Text('현재 발효중인 폭염특보는 없습니다'),
+  //       ] else ...[
+  //         Text(Static.reportList![index])
+  //       ],
+  //       Text(
+  //           '폭염내용\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng\ng')
+  //     ]),
+  //   );
+  // }
 
 //   Widget disasterButton() {
 //     return Container(
@@ -604,26 +615,99 @@ class _InfoScreenState extends State<InfoScreen> with TickerProviderStateMixin {
     for (int i = 0; i < paths.length; i++) {
       paths[i][1] = areaColor![i];
     }
-    return Column(children: [
-      Container(
-        margin: EdgeInsets.only(right: 100, bottom: 500),
-        child: Transform.scale(
-          scale: 0.6,
-          child: Container(
-            width: 500,
-            height: 500,
-            child: Stack(
-              children: paths.map((e) {
-                return CustomPaint(
-                    painter:
-                        MyPainter(parseSvgPath(e[0] as String), e[1] as Color));
-              }).toList(),
-            ),
+    return SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Container(
+              width: MediaQuery.of(context).size.width * 0.80,
+              height: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(right: 200, bottom: 300),
+              child: Transform.scale(
+                scale: 0.6,
+
+                child: Stack(
+                  // fit: StackFit.loose,
+                  children: paths.map((e) {
+                    return CustomPaint(
+                        painter: MyPainter(
+                            parseSvgPath(e[0] as String), e[1] as Color));
+                  }).toList(),
+                ),
+                //   ),
+                // ),
+              )),
+          alertBox(index),
+        ]));
+  }
+
+  Widget alertBox(int index) {
+    return Container(
+        margin: EdgeInsets.only(top: 30),
+        padding: EdgeInsets.all(20),
+        width: MediaQuery.of(context).size.width * 0.90,
+        decoration: BoxDecoration(
+          color: Color.fromARGB(173, 170, 170, 170).withOpacity(0.1),
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
           ),
         ),
-      ),
-      // disasterInfo(index)
-    ]);
+        child: Column(children: [
+          Row(children: [
+            Icon(
+              Icons.warning_amber,
+              color: Color.fromARGB(255, 149, 182, 169),
+            ),
+            Text(
+              '현재상황',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 20,
+                // fontWeight: FontWeight.w300,
+              ),
+            ),
+          ]),
+          Row(children: [
+            Icon(
+              Icons.warning_amber,
+              color: Color.fromARGB(255, 149, 182, 169),
+            ),
+            Text(
+              '폭염이란?',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 20,
+                // fontWeight: FontWeight.w300,
+              ),
+            ),
+          ]),
+          Row(children: [
+            Icon(
+              Icons.warning_amber,
+              color: Color.fromARGB(255, 149, 182, 169),
+            ),
+            Text(
+              '행동강령',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 20,
+                // fontWeight: FontWeight.w300,
+              ),
+            ),
+          ])
+        ]));
+
+    // Flexible(
+    //     child: RichText(
+    //         overflow: TextOverflow.ellipsis,
+    //         maxLines: 1,
+    //         text: TextSpan(
+    //           text: label,
+    //           style: TextStyle(
+    //             color: Color.fromARGB(255, 181, 189, 186),
+    //             fontSize: 20,
+    //             fontWeight: FontWeight.w300,
+    //           ),
+    //         )))
   }
 }
 

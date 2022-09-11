@@ -1,3 +1,4 @@
+import 'package:donation_nature/screen/main_screen.dart';
 import 'package:donation_nature/screen/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -123,9 +124,11 @@ class LoginScreenState extends State<LoginScreen> {
           email: _emailTextEditingController.text,
           password: _passwordTextEditingController.text,
         );
-        Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MyPageScreen()))
-            .then((value) => {setState(() {})});
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => MainScreen()),
+            (route) => false);
+
         // Navigator.push(context,
         //     MaterialPageRoute(builder: (context) => const MyPageScreen()));
       } on FirebaseAuthException catch (e) {
@@ -138,6 +141,8 @@ class LoginScreenState extends State<LoginScreen> {
           message = '비밀번호를 확인하세요';
         } else if (e.code == 'invalid-email') {
           message = '이메일을 확인하세요.';
+        } else {
+          (message = '오류가 발생하였습니다.\n 잠시후 다시 시도해주세요.');
         }
 
         ScaffoldMessenger.of(context).showSnackBar(

@@ -45,10 +45,11 @@ class MyApp extends StatelessWidget {
             return MaterialApp(
               theme: ThemeData(
                   // primaryColor: Color.fromARGB(255, 7, 65, 29),
-
+                  fontFamily: 'NanumSquare',
+                  scaffoldBackgroundColor: Colors.white,
                   appBarTheme: AppBarTheme(
                       elevation: 1.0,
-                      centerTitle: true,
+                      // centerTitle: true,
                       color: Colors.white,
                       iconTheme: IconThemeData(color: Colors.black),
                       titleTextStyle: TextStyle(
@@ -85,8 +86,6 @@ class Init {
     var location = result.split(' ');
     Static.userLocation = location[1] + ' ' + location[2] + ' ' + location[3];
     Static.reportList = await wthrReport.getWeatherReport();
-
-    Static.reportList = ['폭염주의보: 서울', '', '', '', 'null 푸랑주의보 서울'];
 
     // 초기 로딩 완료 시 띄울 앱 첫 화면
 

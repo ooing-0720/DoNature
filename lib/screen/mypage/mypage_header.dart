@@ -120,19 +120,22 @@ class MyPageHeaderState extends State<MyPageHeader> {
           ] else ...[
             Text(
               userName,
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
             )
           ],
           Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Color(0xff90B1A4),
-            ),
+            // decoration: BoxDecoration(
+            //   borderRadius: BorderRadius.circular(5),
+            //   color: Color(0xff416E5C),
+            // ),
             child: Text(
               userEmail,
-              style: TextStyle(
-                fontSize: 13,
-              ),
+              style:
+                  TextStyle(fontSize: 13, color: Color.fromARGB(255, 88, 88, 88)
+                      // decoration: TextDecoration.underline,
+                      // decorationColor: Color(0xff416E5C),
+                      // decorationThickness: 3
+                      ),
             ),
           ),
           SizedBox(height: 30),
@@ -187,7 +190,7 @@ class MyPageHeaderState extends State<MyPageHeader> {
           //     borderRadius: BorderRadius.circular(30)),
           child: Icon(
             mIcon,
-            color: Color(0xff90B1A4),
+            color: Color(0xff416E5C),
             size: 30,
           ),
         ),

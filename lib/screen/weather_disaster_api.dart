@@ -99,7 +99,7 @@ class WthrReport {
 
     for (int i = 0; i < location.length; i++) {
       if (str.contains(location[i])) {
-        colors[i] = Color.fromARGB(255, 94, 94, 94);
+        colors[i] = Color(0xff416E5C);
       } else {
         colors[i] = Color.fromARGB(255, 223, 223, 223).withOpacity(0.0);
       }

@@ -642,6 +642,10 @@ class _InfoScreenState extends State<InfoScreen> with TickerProviderStateMixin {
   }
 
   Widget alertBox(int index) {
+    String curReport = Static.reportList![index].replaceAll('null', '').trim();
+    if (curReport == '') {
+      curReport = '현재 발효된 특보가 없습니다';
+    }
     return Container(
         margin: EdgeInsets.only(top: 30),
         padding: EdgeInsets.all(20),
@@ -662,11 +666,24 @@ class _InfoScreenState extends State<InfoScreen> with TickerProviderStateMixin {
               '현재상황',
               style: TextStyle(
                 color: Colors.grey,
-                fontSize: 20,
+                fontSize: 27,
                 // fontWeight: FontWeight.w300,
               ),
-            ),
+            )
           ]),
+          Container(
+            width: double.infinity,
+            child: Text(
+              curReport,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 20,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
           Column(
             children: [
               Row(children: [
@@ -675,25 +692,33 @@ class _InfoScreenState extends State<InfoScreen> with TickerProviderStateMixin {
                   color: Color.fromARGB(255, 149, 182, 169),
                 ),
                 Text(
-                  '폭염이란?',
+                  '폭염(이)란?',
                   style: TextStyle(
                     color: Colors.grey,
-                    fontSize: 20,
+                    fontSize: 27,
                     // fontWeight: FontWeight.w300,
                   ),
                 ),
               ]),
               Container(
                 width: double.infinity,
-                child: Text(
-                  disasterInfoList[index],
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14,
-                  ),
+                child: Column(
+                  children: [
+                    Text(
+                      disasterInfoList[index],
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 20,
+                        height: 1.2,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
+          ),
+          SizedBox(
+            height: 10,
           ),
           Column(
             children: [
@@ -707,7 +732,7 @@ class _InfoScreenState extends State<InfoScreen> with TickerProviderStateMixin {
                     '행동강령',
                     style: TextStyle(
                       color: Colors.grey,
-                      fontSize: 20,
+                      fontSize: 27,
                       // fontWeight: FontWeight.w300,
                     ),
                   ),
@@ -717,10 +742,8 @@ class _InfoScreenState extends State<InfoScreen> with TickerProviderStateMixin {
                 width: double.infinity,
                 child: Text(
                   disasterResponseList[index],
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14,
-                  ),
+                  style:
+                      TextStyle(color: Colors.grey, fontSize: 20, height: 1.2),
                 ),
               ),
             ],

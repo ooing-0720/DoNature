@@ -1,3 +1,4 @@
+import 'package:donation_nature/media/media.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './post/post_add_screen.dart';
@@ -17,9 +18,95 @@ GestureDetector postListTile(BuildContext context, Post data) {
             ));
       },
       child: ListTile(
-        title: Text(
-          "${data.title}",
-          style: TextStyle(fontSize: 17.5),
+        title: Container(
+          width: MediaQuery.of(context).size.width / 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  // Container(
+                  //   padding: EdgeInsets.all(3),
+                  //   decoration: BoxDecoration(
+                  //       color: Color(0xff416E5C),
+                  //       borderRadius: BorderRadius.circular(20)),
+                  //   child: Text(
+                  //     "${data.tagMore}",
+                  //     maxLines: 1,
+                  //     softWrap: false,
+                  //     style: TextStyle(fontSize: 14, color: Colors.white),
+                  //   ),
+                  // ),
+                  Container(
+                    padding: EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xff416E5C),
+                        ),
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Text(
+                      "${data.tagMore}",
+                      maxLines: 1,
+                      softWrap: false,
+                      style: TextStyle(fontSize: 14, color: Color(0xff416E5C)),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  // Chip(
+                  //   label: Text(
+                  //     "${data.tagMore}",
+                  //     style: TextStyle(color: Colors.white),
+                  //   ),
+                  //   backgroundColor: Color(0xff90B1A4),
+                  // ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    child: Text(
+                      overflow: TextOverflow.ellipsis,
+                      "${data.title}",
+                      style: TextStyle(
+                          fontSize: 17.5, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  // Text(
+                  //   "#${data.tagMore}",
+                  //   style: TextStyle(color: Color(0xff416E5C)),
+                  // ),
+                  // // Chip(
+                  // //   label: Text(
+                  // //     "${data.tagMore}",
+                  // //     style: TextStyle(color: Colors.white),
+                  // //   ),
+                  // //   backgroundColor: Color(0xff90B1A4),
+                  // // ),
+                  // SizedBox(
+                  //   width: 5,
+                  // ),
+                  // Text(
+                  //   "#${data.tagDisaster}",
+                  //   style: TextStyle(color: Color(0xff416E5C)),
+                  // ),
+                  // // Chip(
+                  // //   label: Text(
+                  // //     "${data.tagDisaster}",
+                  // //     style: TextStyle(color: Colors.white),
+                  // //   ),
+                  // //   backgroundColor: Color(0xff90B1A4),
+                  // // ),
+                  // SizedBox(
+                  //   width: 5,
+                  // ),
+                  // Text(
+                  //   "#${data.locationSiDo}",
+                  //   style: TextStyle(color: Color(0xff416E5C)),
+                  // ),
+                ],
+              ),
+            ],
+          ),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,40 +116,33 @@ GestureDetector postListTile(BuildContext context, Post data) {
               style: TextStyle(fontSize: 12),
             ),
             Row(children: [
-              Transform(
-                transform: new Matrix4.identity()..scale(0.95),
-                child: Row(
-                  children: [
-                    Chip(
-                      label: Text(
-                        "${data.tagMore}",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      backgroundColor: Color(0xff90B1A4),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Chip(
-                      label: Text(
-                        "${data.tagDisaster}",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      backgroundColor: Color(0xff90B1A4),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Chip(
-                      label: Text(
-                        "${data.locationSiDo}",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      backgroundColor: Color(0xff90B1A4),
-                    ),
-                  ],
-                ),
+              // Chip(
+              //   label: Text(
+              //     "${data.tagDisaster}",
+              //     style: TextStyle(color: Colors.white),
+              //   ),
+              //   backgroundColor: Color(0xff90B1A4),
+              // ),
+              Text(
+                "#${data.tagDisaster}",
+                style: TextStyle(
+                    color: Color(0xff416E5C), fontWeight: FontWeight.bold),
               ),
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                "#${data.locationSiDo}",
+                style: TextStyle(
+                    color: Color(0xff416E5C), fontWeight: FontWeight.bold),
+              ),
+              // Chip(
+              //   label: Text(
+              //     "${data.locationSiDo}",
+              //     style: TextStyle(color: Colors.white),
+              //   ),
+              //   backgroundColor: Color(0xff90B1A4),
+              // ),
               Spacer(),
               Builder(builder: (context) {
                 return data.isDone

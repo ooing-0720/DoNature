@@ -68,15 +68,15 @@ class _BoardScreenState extends State<BoardScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<Post> posts = snapshot.data!;
-              return ListView.builder(
-                itemCount: posts.length,
-                itemBuilder: (BuildContext context, int index) {
-                  Post data = posts[index];
-                  return Card(
-                    child: postListTile(context, data),
-                  );
-                },
-              );
+              return ListView.separated(
+                  itemCount: posts.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Post data = posts[index];
+                    return postListTile(context, data);
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Divider(thickness: 1);
+                  });
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');
             } else {
@@ -93,7 +93,7 @@ class _BoardScreenState extends State<BoardScreen> {
                       MaterialPageRoute(builder: (context) => PostAddScreen()));
                 },
                 label: Text('글쓰기'),
-                backgroundColor: Color(0xff90B1A4),
+                backgroundColor: Color(0xff416E5C),
                 icon: Icon(Icons.add),
               )
             : Container();

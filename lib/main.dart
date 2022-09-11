@@ -86,6 +86,8 @@ class Init {
     Static.userLocation = location[1] + ' ' + location[2] + ' ' + location[3];
     Static.reportList = await wthrReport.getWeatherReport();
 
+    Static.reportList = ['폭염주의보: 서울', '', '', '', 'null 푸랑주의보 서울'];
+
     // 초기 로딩 완료 시 띄울 앱 첫 화면
 
     return MainScreen();

@@ -1,3 +1,5 @@
+import 'package:donation_nature/screen/main_screen.dart';
+import 'package:donation_nature/screen/mypage/change_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:donation_nature/screen/mypage/edit_profile_screen.dart';
 import 'package:donation_nature/screen/signup_screen.dart';
@@ -89,7 +91,7 @@ class MyPageMenuState extends State<MyPageMenu> {
                 : Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => EditProfileScreen()));
+                        builder: (context) => ChangePasswordScreen()));
           },
         ),
         // Divider(thickness: 1),
@@ -137,8 +139,11 @@ class MyPageMenuState extends State<MyPageMenu> {
                   child: Text('로그아웃'),
                   onPressed: () {
                     userManage.signOut();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()));
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => MainScreen()),
+                        (route) => false);
                   }),
             ])
           ]);

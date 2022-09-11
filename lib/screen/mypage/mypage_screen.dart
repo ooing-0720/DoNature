@@ -7,14 +7,13 @@ import 'package:donation_nature/alarm/service/alarm_serivce.dart';
 
 class MyPageScreen extends StatefulWidget {
   const MyPageScreen({Key? key}) : super(key: key);
-  
+
   @override
   State<MyPageScreen> createState() => MyPageScreenState();
-  
 }
 
-
 User? user;
+
 class MyPageScreenState extends State<MyPageScreen> {
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,6 @@ class MyPageScreenState extends State<MyPageScreen> {
             style: TextStyle(
               color: Colors.black,
             )),
-
       ),
       body: SingleChildScrollView(
         child: Column(children: [MyPageHeader(), MyPageMenu()]),

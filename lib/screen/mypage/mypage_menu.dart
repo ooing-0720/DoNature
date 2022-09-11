@@ -49,6 +49,7 @@ class MyPageMenuState extends State<MyPageMenu> {
         //         MaterialPageRoute(builder: (context) => SignUpScreen()));
         //   },
         // ),
+        Divider(height: 1),
         ListTile(
           title: Container(
               alignment: Alignment.centerLeft,
@@ -71,6 +72,7 @@ class MyPageMenuState extends State<MyPageMenu> {
                         builder: (context) => EditProfileScreen()));
           },
         ),
+        Divider(height: 1),
         ListTile(
           title: Container(
               alignment: Alignment.centerLeft,
@@ -94,7 +96,7 @@ class MyPageMenuState extends State<MyPageMenu> {
                         builder: (context) => ChangePasswordScreen()));
           },
         ),
-        // Divider(thickness: 1),
+        Divider(height: 1),
         ListTile(
           title: Container(
               alignment: Alignment.centerLeft,

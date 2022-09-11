@@ -35,26 +35,13 @@ class _MainScreenState extends State<MainScreen> {
     MyPageScreen(),
   ];
 
-
-
-
-
-  
-  
-
-
-
-void initState(){
-        
-      }
-
+  void initState() {}
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
-
 
   // Future alarmIcon(User? user) async {
   //   if (user != null){
@@ -73,9 +60,9 @@ void initState(){
 
   // }
 
-   @override
+  @override
   Widget build(BuildContext context) {
-   // alarmIcon(user);
+    // alarmIcon(user);
     return Scaffold(
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -87,11 +74,11 @@ void initState(){
             label: '홈',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat_outlined),
+            icon: Icon(Icons.chat),
             label: '채팅',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.library_books_outlined),
+            icon: Icon(Icons.library_books),
             label: '나눔',
           ),
           BottomNavigationBarItem(
@@ -99,12 +86,13 @@ void initState(){
             label: '알람',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
+            icon: Icon(Icons.person),
             label: '내 정보',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xff003300),
+        selectedItemColor: Color(0xff416E5C),
+        elevation: 1.0,
         onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
       ),

@@ -107,6 +107,16 @@ flutter:
          weight: 500
        - asset: fonts/Noto_Sans_KR/NotoSansKR-Bold.otf
          weight: 700
+
+   - family: NanumSquare
+     fonts:
+       - asset: fonts/NanumSquare/NanumSquareOTF_acR.otf
+       - asset: fonts/NanumSquare/NanumSquareOTF_acL.otf
+         weight: 300
+       - asset: fonts/NanumSquare/NanumSquareOTF_acB.otf
+         weight: 600
+       - asset: fonts/NanumSquare/NanumSquareOTF_acEB.otf
+         weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

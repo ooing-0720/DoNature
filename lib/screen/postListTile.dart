@@ -67,7 +67,7 @@ GestureDetector postListTile(BuildContext context, Post data) {
                         overflow: TextOverflow.ellipsis,
                         "${data.title}",
                         style: TextStyle(
-                            fontSize: 17.5, fontWeight: FontWeight.w500),
+                            fontSize: 17, fontWeight: FontWeight.w500),
                       ),
                     ),
                   ],

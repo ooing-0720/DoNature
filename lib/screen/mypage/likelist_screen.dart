@@ -38,16 +38,16 @@ class _LikeListScreenState extends State<LikeListScreen> {
                   if (snapshot.hasData) {
                     List<Post> findPosts = snapshot.data!;
 
-                    return ListView.builder(
-                      itemCount: findPosts.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        Post data = findPosts[index];
+                    return ListView.separated(
+                        itemCount: findPosts.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          Post data = findPosts[index];
 
-                        return Card(
-                          child: postListTile(context, data),
-                        );
-                      },
-                    );
+                          return postListTile(context, data);
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return Divider(thickness: 1);
+                        });
                   } else if (snapshot.hasError) {
                     print('${snapshot.error}');
                     return Text('${snapshot.error}');

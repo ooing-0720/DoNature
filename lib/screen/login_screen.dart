@@ -2,7 +2,6 @@ import 'package:donation_nature/screen/main_screen.dart';
 import 'package:donation_nature/screen/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:donation_nature/screen/mypage/mypage_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -128,11 +127,7 @@ class LoginScreenState extends State<LoginScreen> {
             context,
             MaterialPageRoute(builder: (BuildContext context) => MainScreen()),
             (route) => false);
-
-        // Navigator.push(context,
-        //     MaterialPageRoute(builder: (context) => const MyPageScreen()));
       } on FirebaseAuthException catch (e) {
-        //logger.e(e);
         String message = '';
 
         if (e.code == 'user-not-found') {

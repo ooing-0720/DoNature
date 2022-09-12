@@ -3,6 +3,7 @@ import 'package:donation_nature/screen/disaster_list.dart';
 import 'package:donation_nature/API/repository/ultra_srt_ncst_repository.dart';
 import 'package:donation_nature/API/repository/wthr_wrn_liist_repository.dart';
 
+// 날씨 정보 리스트
 class WthrReport {
   Future<List<String>> getWthrInfo(Map<dynamic, dynamic> position) async {
     UltraSrtNcstRepository ultraSrtNcstRepository = UltraSrtNcstRepository();
@@ -18,9 +19,8 @@ class WthrReport {
     return WthrInfoList;
   }
 
+// 기상 특보 리스트(폭염, 호우, 태풍, 강풍, 풍랑)
   Future<List<String>> getWeatherReport() async {
-    //PermissionRequest.determinePosition();
-
     WthrWrnListRepository wthrWrnListRepository = WthrWrnListRepository();
     var wthrWrnList = await wthrWrnListRepository.loadWthrWrnList();
 
@@ -33,9 +33,9 @@ class WthrReport {
     ];
 
     return reportList;
-    // 폭염, 호우, 태풍, 강풍, 풍랑
   }
 
+// 재난 지도 색상 지정
   List<Color>? classifyLocation(String str) {
     List<Color>? colors = [
       Color.fromARGB(255, 223, 223, 223).withOpacity(0.0),

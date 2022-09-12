@@ -30,6 +30,7 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> getWeatherData() async {
+    // 유저가 위치한 지역의 기상 특보를 받아옴
     for (int i = 0; i < location.length; i++) {
       if (Static.userLocation!.contains(location[i])) {
         for (int j = 0; j < Static.reportList!.length; j++) {
@@ -46,9 +47,11 @@ class HomeScreenState extends State<HomeScreen> {
         label += ' ' + labels[i];
       }
     }
+
     if (i_images.length == 0) {
       i_images.add('assets/images/earth.png');
     }
+
     if (label == '') {
       label = ' 현재 발효된 특보가 없습니다';
     }
@@ -151,7 +154,6 @@ class HomeScreenState extends State<HomeScreen> {
                     child: Text("대처법 알아보기 →"),
                     style: TextButton.styleFrom(
                       primary: Color.fromARGB(255, 181, 189, 186),
-                      // primary: Color.fromARGB(255, 65, 110, 92), // foreground
                     ),
                   ),
                 ],

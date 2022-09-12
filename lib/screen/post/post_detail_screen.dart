@@ -41,148 +41,253 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 appBar: AppBar(),
                 body: Padding(
                   padding: const EdgeInsets.all(15),
-                  child: Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      widget.post.isDone
+                          ? Container(
+                              padding: EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(3.0))),
                               child: Text(
-                                widget.post.title!,
-                                maxLines: 1,
+                                "나눔완료",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 30),
+                                    color: Colors.white, fontSize: 14),
+                              ),
+                            )
+                          : Container(
+                              padding: EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Color(0xff416E5C),
+                                  ),
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Text(
+                                "${widget.post.tagMore}",
+                                maxLines: 1,
+                                softWrap: false,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                    color: Color(0xff416E5C)),
                               ),
                             ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                                dateTime.toLocal().toString().substring(5, 16)),
-                          ],
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        child: Text(
+                          widget.post.title!,
+                          maxLines: 2,
+                          softWrap: true,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30,
+                          ),
                         ),
-                        Divider(
-                          height: 20,
-                          thickness: 1.5,
-                        ),
-                        Row(
-                          children: [
-                            // Icon(Icons.local_offer, color: Color(0xff90B1A4)),
-                            Chip(
-                              label: Text(widget.post.tagMore!,
-                                  style: TextStyle(color: Colors.white)),
-                              backgroundColor: Color(0xff90B1A4),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Chip(
-                              label: Text(widget.post.tagDisaster!,
-                                  style: TextStyle(color: Colors.white)),
-                              backgroundColor: Color(0xff90B1A4),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
+                      ),
+                      SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Text(
+                            "#${widget.post.tagDisaster}",
+                            style: TextStyle(
+                                color: Color(0xff416E5C),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17),
+                          ),
+                          // Chip(
+                          //   label: Text(widget.post.tagDisaster!,
+                          //       style: TextStyle(color: Colors.white)),
+                          //   backgroundColor: Color(0xff416E5C),
+                          // ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            "#${widget.post.locationSiDo} ${widget.post.locationGuGunSi}",
+                            style: TextStyle(
+                                color: Color(0xff416E5C),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17),
+                          ),
+                          // Chip(
+                          //   avatar: Icon(
+                          //     Icons.place,
+                          //     color: Colors.white,
+                          //     size: 17,
+                          //   ),
+                          //   label: Text(
+                          //       widget.post.locationSiDo! +
+                          //           " " +
+                          //           widget.post.locationGuGunSi!,
+                          //       style: TextStyle(color: Colors.white)),
+                          //   backgroundColor: Color(0xff416E5C),
+                          // ),
+                          Spacer(),
 
-                            Chip(
-                              avatar: Icon(
-                                Icons.place,
-                                color: Colors.white,
-                                size: 17,
+                          if (userIsWriter == false &&
+                              widget.post.isDone == false) //글 작성자가 본인이 아닐 때
+                            IconButton(
+                              padding: EdgeInsets.zero, // 패딩 설정
+                              constraints: BoxConstraints(), // constraints
+                              icon: Icon(
+                                PostService().isLiked(widget.post, user)
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: Color(0xff416E5C),
                               ),
-                              label: Text(
-                                  widget.post.locationSiDo! +
-                                      " " +
-                                      widget.post.locationGuGunSi!,
-                                  style: TextStyle(color: Colors.white)),
-                              backgroundColor: Color(0xff90B1A4),
-                            ),
-                            Spacer(),
-                            if (userIsWriter == true &&
-                                widget.post.isDone ==
-                                    false) //글 작성자가 본인이고 나눔 완료 전일 때
-                              Transform.scale(
-                                scale: 0.8,
-                                child: Row(children: [
-                                  deleteButton(context),
-                                  editButton(context)
-                                ]),
-                              )
-                            else if (userIsWriter == false) //글 작성자가 본인이 아닐 때
-                              IconButton(
-                                icon: Icon(
+                              onPressed: () {
+                                setState(() {
+                                  PostService().likePost(widget.post, user);
                                   PostService().isLiked(widget.post, user)
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: Color(0xff90B1A4),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    PostService().likePost(widget.post, user);
-                                    PostService().isLiked(widget.post, user)
-                                        ? ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                                content:
-                                                    Text("관심 목록에 추가되었습니다.")))
-                                        : null;
-                                  });
-                                },
-                              ),
-                          ],
-                        ),
-                        Divider(
-                          height: 20,
-                          thickness: 1.5,
-                        ),
-                        Expanded(
-                            child: SingleChildScrollView(
-                          child: widget.post.imageUrl != null
-                              ? Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Center(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                image: NetworkImage(
-                                                    "${widget.post.imageUrl}"),
-                                                fit: BoxFit.cover)),
-                                        height: 400,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                      ),
+                                      ? ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text("관심 목록에 추가되었습니다.")))
+                                      : null;
+                                });
+                              },
+                            ),
+                        ],
+                      ),
+                      // SizedBox(
+                      //   height: 5,
+                      // ),
+                      Divider(
+                        height: 20,
+                        thickness: 1,
+                      ),
+                      Row(
+                        children: [
+                          Text("글쓴이: " + widget.post.writer!),
+                          VerticalDivider(
+                            color: Colors.black,
+                            thickness: 1,
+                          ),
+                          Text(dateTime.toLocal().toString().substring(5, 16)),
+                          Spacer(),
+                          if (userIsWriter == true &&
+                              widget.post.isDone ==
+                                  false) //글 작성자가 본인이고 나눔 완료 전일 때
+                            Transform.scale(
+                              scale: 0.8,
+                              child: Row(children: [
+                                deleteButton(context),
+                                editButton(context)
+                              ]),
+                            )
+                          // else if (widget.post.isDone == true)
+                          //   Container(
+                          //     padding: EdgeInsets.all(3),
+                          //     decoration: BoxDecoration(
+                          //         color: Colors.grey,
+                          //         borderRadius:
+                          //             BorderRadius.all(Radius.circular(3.0))),
+                          //     child: Text(
+                          //       "나눔완료",
+                          //       style: TextStyle(
+                          //           color: Colors.white, fontSize: 14),
+                          //     ),
+                          //   ),
+                        ],
+                      ),
+                      Divider(
+                        height: 20,
+                        thickness: 1,
+                      ),
+
+                      // Row(
+                      //   children: [
+                      //     // Icon(Icons.local_offer, color: Color(0xff90B1A4)),
+                      //     // Text(
+                      //     //   "#${widget.post.tagDisaster}",
+                      //     //   style: TextStyle(
+                      //     //       color: Color(0xff416E5C),
+                      //     //       fontWeight: FontWeight.bold,
+                      //     //       fontSize: 17),
+                      //     // ),
+                      //     // // Chip(
+                      //     // //   label: Text(widget.post.tagDisaster!,
+                      //     // //       style: TextStyle(color: Colors.white)),
+                      //     // //   backgroundColor: Color(0xff416E5C),
+                      //     // // ),
+                      //     // SizedBox(
+                      //     //   width: 5,
+                      //     // ),
+                      //     // // Text(
+                      //     // //   "#${widget.post.locationSiDo}" +
+                      //     // //       "#${widget.post.locationGuGunSi}",
+                      //     // //   style: TextStyle(
+                      //     // //       color: Color(0xff416E5C),
+                      //     // //       fontWeight: FontWeight.bold,
+                      //     // //       fontSize: 17),
+                      //     // // ),
+                      //     // // Chip(
+                      //     // //   avatar: Icon(
+                      //     // //     Icons.place,
+                      //     // //     color: Colors.white,
+                      //     // //     size: 17,
+                      //     // //   ),
+                      //     // //   label: Text(
+                      //     // //       widget.post.locationSiDo! +
+                      //     // //           " " +
+                      //     // //           widget.post.locationGuGunSi!,
+                      //     // //       style: TextStyle(color: Colors.white)),
+                      //     // //   backgroundColor: Color(0xff416E5C),
+                      //     // // ),
+                      //   ],
+                      // ),
+                      // Divider(
+                      //   height: 20,
+                      //   thickness: 1.5,
+                      // ),
+                      Container(
+                          child: SingleChildScrollView(
+                        child: widget.post.imageUrl != null
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: NetworkImage(
+                                                  "${widget.post.imageUrl}"),
+                                              fit: BoxFit.cover)),
+                                      height: 400,
+                                      width: MediaQuery.of(context).size.width,
                                     ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 10),
-                                      child: Text(
-                                        widget.post.content!,
-                                        style: TextStyle(fontSize: 15),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Column(
-                                  children: [
-                                    Text(
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    child: Text(
                                       widget.post.content!,
                                       style: TextStyle(fontSize: 15),
                                     ),
-                                  ],
-                                ),
-                        ))
-                      ],
-                    ),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                children: [
+                                  Text(
+                                    widget.post.content!,
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                ],
+                              ),
+                      ))
+                    ],
                   ),
                 ),
-                floatingActionButton: userIsWriter ==
-                        false //본인이 작성한 글이 아니면 채팅 가능
+                floatingActionButton: userIsWriter == false &&
+                        widget.post.isDone == false
+                    //본인이 작성한 글이 아니고 나눔완료 되기 전이면 채팅 가능
                     ? FloatingActionButton.extended(
                         onPressed: () async {
                           ChattingRoom _chattingRoom;
@@ -239,185 +344,226 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                           }
                         },
                         label: Text('채팅하기'),
-                        backgroundColor: Color(0xff90B1A4),
+                        backgroundColor: Color(0xff416E5C),
                         icon: Icon(Icons.chat_bubble),
                       )
                     :
                     //본인이 작성했을 때
                     isNanum == true && widget.post.isDone == false
                         //나눔관련 글이 맞고 나눔완료 전일 때
-                        ? FloatingActionButton.extended(
-                            backgroundColor: Color(0xff90B1A4),
-                            icon: Icon(Icons.check),
-                            label: Text('나눔종료'),
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext ctx) {
-                                    return AlertDialog(
-                                      title: const Text(
-                                        '나눔을 종료하시겠습니까?',
-                                        style: TextStyle(fontSize: 15),
-                                      ),
-                                      content: const Text(
-                                        '나눔을 종료하면 수정/삭제가 불가합니다.',
-                                        style: TextStyle(fontSize: 12),
-                                      ),
-                                      actions: [
-                                        OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                              minimumSize: Size(40, 40),
-                                              primary: Color(0xff90B1A4),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.of(ctx).pop();
-                                              PostService().isDone(widget.post);
-                                              setState(() {
-                                                widget.post.isDone = true;
-                                              });
-                                              Navigator.push(
-                                                  ctx,
-                                                  MaterialPageRoute(
-                                                      builder: ((context) =>
-                                                          BoardScreen())));
-                                            },
-                                            child: Text("예")),
-                                        OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                              minimumSize: Size(40, 40),
-                                              primary: Color(0xff90B1A4),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.of(ctx).pop();
-                                            },
-                                            child: Text("아니오"))
-                                      ],
-                                    );
-                                  });
-                            })
+                        ? isDoneButton(context)
                         : Container());
           })
         : //유저가 로그인 안 한 경우
-        Scaffold(
-            appBar: AppBar(),
-            body: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        child: Text(
-                          widget.post.title!,
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 30),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(dateTime.toLocal().toString().substring(5, 16)),
-                    ],
+        logOutPost(dateTime, context);
+  }
+
+  Scaffold logOutPost(DateTime dateTime, BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.all(3),
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Color(0xff416E5C),
                   ),
-                  Divider(
-                    height: 20,
-                    thickness: 1.5,
-                  ),
-                  Row(
-                    children: [
-                      Chip(
-                        label: Text(widget.post.tagMore!,
-                            style: TextStyle(color: Colors.white)),
-                        backgroundColor: Color(0xff90B1A4),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Chip(
-                        label: Text(widget.post.tagDisaster!,
-                            style: TextStyle(color: Colors.white)),
-                        backgroundColor: Color(0xff90B1A4),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Chip(
-                        avatar: Icon(
-                          Icons.place,
-                          color: Colors.white,
-                          size: 17,
-                        ),
-                        label: Text(
-                            widget.post.locationSiDo! +
-                                " " +
-                                widget.post.locationGuGunSi!,
-                            style: TextStyle(color: Colors.white)),
-                        backgroundColor: Color(0xff90B1A4),
-                      ),
-                      Chip(
-                        label: Text(
-                            widget.post.locationSiDo! +
-                                " " +
-                                widget.post.locationGuGunSi!,
-                            style: TextStyle(color: Colors.white)),
-                        backgroundColor: Color(0xff90B1A4),
-                      ),
-                      Spacer(),
-                    ],
-                  ),
-                  Divider(
-                    height: 20,
-                    thickness: 1.5,
-                  ),
-                  Expanded(
-                      child: SingleChildScrollView(
-                    child: widget.post.imageUrl != null
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Center(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              "${widget.post.imageUrl}"),
-                                          fit: BoxFit.cover)),
-                                  height: 400,
-                                  width: MediaQuery.of(context).size.width,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: Text(
-                                  widget.post.content!,
-                                  style: TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            ],
-                          )
-                        : Column(
-                            children: [
-                              Text(
-                                widget.post.content!,
-                                style: TextStyle(fontSize: 15),
-                              ),
-                            ],
-                          ),
-                  ))
-                ],
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(20)),
+              child: Text(
+                "${widget.post.tagMore}",
+                maxLines: 1,
+                softWrap: false,
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Color(0xff416E5C)),
               ),
             ),
-          );
+            SizedBox(
+              height: 5,
+            ),
+            Container(
+              child: Text(
+                widget.post.title!,
+                maxLines: 2,
+                softWrap: true,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Row(
+              children: [
+                Text(
+                  "#${widget.post.tagDisaster}",
+                  style: TextStyle(
+                      color: Color(0xff416E5C),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17),
+                ),
+                // Chip(
+                //   label: Text(widget.post.tagDisaster!,
+                //       style: TextStyle(color: Colors.white)),
+                //   backgroundColor: Color(0xff416E5C),
+                // ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  "#${widget.post.locationSiDo} ${widget.post.locationGuGunSi}",
+                  style: TextStyle(
+                      color: Color(0xff416E5C),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17),
+                ),
+                // Chip(
+                //   avatar: Icon(
+                //     Icons.place,
+                //     color: Colors.white,
+                //     size: 17,
+                //   ),
+                //   label: Text(
+                //       widget.post.locationSiDo! +
+                //           " " +
+                //           widget.post.locationGuGunSi!,
+                //       style: TextStyle(color: Colors.white)),
+                //   backgroundColor: Color(0xff416E5C),
+                // ),
+                Spacer(),
+              ],
+            ),
+            // SizedBox(
+            //   height: 5,
+            // ),
+            Divider(
+              height: 20,
+              thickness: 1.5,
+            ),
+            Row(
+              children: [
+                Text("글쓴이: " + widget.post.writer!),
+                VerticalDivider(
+                  color: Colors.black,
+                  thickness: 1,
+                ),
+                Text(dateTime.toLocal().toString().substring(5, 16)),
+              ],
+            ),
+            Divider(
+              height: 20,
+              thickness: 1.5,
+            ),
+            Expanded(
+                child: SingleChildScrollView(
+              child: widget.post.imageUrl != null
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image:
+                                        NetworkImage("${widget.post.imageUrl}"),
+                                    fit: BoxFit.cover)),
+                            height: 400,
+                            width: MediaQuery.of(context).size.width,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Text(
+                            widget.post.content!,
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        Text(
+                          widget.post.content!,
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ],
+                    ),
+            ))
+          ],
+        ),
+      ),
+    );
+  }
+
+  FloatingActionButton isDoneButton(BuildContext context) {
+    return FloatingActionButton.extended(
+        backgroundColor: Color(0xff416E5C),
+        icon: Icon(Icons.check),
+        label: Text('나눔종료'),
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext ctx) {
+                return AlertDialog(
+                  title: const Text(
+                    '나눔을 종료하시겠습니까?',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                  content: const Text(
+                    '나눔을 종료하면 수정/삭제가 불가합니다.',
+                    style: TextStyle(fontSize: 12),
+                  ),
+                  actions: [
+                    OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: Size(40, 40),
+                          primary: Color(0xff90B1A4),
+                        ),
+                        onPressed: () {
+                          Navigator.of(ctx).pop();
+                          PostService().isDone(widget.post);
+                          setState(() {
+                            widget.post.isDone = true;
+                          });
+                          //나눔이 완료되었습니다
+
+                          Navigator.push(
+                              ctx,
+                              MaterialPageRoute(
+                                  builder: ((context) => BoardScreen())));
+                        },
+                        child: Text("예")),
+                    OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: Size(40, 40),
+                          primary: Color(0xff90B1A4),
+                        ),
+                        onPressed: () {
+                          Navigator.of(ctx).pop();
+                        },
+                        child: Text("아니오"))
+                  ],
+                );
+              });
+        });
   }
 
   TextButton editButton(BuildContext context) {
     return TextButton(
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+        ),
         //수정버튼
         onPressed: () {
           Navigator.push(
@@ -444,6 +590,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
   TextButton deleteButton(BuildContext context) {
     return TextButton(
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+        ),
         //삭제버튼
         onPressed: () {
           showDialog(
@@ -452,29 +601,56 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 return AlertDialog(
                   content: Text("게시글을 삭제하시겠습니까?"),
                   actions: [
-                    OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: Size(40, 40),
-                          primary: Color(0xff90B1A4),
-                        ),
-                        onPressed: () {
-                          Navigator.of(ctx).pop();
-                          PostService().deletePost(widget.post);
-                          Navigator.push(
-                              ctx,
-                              MaterialPageRoute(
-                                  builder: ((context) => BoardScreen())));
-                        },
-                        child: Text("예")),
-                    OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: Size(40, 40),
-                          primary: Color(0xff90B1A4),
-                        ),
-                        onPressed: () {
-                          Navigator.of(ctx).pop();
-                        },
-                        child: Text("아니오"))
+                    ButtonTheme(
+                      minWidth: 20.0,
+                      child: FlatButton(
+                          onPressed: () {
+                            Navigator.of(ctx).pop();
+                            PostService().deletePost(widget.post);
+                            Navigator.push(
+                                ctx,
+                                MaterialPageRoute(
+                                    builder: ((context) => BoardScreen())));
+                          },
+                          child: Text(
+                            "예",
+                            style: TextStyle(color: Color(0xff416E5C)),
+                          )),
+                    ),
+                    ButtonTheme(
+                      minWidth: 20,
+                      child: FlatButton(
+                          onPressed: () {
+                            Navigator.of(ctx).pop();
+                          },
+                          child: Text(
+                            "아니오",
+                            style: TextStyle(color: Color(0xff416E5C)),
+                          )),
+                    ),
+                    // OutlinedButton(
+                    //     style: OutlinedButton.styleFrom(
+                    //       minimumSize: Size(40, 40),
+                    //       primary: Color(0xff90B1A4),
+                    //     ),
+                    //     onPressed: () {
+                    //       Navigator.of(ctx).pop();
+                    //       PostService().deletePost(widget.post);
+                    //       Navigator.push(
+                    //           ctx,
+                    //           MaterialPageRoute(
+                    //               builder: ((context) => BoardScreen())));
+                    //     },
+                    //     child: Text("예")),
+                    // OutlinedButton(
+                    //     style: OutlinedButton.styleFrom(
+                    //       minimumSize: Size(40, 40),
+                    //       primary: Color(0xff90B1A4),
+                    //     ),
+                    //     onPressed: () {
+                    //       Navigator.of(ctx).pop();
+                    //     },
+                    //     child: Text("아니오"))
                   ],
                 );
               });

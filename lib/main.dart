@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
           } else {
             FlutterNativeSplash.remove();
             return MaterialApp(
+              debugShowCheckedModeBanner: false,
               theme: ThemeData(
                   // primaryColor: Color.fromARGB(255, 7, 65, 29),
                   fontFamily: 'Pretendard',
@@ -86,7 +87,13 @@ class Init {
     var location = result.split(' ');
     Static.userLocation = location[1] + ' ' + location[2] + ' ' + location[3];
     Static.reportList = await wthrReport.getWeatherReport();
-
+    // Static.reportList = [
+    //   '폭염주의보: 서울',
+    //   '',
+    //   '',
+    //   '',
+    //   '',
+    // ];
     // 초기 로딩 완료 시 띄울 앱 첫 화면
 
     return MainScreen();

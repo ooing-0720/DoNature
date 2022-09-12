@@ -53,7 +53,7 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
                       Center(
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                primary: Color(0xff90B1A4)),
+                                primary: Color(0xff416E5C)),
                             key: _searchKey,
                             onPressed: () {
                               Navigator.push(
@@ -95,8 +95,8 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
             tagMoreList.length,
             (int index) {
               return ChoiceChip(
-                backgroundColor: Color(0xff90B1A4),
-                selectedColor: Color(0xff416E5C),
+                backgroundColor: Color(0xff416E5C),
+                selectedColor: Colors.grey.withOpacity(0.5),
                 label: Text(
                   tagMoreList[index],
                   style: TextStyle(color: Colors.white),
@@ -169,8 +169,8 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
       Widget item = Padding(
         padding: const EdgeInsets.only(left: 10, right: 5),
         child: ChoiceChip(
-          backgroundColor: Color(0xff90B1A4),
-          selectedColor: Color(0xff416E5C),
+          backgroundColor: Color(0xff416E5C),
+          selectedColor: Colors.grey.withOpacity(0.5),
           selected: selectedDisasterIndex == i,
           onSelected: (bool value) {
             setState(() {
@@ -296,103 +296,15 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   if (snapshot.hasData) {
                     List<Post> findPosts = snapshot.data!;
 
-                    return ListView.builder(
+                    return ListView.separated(
                       itemCount: findPosts.length,
                       itemBuilder: (BuildContext context, int index) {
                         Post data = findPosts[index];
 
-                        return Card(child: postListTile(context, data)
-
-                            // GestureDetector(
-                            //   onTap: () {
-                            //     Navigator.push(
-                            //         context,
-                            //         MaterialPageRoute(
-                            //           builder: (context) =>
-                            //               PostDetailScreen(data),
-                            //         ));
-                            //   },
-                            //   child: ListTile(
-                            //     title: Text(
-                            //       "${data.title}",
-                            //       style: TextStyle(fontSize: 17.5),
-                            //     ),
-                            //     subtitle: Column(
-                            //       crossAxisAlignment: CrossAxisAlignment.start,
-                            //       children: [
-                            //         Text(
-                            //           "${data.date!.toDate().toLocal().toString().substring(5, 16)}",
-                            //           style: TextStyle(fontSize: 12),
-                            //         ),
-                            //         Row(children: [
-                            //           Transform(
-                            //             transform: new Matrix4.identity()
-                            //               ..scale(0.95),
-                            //             child: Row(
-                            //               children: [
-                            //                 Chip(
-                            //                   label: Text(
-                            //                     "${data.tagMore}",
-                            //                     style: TextStyle(
-                            //                         color: Colors.white),
-                            //                   ),
-                            //                   backgroundColor: Color(0xff90B1A4),
-                            //                 ),
-                            //                 SizedBox(
-                            //                   width: 5,
-                            //                 ),
-                            //                 Chip(
-                            //                   label: Text(
-                            //                     "${data.tagDisaster}",
-                            //                     style: TextStyle(
-                            //                         color: Colors.white),
-                            //                   ),
-                            //                   backgroundColor: Color(0xff90B1A4),
-                            //                 ),
-                            //                 SizedBox(
-                            //                   width: 5,
-                            //                 ),
-                            //                 Chip(
-                            //                   label: Text(
-                            //                     "${data.locationSiDo}",
-                            //                     style: TextStyle(
-                            //                         color: Colors.white),
-                            //                   ),
-                            //                   backgroundColor: Color(0xff90B1A4),
-                            //                 ),
-                            //               ],
-                            //             ),
-                            //           ),
-                            //           Spacer(),
-                            //           Builder(builder: (context) {
-                            //             return data.isDone
-                            //                 ? Container(
-                            //                     decoration: BoxDecoration(
-                            //                         color: Color.fromARGB(
-                            //                             255, 106, 106, 106),
-                            //                         borderRadius:
-                            //                             BorderRadius.all(
-                            //                                 Radius.circular(
-                            //                                     3.0))),
-                            //                     child: Padding(
-                            //                       padding:
-                            //                           const EdgeInsets.all(4.0),
-                            //                       child: Text(
-                            //                         "나눔완료",
-                            //                         style: TextStyle(
-                            //                             color: Colors.white,
-                            //                             fontSize: 14),
-                            //                       ),
-                            //                     ),
-                            //                   )
-                            //                 : Container();
-                            //           }),
-                            //         ]),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
-                            );
+                        return postListTile(context, data);
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return Divider(thickness: 1);
                       },
                     );
                   } else if (snapshot.hasError) {

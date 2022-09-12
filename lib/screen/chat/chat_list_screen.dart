@@ -28,7 +28,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   style: TextStyle(
                     color: Colors.black,
                   )),
-            
             ),
             body: RefreshIndicator(
               onRefresh: () {
@@ -42,133 +41,130 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   if (snapshot.hasData) {
                     List<ChattingRoom> rooms = snapshot.data!;
                     // print(rooms.length);
-                    return ListView.builder(
+                    return ListView.separated(
                       itemCount: rooms.length,
                       itemBuilder: (BuildContext context, int index) {
                         String userEmail = user!.email!; //현재 유저의 이메일
                         ChattingRoom data = rooms[index]; //각각의 채팅방
                         // data.user!.first   //sender
-                        return Card(
-                          //상대방 이름 user list
-                          child: Builder(builder: (context) {
-                            //채팅하는 상대방 이름 띄우기
-                            return userEmail == data.user!.first
-                                //내가 채팅하기를 눌렀을 때
+                        return Builder(builder: (context) {
+                          //채팅하는 상대방 이름 띄우기
+                          return userEmail == data.user!.first
+                              //내가 채팅하기를 눌렀을 때
 
-                                ? GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ChatDetailScreen(
-                                                    chattingRoom: data,
-                                                    userName:
-                                                        data.nickname!.last,
-                                                    reference:
-                                                        data.chatReference!,
-                                                  )));
-                                    },
-                                    child: ListTile(
-                                        contentPadding: EdgeInsets.symmetric(
-                                            vertical: 8, horizontal: 8),
-                                        dense: false,
-                                        visualDensity: VisualDensity(
-                                            horizontal: -4, vertical: -4),
-                                        leading: circleAvartar(),
-                                        title: Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 3.0),
-                                          child: Text(
-                                            "${data.postTitle}",
-                                            style: TextStyle(fontSize: 18),
-                                          ),
-                                        ),
-                                        subtitle: Row(
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text("${data.nickname!.last}"),
-                                                // SizedBox(
-                                                //   height: 2,
-                                                // ),
-                                                Text(
-                                                  "${data.updatedMsg}",
-                                                  maxLines: 3,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                              ],
-                                            ),
-                                            //공통으로
-                                            Spacer(),
-                                            Text(
-                                              "${data.updatedDate?.toDate().toLocal().toString().substring(5, 16)}",
-                                              //style: TextStyle(fontSize: 10),
-                                            ),
-                                          ],
-                                        )),
-                                  )
-                                : //상대방이 채팅하기를 눌렀을 때
-                                GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
+                              ? GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
                                             builder: (context) =>
                                                 ChatDetailScreen(
-                                              chattingRoom: data,
-                                              userName: data.nickname!.first,
-                                              reference: data.chatReference!,
-                                            ),
-                                          ));
-                                    },
-                                    child: ListTile(
-                                        contentPadding: EdgeInsets.symmetric(
-                                            vertical: 8, horizontal: 8),
-                                        dense: false,
-                                        visualDensity: VisualDensity(
-                                            horizontal: -4, vertical: -4),
-                                        leading: circleAvartar(),
-                                        title: Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 3.0),
-                                          child: Text(
-                                            "${data.postTitle}",
-                                            style: TextStyle(fontSize: 18),
-                                          ),
+                                                  chattingRoom: data,
+                                                  userName: data.nickname!.last,
+                                                  reference:
+                                                      data.chatReference!,
+                                                )));
+                                  },
+                                  child: ListTile(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 8, horizontal: 8),
+                                      dense: false,
+                                      visualDensity: VisualDensity(
+                                          horizontal: -4, vertical: -4),
+                                      leading: circleAvartar(),
+                                      title: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 3.0),
+                                        child: Text(
+                                          "${data.postTitle}",
+                                          style: TextStyle(fontSize: 18),
                                         ),
-                                        subtitle: Row(
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text("${data.nickname!.first}"),
-                                                // SizedBox(
-                                                //   height: 2,
-                                                // ),
-                                                Text(
-                                                  "${data.updatedMsg}",
-                                                  maxLines: 3,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                              ],
-                                            ),
-                                            //공통으로
-                                            Spacer(),
-                                            Text(
-                                              "${data.updatedDate?.toDate().toLocal().toString().substring(5, 16)}",
-                                              //style: TextStyle(fontSize: 10),
-                                            ),
-                                          ],
-                                        )),
-                                  );
-                          }),
-                        );
+                                      ),
+                                      subtitle: Row(
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text("${data.nickname!.last}"),
+                                              // SizedBox(
+                                              //   height: 2,
+                                              // ),
+                                              Text(
+                                                "${data.updatedMsg}",
+                                                maxLines: 3,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
+                                          ),
+                                          //공통으로
+                                          Spacer(),
+                                          Text(
+                                            "${data.updatedDate?.toDate().toLocal().toString().substring(5, 16)}",
+                                            //style: TextStyle(fontSize: 10),
+                                          ),
+                                        ],
+                                      )),
+                                )
+                              : //상대방이 채팅하기를 눌렀을 때
+                              GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ChatDetailScreen(
+                                            chattingRoom: data,
+                                            userName: data.nickname!.first,
+                                            reference: data.chatReference!,
+                                          ),
+                                        ));
+                                  },
+                                  child: ListTile(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 8, horizontal: 8),
+                                      dense: false,
+                                      visualDensity: VisualDensity(
+                                          horizontal: -4, vertical: -4),
+                                      leading: circleAvartar(),
+                                      title: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 3.0),
+                                        child: Text(
+                                          "${data.postTitle}",
+                                          style: TextStyle(fontSize: 18),
+                                        ),
+                                      ),
+                                      subtitle: Row(
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text("${data.nickname!.first}"),
+                                              // SizedBox(
+                                              //   height: 2,
+                                              // ),
+                                              Text(
+                                                "${data.updatedMsg}",
+                                                maxLines: 3,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
+                                          ),
+                                          //공통으로
+                                          Spacer(),
+                                          Text(
+                                            "${data.updatedDate?.toDate().toLocal().toString().substring(5, 16)}",
+                                            //style: TextStyle(fontSize: 10),
+                                          ),
+                                        ],
+                                      )),
+                                );
+                        });
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return Divider(thickness: 1);
                       },
                     );
                   } else if (snapshot.hasError) {

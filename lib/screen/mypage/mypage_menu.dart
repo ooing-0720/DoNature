@@ -128,31 +128,38 @@ class MyPageMenuState extends State<MyPageMenu> {
         context: context,
         builder: (BuildContext context) {
           // return object of type Dialog
-          return AlertDialog(content: Text("정말 로그아웃 하시겠습니까?"), actions: [
-            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    primary: Color(0xff9fc3a8),
-                  ),
-                  child: Text('닫기'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }),
-              OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    primary: Color(0xff9fc3a8),
-                  ),
-                  child: Text('로그아웃'),
-                  onPressed: () {
-                    userManage.signOut();
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => MainScreen()),
-                        (route) => false);
-                  }),
-            ])
-          ]);
+          return AlertDialog(
+            content: Text("정말 로그아웃 하시겠습니까?"),
+            actions: [
+              ButtonTheme(
+                minWidth: 20.0,
+                child: FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "닫기",
+                      style: TextStyle(color: Color(0xff416E5C)),
+                    )),
+              ),
+              ButtonTheme(
+                minWidth: 20,
+                child: FlatButton(
+                    onPressed: () {
+                      userManage.signOut();
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => MainScreen()),
+                          (route) => false);
+                    },
+                    child: Text(
+                      "로그아웃",
+                      style: TextStyle(color: Color(0xff416E5C)),
+                    )),
+              ),
+            ],
+          );
         });
   }
 }

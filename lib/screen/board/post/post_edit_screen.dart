@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation_nature/board/service/post_service.dart';
 import 'package:donation_nature/media/media.dart';
@@ -55,7 +54,40 @@ class _PostEditScreenState extends State<PostEditScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                titleEditForm(),
+                TextFormField(
+                  controller: titleEditingController,
+                  onChanged: (nextText) {
+                    setState(() {
+                      titleEditingController.text = nextText.substring(0, 24);
+                      titleEditingController.selection =
+                          TextSelection.fromPosition(TextPosition(offset: 24));
+                    });
+                  },
+                  inputFormatters: [LengthLimitingTextInputFormatter(24)],
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                    hintText: '제목을 입력하세요',
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 1, color: Colors.grey),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        )),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 2, color: Colors.grey),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 1, color: Colors.red),
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                  ),
+                  validator: (String? val) {
+                    if (val!.isEmpty) {
+                      return "제목은 비워둘 수 없습니다";
+                    }
+                  },
+                ),
                 Divider(
                   height: 20,
                   thickness: 1.5,
@@ -233,7 +265,31 @@ class _PostEditScreenState extends State<PostEditScreen> {
                     ),
                   ],
                 ),
-                contentEditForm(),
+                TextFormField(
+                  controller: contentEditingController,
+                  maxLines: 20,
+                  validator: (String? val) {
+                    if (val!.isEmpty) {
+                      return "내용은 비워둘 수 없습니다";
+                    }
+                  },
+                  decoration: InputDecoration(
+                    hintText: '내용을 입력하세요',
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 1, color: Colors.grey),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        )),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 2, color: Colors.grey),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        )),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 1, color: Colors.red),
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                  ),
+                ),
                 SizedBox(
                   height: 20,
                 ),
@@ -332,71 +388,6 @@ class _PostEditScreenState extends State<PostEditScreen> {
           ),
         ),
       ],
-    );
-  }
-
-  TextFormField contentEditForm() {
-    return TextFormField(
-      controller: contentEditingController,
-      maxLines: 20,
-      validator: (String? val) {
-        if (val!.isEmpty) {
-          return "내용은 비워둘 수 없습니다";
-        }
-      },
-      decoration: InputDecoration(
-        hintText: '내용을 입력하세요',
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Colors.grey),
-            borderRadius: BorderRadius.all(
-              Radius.circular(20),
-            )),
-        focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 2, color: Colors.grey),
-            borderRadius: BorderRadius.all(
-              Radius.circular(20),
-            )),
-        errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Colors.red),
-            borderRadius: BorderRadius.all(Radius.circular(20))),
-      ),
-    );
-  }
-
-  TextFormField titleEditForm() {
-    return TextFormField(
-      controller: titleEditingController,
-      onChanged: (nextText) {
-        setState(() {
-          titleEditingController.text = nextText.substring(0, 24);
-          titleEditingController.selection =
-              TextSelection.fromPosition(TextPosition(offset: 24));
-        });
-      },
-      inputFormatters: [LengthLimitingTextInputFormatter(24)],
-      maxLines: 1,
-      decoration: InputDecoration(
-        hintText: '제목을 입력하세요',
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Colors.grey),
-            borderRadius: BorderRadius.all(
-              Radius.circular(20),
-            )),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(width: 2, color: Colors.grey),
-          borderRadius: BorderRadius.all(
-            Radius.circular(20),
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Colors.red),
-            borderRadius: BorderRadius.all(Radius.circular(20))),
-      ),
-      validator: (String? val) {
-        if (val!.isEmpty) {
-          return "제목은 비워둘 수 없습니다";
-        }
-      },
     );
   }
 

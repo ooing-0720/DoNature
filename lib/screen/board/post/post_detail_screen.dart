@@ -162,7 +162,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         height: 20,
                         thickness: 1,
                       ),
-                      Container(
+                      Expanded(
                           child: SingleChildScrollView(
                         child: widget.post.imageUrl != null
                             ? Column(
@@ -296,35 +296,37 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                         style: TextStyle(fontSize: 12),
                                       ),
                                       actions: [
-                                        OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                              minimumSize: Size(40, 40),
-                                              primary: Color(0xff90B1A4),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.of(ctx).pop();
-                                              PostService().isDone(widget.post);
-                                              setState(() {
-                                                widget.post.isDone = true;
-                                              });
-                                              //나눔이 완료되었습니다
+                                        ButtonTheme(
+                                            minWidth: 20,
+                                            child: FlatButton(
+                                                onPressed: () {
+                                                  Navigator.of(ctx).pop();
+                                                  PostService()
+                                                      .isDone(widget.post);
+                                                  setState(() {
+                                                    widget.post.isDone = true;
+                                                  });
+                                                  //나눔이 완료되었습니다
 
-                                              Navigator.push(
-                                                  ctx,
-                                                  MaterialPageRoute(
-                                                      builder: ((context) =>
-                                                          BoardScreen())));
-                                            },
-                                            child: Text("예")),
-                                        OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                              minimumSize: Size(40, 40),
-                                              primary: Color(0xff90B1A4),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.of(ctx).pop();
-                                            },
-                                            child: Text("아니오"))
+                                                  Navigator.push(
+                                                      ctx,
+                                                      MaterialPageRoute(
+                                                          builder: ((context) =>
+                                                              BoardScreen())));
+                                                },
+                                                child: Text("예"))),
+                                        ButtonTheme(
+                                          minWidth: 20,
+                                          child: FlatButton(
+                                              onPressed: () {
+                                                Navigator.of(ctx).pop();
+                                              },
+                                              child: Text(
+                                                "아니오",
+                                                style: TextStyle(
+                                                    color: Color(0xff416E5C)),
+                                              )),
+                                        )
                                       ],
                                     );
                                   });
@@ -339,24 +341,36 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: EdgeInsets.all(3),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Color(0xff416E5C),
+                  widget.post.isDone
+                      ? Container(
+                          padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(3.0))),
+                          child: Text(
+                            "나눔완료",
+                            style: TextStyle(color: Colors.white, fontSize: 14),
+                          ),
+                        )
+                      : Container(
+                          padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Color(0xff416E5C),
+                              ),
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Text(
+                            "${widget.post.tagMore}",
+                            maxLines: 1,
+                            softWrap: false,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: Color(0xff416E5C)),
+                          ),
                         ),
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Text(
-                      "${widget.post.tagMore}",
-                      maxLines: 1,
-                      softWrap: false,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                          color: Color(0xff416E5C)),
-                    ),
-                  ),
                   SizedBox(
                     height: 5,
                   ),

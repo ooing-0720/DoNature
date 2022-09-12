@@ -104,8 +104,8 @@ class _PostAddScreenState extends State<PostAddScreen> {
                       tagMoreList.length,
                       (int index) {
                         return ChoiceChip(
-                          backgroundColor: Color(0xff416E5C),
-                          selectedColor: Colors.grey.withOpacity(0.5),
+                          backgroundColor: Colors.grey.withOpacity(0.5),
+                          selectedColor: Color(0xff416E5C),
                           label: Text(
                             tagMoreList[index],
                             style: TextStyle(color: Colors.white),
@@ -487,8 +487,8 @@ class _PostAddScreenState extends State<PostAddScreen> {
       Widget item = Padding(
         padding: const EdgeInsets.only(left: 10, right: 5),
         child: ChoiceChip(
-          backgroundColor: Color(0xff416E5C),
-          selectedColor: Colors.grey.withOpacity(0.5),
+          backgroundColor: Colors.grey.withOpacity(0.5),
+          selectedColor: Color(0xff416E5C),
           selected: selectedDisasterIndex == i,
           onSelected: (bool value) {
             setState(() {

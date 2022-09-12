@@ -40,13 +40,6 @@ class WthrWrnList {
           item.split(':')[0].trim(): item.split(':')[1].trim(),
     };
 
-    /* BAD
-    Map<String, dynamic> map = Map.fromIterable(t6,
-      key: (item) => item.split(':') .[0].trim(),
-      value: (item) => item.split(':').[1].trim()
-    );
-    */
-
     // t7: 예비특보 발효현황
     RegExp basicReg = RegExp(r"\([0-9]\)");
     List<String> t7 = json['t7'].substring(4).split(basicReg);

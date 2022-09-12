@@ -1,7 +1,4 @@
-// import 'dart:html';
-
 import 'package:geolocator/geolocator.dart';
-// import 'package:permission/permission.dart' as permission;
 import 'package:permission_handler/permission_handler.dart';
 
 // 권한 요청 클래스

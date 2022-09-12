@@ -208,39 +208,39 @@ class SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Expanded(flex: 1, child: Text("휴대폰")),
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                      child: TextFormField(
-                          controller: _numberTextEditingController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return '휴대폰 번호를 입력하세요.';
-                            } else if (!RegExp(r'^010-?([0-9]{4})-?([0-9]{4})$')
-                                .hasMatch(value)) {
-                              return '올바른 전화번호 형식이 아닙니다.';
-                            }
-                            return null;
-                          },
-                          style: TextStyle(
-                            fontSize: 12,
-                          ),
-                          decoration: InputDecoration(
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 10.0),
-                            isDense: true,
-                            hintText: "010-0000-0000",
-                          )),
-                    ),
-                  )
-                ],
-              ),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              // Row(
+              //   children: [
+              //     Expanded(flex: 1, child: Text("휴대폰")),
+              //     Expanded(
+              //       flex: 3,
+              //       child: Container(
+              //         child: TextFormField(
+              //             controller: _numberTextEditingController,
+              //             validator: (value) {
+              //               if (value!.isEmpty) {
+              //                 return '휴대폰 번호를 입력하세요.';
+              //               } else if (!RegExp(r'^010-?([0-9]{4})-?([0-9]{4})$')
+              //                   .hasMatch(value)) {
+              //                 return '올바른 전화번호 형식이 아닙니다.';
+              //               }
+              //               return null;
+              //             },
+              //             style: TextStyle(
+              //               fontSize: 12,
+              //             ),
+              //             decoration: InputDecoration(
+              //               contentPadding: new EdgeInsets.symmetric(
+              //                   vertical: 10.0, horizontal: 10.0),
+              //               isDense: true,
+              //               hintText: "010-0000-0000",
+              //             )),
+              //       ),
+              //     )
+              //   ],
+              // ),
               SizedBox(
                 height: 10,
               ),
@@ -269,7 +269,7 @@ class SignUpScreenState extends State<SignUpScreen> {
   }
 
   join() async {
-    String message = '';
+    String message = '회원가입이 되었습니다.';
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(

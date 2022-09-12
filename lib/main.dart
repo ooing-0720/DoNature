@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
             return MaterialApp(
               theme: ThemeData(
                   // primaryColor: Color.fromARGB(255, 7, 65, 29),
-                  fontFamily: 'NanumSquare',
+                  fontFamily: 'Pretendard',
                   scaffoldBackgroundColor: Colors.white,
                   appBarTheme: AppBarTheme(
                       elevation: 1.0,

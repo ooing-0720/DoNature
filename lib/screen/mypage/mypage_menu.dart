@@ -49,7 +49,7 @@ class MyPageMenuState extends State<MyPageMenu> {
         //         MaterialPageRoute(builder: (context) => SignUpScreen()));
         //   },
         // ),
-        Divider(height: 1),
+        Divider(height: 1, thickness: 1),
         ListTile(
           title: Container(
               alignment: Alignment.centerLeft,
@@ -67,12 +67,15 @@ class MyPageMenuState extends State<MyPageMenu> {
                 ? Navigator.push(context,
                     MaterialPageRoute(builder: (context) => LoginScreen()))
                 : Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => EditProfileScreen()));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditProfileScreen()))
+                    .then((value) {
+                    setState(() {});
+                  });
           },
         ),
-        Divider(height: 1),
+        Divider(height: 1, thickness: 1),
         ListTile(
           title: Container(
               alignment: Alignment.centerLeft,
@@ -96,7 +99,7 @@ class MyPageMenuState extends State<MyPageMenu> {
                         builder: (context) => ChangePasswordScreen()));
           },
         ),
-        Divider(height: 1),
+        Divider(height: 1, thickness: 1),
         ListTile(
           title: Container(
               alignment: Alignment.centerLeft,
@@ -114,6 +117,7 @@ class MyPageMenuState extends State<MyPageMenu> {
                   MaterialPageRoute(builder: (context) => LoginScreen()))
               : _LogoutDialog(),
         ),
+        Divider(height: 1, thickness: 1),
       ],
       shrinkWrap: true,
     );

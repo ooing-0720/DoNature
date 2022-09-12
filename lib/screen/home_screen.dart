@@ -72,7 +72,6 @@ class HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     DateFormat dateFormat = DateFormat("yyyy년 MM월 dd일 HH:mm");
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text("DONATURE"),
         elevation: 0,
@@ -166,8 +165,10 @@ class HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   Flexible(
                                     fit: FlexFit.loose,
-                                    child: Image.asset(i_images[itemIndex],
-                                        fit: BoxFit.fill),
+                                    // flex: 2,
+                                    child: Image.asset(
+                                      i_images[itemIndex],
+                                    ),
                                   )
 
                                   // Text(labels[itemIndex])

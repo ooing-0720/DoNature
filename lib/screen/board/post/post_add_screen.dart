@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation_nature/board/service/post_service.dart';
 import 'package:donation_nature/media/media.dart';
@@ -72,7 +71,40 @@ class _PostAddScreenState extends State<PostAddScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            titleForm(),
+            TextFormField(
+              controller: titleEditingController,
+              onChanged: (nextText) {
+                setState(() {
+                  titleEditingController.text = nextText.substring(0, 24);
+                  titleEditingController.selection =
+                      TextSelection.fromPosition(TextPosition(offset: 24));
+                });
+              },
+              inputFormatters: [LengthLimitingTextInputFormatter(24)],
+              maxLines: 1,
+              decoration: InputDecoration(
+                hintText: '제목을 입력하세요',
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 1, color: Colors.grey),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    )),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(width: 2, color: Colors.grey),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20),
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 1, color: Colors.red),
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+              ),
+              validator: (String? val) {
+                if (val!.isEmpty) {
+                  return "제목은 비워둘 수 없습니다";
+                }
+              },
+            ),
             Divider(
               height: 20,
               thickness: 1.5,
@@ -129,7 +161,6 @@ class _PostAddScreenState extends State<PostAddScreen> {
                               SimpleDialogOption(
                                 onPressed: () async {
                                   // 카메라에서 가져오기
-                                  // 파이어베이스에 사진 업로드된 후에 글작성 버튼 눌러야함 - 5sec
                                   _editedPost.imageUrl =
                                       await _media.uploadImage(
                                           ImageSource.camera,
@@ -252,11 +283,34 @@ class _PostAddScreenState extends State<PostAddScreen> {
                 ),
               ],
             ),
-            contentForm(),
+            TextFormField(
+              controller: contentEditingController,
+              maxLines: 20,
+              validator: (String? val) {
+                if (val!.isEmpty) {
+                  return "내용은 비워둘 수 없습니다";
+                }
+              },
+              decoration: InputDecoration(
+                hintText: '내용을 입력하세요',
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 1, color: Colors.grey),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    )),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 2, color: Colors.grey),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    )),
+                errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 1, color: Colors.red),
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+              ),
+            ),
             SizedBox(
               height: 20,
             ),
-           
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(children: disasterChips()),
@@ -505,7 +559,6 @@ class _PostAddScreenState extends State<PostAddScreen> {
                       ScaffoldMessenger.of(context)
                           .showSnackBar(SnackBar(content: Text('저장되었습니다')));
 
-
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -513,7 +566,6 @@ class _PostAddScreenState extends State<PostAddScreen> {
                           )).then((value) {
                         setState(() {});
                       });
-
                     },
                     child: Text(
                       "예",

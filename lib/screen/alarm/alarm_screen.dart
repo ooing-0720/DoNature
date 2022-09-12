@@ -1,9 +1,9 @@
 import 'package:donation_nature/alarm/service/alarm_serivce.dart';
 import 'package:donation_nature/models/alarm_model.dart';
-import 'package:donation_nature/screen/login_screen.dart';
+import 'package:donation_nature/screen/mypage/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:donation_nature/screen/user_manage.dart';
+import 'package:donation_nature/mypage/user_manage.dart';
 
 class AlarmScreen extends StatefulWidget {
   const AlarmScreen({Key? key}) : super(key: key);

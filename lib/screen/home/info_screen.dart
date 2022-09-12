@@ -1,9 +1,9 @@
-import 'package:donation_nature/screen/api_info.dart';
-import 'package:donation_nature/screen/weather_disaster_api.dart';
+import 'package:donation_nature/screen/home/api_info.dart';
+import 'package:donation_nature/screen/home/weather_disaster_api.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
-import './disaster_info_list.dart';
+import 'disaster_info_list.dart';
 
 class InfoScreen extends StatefulWidget {
   @override

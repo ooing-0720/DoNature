@@ -117,7 +117,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(15),
                                         color: (isMe
-                                            ? Color(0xff90B1A4)
+                                            ? Color(0xff416E5C)
                                             : Colors.grey.shade200),
                                       ),
                                       padding: EdgeInsets.all(12),
@@ -255,7 +255,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 color: Colors.white,
                 size: 18,
               ),
-              backgroundColor: Color(0xff90B1A4),
+              backgroundColor: Color(0xff416E5C),
               elevation: 0,
             ),
           ],

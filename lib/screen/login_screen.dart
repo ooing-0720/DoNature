@@ -66,6 +66,7 @@ class LoginScreenState extends State<LoginScreen> {
                 border: OutlineInputBorder(),
                 labelText: '이메일',
               ),
+              keyboardType: TextInputType.emailAddress,
             ),
             SizedBox(height: 12.0),
             TextFormField(

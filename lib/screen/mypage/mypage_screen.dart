@@ -1,9 +1,7 @@
-import 'package:donation_nature/screen/alarm_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:donation_nature/screen/mypage/mypage_header.dart';
 import 'package:donation_nature/screen/mypage/mypage_menu.dart';
-import 'package:donation_nature/alarm/service/alarm_serivce.dart';
 
 class MyPageScreen extends StatefulWidget {
   const MyPageScreen({Key? key}) : super(key: key);
@@ -27,7 +25,6 @@ class MyPageScreenState extends State<MyPageScreen> {
       body: SingleChildScrollView(
         child: Column(children: [MyPageHeader(), MyPageMenu()]),
       ),
-      // backgroundColor: Color(0xffededed),
     );
   }
 }

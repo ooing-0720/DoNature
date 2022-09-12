@@ -1,14 +1,12 @@
-import 'dart:async';
-
 import 'package:donation_nature/alarm/service/alarm_serivce.dart';
 import 'package:donation_nature/board/service/post_service.dart';
 import 'package:donation_nature/chat/domain/chatting_room.dart';
 import 'package:donation_nature/chat/service/chat_service.dart';
-import 'package:donation_nature/screen/board_screen.dart';
+import 'package:donation_nature/screen/board/board_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:donation_nature/screen/user_manage.dart';
-import '../chat/chat_detail_screen.dart';
+import 'package:donation_nature/mypage/user_manage.dart';
+import 'package:donation_nature/screen/chat/chat_detail_screen.dart';
 import './post_edit_screen.dart';
 
 import 'package:donation_nature/board/domain/post.dart';

@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:donation_nature/screen/disaster_list.dart';
+import 'package:donation_nature/screen/home/disaster_list.dart';
 import 'package:donation_nature/API/repository/ultra_srt_ncst_repository.dart';
 import 'package:donation_nature/API/repository/wthr_wrn_liist_repository.dart';
 

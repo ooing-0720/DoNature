@@ -1,5 +1,5 @@
 import 'package:donation_nature/screen/main_screen.dart';
-import 'package:donation_nature/screen/signup_screen.dart';
+import 'package:donation_nature/screen/mypage/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

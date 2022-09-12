@@ -1,16 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:date_format/date_format.dart';
+
 import 'package:donation_nature/board/service/post_service.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import './post/post_detail_screen.dart';
 import 'package:donation_nature/board/domain/post.dart';
-import 'package:flutter/foundation.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:donation_nature/screen/user_manage.dart';
-import 'package:donation_nature/screen/disaster_list.dart';
-import 'package:donation_nature/screen/location_list.dart';
-import './postListTile.dart';
+import 'package:donation_nature/screen/home/disaster_list.dart';
+import 'package:donation_nature/screen/board/post/location_list.dart';
+import '../post/postListTile.dart';
 
 class BoardSearchScreen extends StatefulWidget {
   const BoardSearchScreen({Key? key}) : super(key: key);

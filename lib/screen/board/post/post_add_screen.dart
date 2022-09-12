@@ -1,26 +1,16 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'dart:convert';
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:date_format/date_format.dart';
 import 'package:donation_nature/board/service/post_service.dart';
 import 'package:donation_nature/media/media.dart';
-import 'package:donation_nature/screen/board_screen.dart';
-import 'package:donation_nature/screen/post/post_detail_screen.dart';
-import 'package:donation_nature/screen/user_manage.dart';
+import 'package:donation_nature/screen/board/board_screen.dart';
+import 'package:donation_nature/mypage/user_manage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:donation_nature/board/domain/post.dart';
 import 'package:flutter/services.dart';
-import 'package:location/location.dart';
-import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:donation_nature/screen/location_list.dart';
-import '../disaster_list.dart';
-import './custom_inputformatter.dart';
+import 'package:donation_nature/screen/board/post/location_list.dart';
+import 'package:donation_nature/screen/home/disaster_list.dart';
 
 class PostAddScreen extends StatefulWidget {
   const PostAddScreen({Key? key}) : super(key: key);
@@ -49,7 +39,6 @@ class _PostAddScreenState extends State<PostAddScreen> {
     writer: '',
     date: null,
     content: '',
-    // imageUrl: '',
     locationSiDo: '',
     locationGuGunSi: '',
     tagDisaster: '', // 재난 태그
@@ -57,7 +46,6 @@ class _PostAddScreenState extends State<PostAddScreen> {
   );
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -268,21 +256,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
             SizedBox(
               height: 20,
             ),
-            // Row(
-            //   children: [
-            //     Padding(
-            //       padding: EdgeInsets.only(left: 10),
-            //       child: Row(
-            //         children: [
-            //           Icon(
-            //             Icons.local_offer,
-            //             color: Color(0xff90B1A4),
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   ],
-            // ),
+           
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(children: disasterChips()),
@@ -380,16 +354,10 @@ class _PostAddScreenState extends State<PostAddScreen> {
   }
 
   TextFormField titleForm() {
-    // int maxLength = 24;
     return TextFormField(
       controller: titleEditingController,
       onChanged: (nextText) {
         setState(() {
-          // if(titleEditingController.text.trim() != ""){
-          //   isSelected = true;
-          // }else{
-          //   isSelected = false;
-          // }
           titleEditingController.text = nextText.substring(0, 24);
           titleEditingController.selection =
               TextSelection.fromPosition(TextPosition(offset: 24));
@@ -537,12 +505,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
                       ScaffoldMessenger.of(context)
                           .showSnackBar(SnackBar(content: Text('저장되었습니다')));
 
-//네비게이터
-// Navigator.of(
-//                       context,
-//                       MaterialPageRoute(
-//                           builder: (context) => PostDetailScreen(_editedPost))
-//                           );
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -551,7 +514,6 @@ class _PostAddScreenState extends State<PostAddScreen> {
                         setState(() {});
                       });
 
-                      //              Navigator.of(context).pop();
                     },
                     child: Text(
                       "예",

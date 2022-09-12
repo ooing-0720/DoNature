@@ -1,18 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:donation_nature/board/service/post_service.dart';
-import 'package:donation_nature/screen/alarm_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import './post/post_add_screen.dart';
-import './post/post_detail_screen.dart';
-import 'package:donation_nature/board/domain/post.dart';
-import 'package:flutter/foundation.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:donation_nature/screen/user_manage.dart';
-import 'package:donation_nature/screen/board_search_screen.dart';
 
-import './postListTile.dart';
+import 'package:donation_nature/board/service/post_service.dart';
+import 'package:donation_nature/screen/alarm/alarm_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:donation_nature/screen/board/post/post_add_screen.dart';
+import 'package:donation_nature/board/domain/post.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:donation_nature/mypage/user_manage.dart';
+import 'package:donation_nature/screen/board/board_search_screen.dart';
+
+import '../post/postListTile.dart';
 
 class BoardScreen extends StatefulWidget {
   const BoardScreen({Key? key}) : super(key: key);

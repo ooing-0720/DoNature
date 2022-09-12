@@ -1,6 +1,6 @@
 import 'dart:ui';
-import 'package:donation_nature/screen/disaster_list.dart';
-import 'package:donation_nature/screen/info_screen.dart';
+import 'package:donation_nature/screen/home/disaster_list.dart';
+import 'package:donation_nature/screen/home/info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';

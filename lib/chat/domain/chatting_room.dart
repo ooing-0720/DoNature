@@ -15,8 +15,6 @@ class ChattingRoom {
   String? postReference;
   DocumentReference? chatReference;
 
-  
-
   ChattingRoom({
     this.user,
     this.nickname,
@@ -42,7 +40,7 @@ class ChattingRoom {
 
   ChattingRoom.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromJson(snapshot.data(), snapshot.reference);
-  
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['user'] = user;
@@ -56,10 +54,4 @@ class ChattingRoom {
 
     return map;
   }
-
-  // Future<Post> getPost(DocumentReference reference) async {
-  //   PostService _postService = PostService();
-  //   return await _postService.getPost(reference);
-  // }
 }
-

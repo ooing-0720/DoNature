@@ -41,45 +41,4 @@ class UltraSrtNcst {
       //   SKY: json["SKY"] as String,
     );
   }
-
-/*
-  factory UltraSrtNcst.fromJson(Map<String, dynamic> json) {
-    // 강수형태 코드 변환
-    if (json["category"] == "PTY") {
-      if (list[0]['obsrValue'] == "0") {
-        list[0]['obsrValue'] = "없음";
-      } else if (list[0]['obsrValue'] == "1") {
-        list[0]['obsrValue'] = "비";
-      } else if (list[0]['obsrValue'] == "2") {
-        list[0]['obsrValue'] = "비/눈";
-      } else if (list[0]['obsrValue'] == "3") {
-        list[0]['obsrValue'] = "눈";
-      } else if (list[0]['obsrValue'] == "5") {
-        list[0]['obsrValue'] = "빗방울";
-      } else if (list[0]['obsrValue'] == "6") {
-        list[0]['obsrValue'] = "빗방울눈날림";
-      } else if (list[0]['obsrValue'] == "7") {
-        list[0]['obsrValue'] = "눈날림";
-      }
-    }
-
-/*
-    // 하늘상태 코드 변환
-    if (json["SKY"] == "1") {
-      json["SKY"] = "맑음";
-    } else if (json["SKY"] == "3") {
-      json["SKY"] = "구름많음";
-    } else if (json["SKY"] == "4") {
-      json["SKY"] = "흐림";
-    }
-*/
-    return UltraSrtNcst(
-      T1H: json[3]["obsrValue"] as String,
-      RN1: json[2]["obsrValue"] as String,
-      REH: json[1]["obsrValue"] as String,
-      PTY: list[0]['obsrValue'] as String,
-      //   SKY: json["SKY"] as String,
-    );
-  }
-  */
 }

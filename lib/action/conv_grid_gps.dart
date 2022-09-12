@@ -33,37 +33,6 @@ class ConvGridGps {
 
   static double get ro => re * sf / Math.pow(roTmp, sn);
 
-/*
-  static gridToGPS(int v1, int v2) {
-    var rs = {};
-    double theta;
-
-    rs['x'] = v1;
-    rs['y'] = v2;
-    int xn = (v1 - XO).toInt();
-    int yn = (ro - v2 + YO).toInt();
-    var ra = Math.sqrt(xn * xn + yn * yn);
-    if (sn < 0.0) ra = -ra;
-    var alat = Math.pow((re * sf / ra), (1.0 / sn));
-    alat = 2.0 * Math.atan(alat) - Math.pi * 0.5;
-
-    if (xn.abs() <= 0.0) {
-      theta = 0.0;
-    } else {
-      if (yn.abs() <= 0.0) {
-        theta = Math.pi * 0.5;
-        if (xn < 0.0) theta = -theta;
-      } else
-        theta = Math.atan2(xn, yn);
-    }
-    var alon = theta / sn + olon;
-    rs['lat'] = alat * RADDEG;
-    rs['lng'] = alon * RADDEG;
-
-    return rs;
-  }
-*/
-
   static gpsToGRID(double v1, double v2) {
     var rs = {};
     double theta;

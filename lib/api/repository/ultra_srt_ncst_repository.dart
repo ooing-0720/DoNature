@@ -11,13 +11,8 @@ class UltraSrtNcstRepository {
   var serviceKey = ultraSrtNcstServiceKey;
 
   Future<dynamic?> loadUltraSrtNcst(Map<dynamic, dynamic> position) async {
-    // var position = await MainAction().getPosition();
-
     var latitude = position['latitude'];
     var longitude = position['longitude'];
-
-    // var latitude = 37.5575;
-    // var longitude = 127.0418;
 
     // 현재 위치 위도, 경도 값을 격자 x, y로 변환
     var grid = ConvGridGps.gpsToGRID(latitude!, longitude!);
@@ -29,12 +24,12 @@ class UltraSrtNcstRepository {
     var dateStr = formatDate(dateNow, [yyyy, mm, dd]).toString();
     var timeStr;
 
+    // API 동기화 시간에 맞게 설정
     if (dateNow.minute < 40) {
       timeStr = (dateNow.hour - 1).toString().padLeft(2, '0') + '00';
     } else {
       timeStr = formatDate(dateNow, [HH, '00']).toString();
     }
-    print(timeStr);
 
     var url = Uri.parse(
         "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?serviceKey=$serviceKey&numOfRows=10&pageNo=1&dataType=JSON&base_date=$dateStr&base_time=$timeStr&nx=$nx&ny=$ny");
@@ -45,17 +40,9 @@ class UltraSrtNcstRepository {
     if (response.statusCode == 200) {
       final body = convert.utf8.decode(response.bodyBytes);
       Map<String, dynamic> jsonResult = convert.json.decode(body);
-      // final jsonCode = jsonResult['response']['header'];
       final jsonUltraSrtNcst = jsonResult['response']['body']['items'];
-
-      // List<dynamic> list = jsonUltraSrtNcst['item'];
-
-      // print(jsonUltraSrtNcst);
 
       return UltraSrtNcst.fromJson(jsonUltraSrtNcst);
     }
-
-    // print('Response status: ${response.statusCode}');
-    // print('Response body: ${response.body}');
   }
 }

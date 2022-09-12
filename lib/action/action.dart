@@ -12,8 +12,6 @@ class MainAction {
     var latitude, longitude;
     var nowPosition = {'latitude': 0.0, 'longitude': 0.0};
 
-    print(permissionValue == true ? 'true' : 'false');
-
     if (permissionValue == true) {
       // 위치 권한 허용한 경우 -> 현재 위치
       Position position = await Geolocator.getCurrentPosition(
@@ -26,12 +24,10 @@ class MainAction {
       nowPosition['latitude'] = 37.566;
       nowPosition['longitude'] = 126.978;
     }
-    // print(nowPosition);
     return nowPosition;
   }
 
   Future<String> getAddress(Map<dynamic, dynamic> position) async {
-    // var position = await getPosition();
     var latitude = position['latitude'];
     var longitude = position['longitude'];
 
@@ -43,7 +39,6 @@ class MainAction {
     Map<String, dynamic> jsonResult = convert.json.decode(body);
     final address = jsonResult['results'][0]['formatted_address'];
 
-    print(address);
     return address;
   }
 }

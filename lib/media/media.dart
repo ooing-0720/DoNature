@@ -6,11 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 class Media {
   // 핸드폰에서 이미지 선택
-  // ImageSource.gallery 또는 ImageSource.camera로 선택 가능
   Future<String> uploadImage(ImageSource source, String title) async {
-    // 접근 권한인데 갤럭시는 필요없다함?
-    // PermissionRequest.getStoragePermission();
-
     var image = await ImagePicker().pickImage(
       source: source,
 

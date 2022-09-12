@@ -182,7 +182,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
 
   CircleAvatar circleAvartar() {
     return CircleAvatar(
-      backgroundColor: Color(0xff90B1A4),
+      backgroundColor: Color(0xff416E5C),
       radius: 24,
       child: Icon(
         Icons.person,

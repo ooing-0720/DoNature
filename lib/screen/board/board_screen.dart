@@ -7,8 +7,7 @@ import 'package:donation_nature/board/domain/post.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/mypage/user_manage.dart';
 import 'package:donation_nature/screen/board/board_search_screen.dart';
-
-import '../post/postListTile.dart';
+import 'package:donation_nature/screen/board/post/postListTile.dart';
 
 class BoardScreen extends StatefulWidget {
   const BoardScreen({Key? key}) : super(key: key);

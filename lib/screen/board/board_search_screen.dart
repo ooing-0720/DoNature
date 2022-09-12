@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:donation_nature/board/domain/post.dart';
 import 'package:donation_nature/screen/home/disaster_list.dart';
 import 'package:donation_nature/screen/board/post/location_list.dart';
-import '../post/postListTile.dart';
+import 'package:donation_nature/screen/board/post/postListTile.dart';
 
 class BoardSearchScreen extends StatefulWidget {
   const BoardSearchScreen({Key? key}) : super(key: key);

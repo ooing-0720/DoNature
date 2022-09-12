@@ -33,7 +33,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   TextEditingController controller = TextEditingController();
   ScrollController scrollController = ScrollController();
 
-//uid랑 비교
   @override
   void initState() {
     setState(() {});
@@ -81,7 +80,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                   List<ChatModel> chats = asyncSnapshot.data!;
 
                   return Column(children: [
-                    //채팅 버블 - expanded
                     Expanded(
                       child: ListView.builder(
                           controller: scrollController,
@@ -93,7 +91,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                               );
                             }
                             bool isMe =
-                                true; //chats의 useruid와 chatmodel의 useruid 같으면 내가 보낸것, isMe=true
+                                true; //chats의 useruid와 chatmodel의 useruid 같으면 내가 보낸 것, isMe=true
                             if (chats[index].userUID != user!.uid) {
                               isMe = false;
                             }
@@ -103,6 +101,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                                   left: 12, right: 12, top: 4, bottom: 4),
                               child: Column(
                                 children: <Widget>[
+                                  //내가 보낸 채팅 버블 오른쪽으로 정렬
                                   Align(
                                     alignment: (isMe
                                         ? Alignment.topRight
@@ -130,14 +129,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                                             : TextStyle(
                                                 fontSize: 15,
                                                 color: Colors.black)),
-
-                                        //TextStyle(fontSize: 15),
                                       ),
                                     ),
-                                    // Padding(
-                                    //     padding: EdgeInsets.only(
-                                    //   bottom: 5,
-                                    // )),
                                   ),
                                   Container(
                                     alignment: isMe
@@ -186,8 +179,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
               controller: controller,
               decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(10),
-                  // enabledBorder: OutlineInputBorder(
-                  //     borderRadius: BorderRadius.circular(15)),
                   hintText: "메세지를 입력하세요",
                   hintStyle: TextStyle(color: Colors.black54, fontSize: 13),
                   focusedBorder: OutlineInputBorder(
@@ -206,7 +197,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
               onPressed: () async {
                 if (controller.value.text.isNotEmpty) {
                   final user = FirebaseAuth.instance.currentUser;
-                  print(controller.text);
+
                   try {
                     ChatModel chatModel = ChatModel(
                         userUID: user!.uid,
@@ -240,7 +231,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     log('error)',
                         error: ex.toString(), stackTrace: StackTrace.current);
                   }
-
+                  //채팅 보내고 나서 가장 아래로 내려오기
                   scrollController.animateTo(
                       scrollController.position.maxScrollExtent,
                       duration: Duration(milliseconds: 300),

@@ -87,7 +87,6 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
           ),
         ),
       ),
-
       children: [
         Wrap(
           spacing: 12,
@@ -95,8 +94,8 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
             tagMoreList.length,
             (int index) {
               return ChoiceChip(
-                backgroundColor: Color(0xff416E5C),
-                selectedColor: Colors.grey.withOpacity(0.5),
+                backgroundColor: Colors.grey.withOpacity(0.5),
+                selectedColor: Color(0xff416E5C),
                 label: Text(
                   tagMoreList[index],
                   style: TextStyle(color: Colors.white),
@@ -113,9 +112,6 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
           ).toList(),
         ),
       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 
@@ -129,16 +125,12 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
           ),
         ),
       ),
-
       children: [
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(children: disasterChips()),
         ),
       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 
@@ -162,15 +154,14 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
   }
 
   List<Widget> disasterChips() {
-    //null값 넣을 수 있게
     List<Widget> chips = [];
 
     for (int i = 0; i < disasterList.length; i++) {
       Widget item = Padding(
         padding: const EdgeInsets.only(left: 10, right: 5),
         child: ChoiceChip(
-          backgroundColor: Color(0xff416E5C),
-          selectedColor: Colors.grey.withOpacity(0.5),
+          backgroundColor: Colors.grey.withOpacity(0.5),
+          selectedColor: Color(0xff416E5C),
           selected: selectedDisasterIndex == i,
           onSelected: (bool value) {
             setState(() {
@@ -270,6 +261,7 @@ class _BoardSearchScreenState extends State<BoardSearchScreen> {
   }
 }
 
+//결과 띄우기
 class SearchResultScreen extends StatefulWidget {
   String? _selectedDo;
   String? _selectedGu;
@@ -300,7 +292,6 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                       itemCount: findPosts.length,
                       itemBuilder: (BuildContext context, int index) {
                         Post data = findPosts[index];
-
                         return postListTile(context, data);
                       },
                       separatorBuilder: (BuildContext context, int index) {
@@ -308,7 +299,6 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                       },
                     );
                   } else if (snapshot.hasError) {
-                    print('${snapshot.error}');
                     return Text('${snapshot.error}');
                   } else {
                     return const Center(child: CircularProgressIndicator());

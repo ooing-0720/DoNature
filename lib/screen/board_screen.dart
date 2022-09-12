@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:donation_nature/board/provider/post_provider.dart';
 import 'package:donation_nature/board/service/post_service.dart';
 import 'package:donation_nature/screen/alarm_screen.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +40,6 @@ class _BoardScreenState extends State<BoardScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                //showSearch(context: context, delegate: MySearchDelegate());
                 Navigator.push(
                     context,
                     MaterialPageRoute(

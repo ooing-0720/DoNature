@@ -62,7 +62,7 @@ GestureDetector postListTile(BuildContext context, Post data) {
                     ),
 
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.5,
+                      width: MediaQuery.of(context).size.width * 0.75,
                       child: Text(
                         overflow: TextOverflow.ellipsis,
                         "${data.title}",

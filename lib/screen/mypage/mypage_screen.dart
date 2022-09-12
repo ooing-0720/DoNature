@@ -25,11 +25,7 @@ class MyPageScreenState extends State<MyPageScreen> {
             )),
       ),
       body: SingleChildScrollView(
-        child: Column(children: [
-          MyPageHeader(),
-
-          //  MyPageMenu()
-        ]),
+        child: Column(children: [MyPageHeader(), MyPageMenu()]),
       ),
       // backgroundColor: Color(0xffededed),
     );

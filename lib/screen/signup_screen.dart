@@ -67,8 +67,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                           fontSize: 12,
                         ),
                         decoration: InputDecoration(
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 10.0),
                           isDense: true,
                           hintText: "이메일 입력",
                           enabledBorder: OutlineInputBorder(
@@ -108,8 +106,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                           fontSize: 12,
                         ),
                         decoration: InputDecoration(
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 10.0),
                           isDense: true,
                           hintText: "비밀번호 입력",
                           enabledBorder: OutlineInputBorder(
@@ -148,8 +144,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                           fontSize: 12,
                         ),
                         decoration: InputDecoration(
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 10.0),
                           isDense: true,
                           hintText: "비밀번호 재입력",
                           enabledBorder: OutlineInputBorder(
@@ -190,8 +184,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                           fontSize: 12,
                         ),
                         decoration: InputDecoration(
-                          contentPadding: new EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 10.0),
                           isDense: true,
                           hintText: "닉네임",
                           enabledBorder: OutlineInputBorder(
@@ -242,7 +234,7 @@ class SignUpScreenState extends State<SignUpScreen> {
               //   ],
               // ),
               SizedBox(
-                height: 10,
+                height: 30,
               ),
               ElevatedButton(
                 onPressed: () {
@@ -257,9 +249,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                     ),
                     primary: Color(0xff416E5C),
                     minimumSize: const Size.fromHeight(50)),
-              ),
-              SizedBox(
-                height: 50,
               ),
             ],
           ),

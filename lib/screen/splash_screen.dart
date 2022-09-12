@@ -8,7 +8,6 @@ class SplashScreen extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Center(child: Image.asset('assets/images/splash.png')),
-        //Here you can set what ever background color you need.
         backgroundColor: Colors.white,
       ),
     );

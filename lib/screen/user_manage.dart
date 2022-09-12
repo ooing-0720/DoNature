@@ -20,16 +20,8 @@ class UserManage {
   User? getUser() {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      // Name, email address, and profile photo URL
       final nickname = user.displayName;
       final email = user.email;
-
-      // Check if user's email is verified
-      // final emailVerified = user.emailVerified;
-
-      // The user's ID, unique to the Firebase project. Do NOT use this value to
-      // authenticate with your backend server, if you have one. Use
-      // User.getIdToken() instead.
       final uid = user.uid;
     }
     return user;
@@ -40,13 +32,8 @@ class UserManage {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       for (final providerProfile in user.providerData) {
-        // ID of the provider (google.com, apple.cpm, etc.)
         final provider = providerProfile.providerId;
-
-        // UID specific to the provider
         final uid = providerProfile.uid;
-
-        // Name, email address, and profile photo URL
         final name = providerProfile.displayName;
         final emailAddress = providerProfile.email;
         final profilePhoto = providerProfile.photoURL;

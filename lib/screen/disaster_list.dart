@@ -7,6 +7,7 @@ List<String> images = [
   'assets/images/wind.png',
   'assets/images/windwave.png',
 ];
+
 List<String> background_images = [
   'assets/images/background_heatwave.jpg',
   'assets/images/background_heavyrain.jpg',
@@ -14,7 +15,9 @@ List<String> background_images = [
   'assets/images/background_strongwind.jpg',
   'assets/images/background_windwave.jpg',
 ];
+
 List<String> labels = ['폭염주의보', '호우주의보', '태풍주의보', '강풍주의보', '풍랑주의보'];
+
 List<String> location = [
   '서울',
   '부산',

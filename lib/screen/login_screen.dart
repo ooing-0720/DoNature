@@ -28,7 +28,6 @@ class LoginScreenState extends State<LoginScreen> {
   }
 
   final _formkey = GlobalKey<FormState>();
-
   final _emailTextEditingController = TextEditingController();
   final _passwordTextEditingController = TextEditingController();
 
@@ -107,7 +106,7 @@ class LoginScreenState extends State<LoginScreen> {
               },
               child: Text("회원가입"),
               style: TextButton.styleFrom(
-                primary: Colors.grey, // foreground
+                primary: Colors.grey,
               ),
             )
           ],

@@ -14,29 +14,38 @@ class EditProfileScreen extends StatefulWidget {
 
 class EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController nicknameTextEditingController = TextEditingController();
-  TextEditingController numberTextEditingController = TextEditingController();
   UserManage userManage = UserManage();
 
-  final _scaffoldGlobalKey = GlobalKey<ScaffoldState>();
+  static final GlobalKey<ScaffoldState> _scaffoldGlobalKey =
+      new GlobalKey<ScaffoldState>();
 
   bool loading = false;
   User? user;
   bool _profileNameValid = true;
-  bool _bioValid = true;
+
   String? _image;
 
   updateUserData() {
     setState(() {
-      nicknameTextEditingController.text.trim().length < 3 ||
+      nicknameTextEditingController.text.trim().length < 2 ||
+              nicknameTextEditingController.text.trim().length > 10 ||
               nicknameTextEditingController.text.isEmpty
           ? _profileNameValid = false
           : _profileNameValid = true;
-
-      numberTextEditingController.text.trim().length > 110 ||
-              numberTextEditingController.text.isEmpty
-          ? _bioValid = false
-          : _bioValid = true;
     });
+
+    if (_profileNameValid) {
+      user?.updateDisplayName(nicknameTextEditingController.text);
+      if (_image == null) {
+        _image = user!.photoURL;
+      }
+      user?.updatePhotoURL(_image);
+      Navigator.pop(context);
+      SnackBar successSnackBar = SnackBar(
+        content: Text('Profile has been updated successfully.'),
+      );
+      _scaffoldGlobalKey.currentState?.showSnackBar(successSnackBar);
+    }
   }
 
   @override
@@ -83,11 +92,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
           actions: <Widget>[
             TextButton(
                 onPressed: () {
-                  if (_profileNameValid) {
-                    user?.updateDisplayName(nicknameTextEditingController.text);
-                    user?.updatePhotoURL(_image);
-                    Navigator.pop(context);
-                  }
+                  updateUserData();
                 },
                 child: Text('변경'),
                 style: TextButton.styleFrom(
@@ -133,12 +138,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 40),
-                      child: Column(
-                        children: [
-                          createProfileNameTextFormField(),
-                          //createBioTextFormField(),
-                        ],
-                      ),
+                      child: createProfileNameTextFormField(),
                     ),
                   ],
                 ))
@@ -163,40 +163,12 @@ class EditProfileScreenState extends State<EditProfileScreen> {
               hintText: user!.displayName,
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey)),
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white)),
               hintStyle: TextStyle(color: Colors.grey),
-              errorText: _profileNameValid ? null : '길이가 너무 짧습니다.'),
+              errorText: _profileNameValid ? null : '2-10자로 입력해주세요.'),
         )
       ],
     );
   }
-
-  // createBioTextFormField() {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       Padding(
-  //         padding: EdgeInsets.only(top: 13),
-  //         child: Text(
-  //           '전화번호',
-  //           style: TextStyle(color: Colors.grey),
-  //         ),
-  //       ),
-  //       TextField(
-  //         controller: numberTextEditingController,
-  //         decoration: InputDecoration(
-  //             hintText: user!.email,
-  //             enabledBorder: UnderlineInputBorder(
-  //                 borderSide: BorderSide(color: Colors.grey)),
-  //             focusedBorder: UnderlineInputBorder(
-  //                 borderSide: BorderSide(color: Colors.white)),
-  //             hintStyle: TextStyle(color: Colors.grey),
-  //             errorText: _bioValid ? null : '올바른 형식이 아닙니다.'),
-  //       )
-  //     ],
-  //   );
-  // }
 
   Future getImageFromGallery(ImageSource source) async {
     // 접근 권한인데 갤럭시는 필요없다함?

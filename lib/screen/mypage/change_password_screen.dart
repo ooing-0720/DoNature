@@ -22,6 +22,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
     user = userManage.getUser();
   }
 
+  @override
   void dispose() {
     _passwordTextEditingController.dispose();
     _changepasswordTextEditingController.dispose();
@@ -41,7 +42,6 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   if (_formKey.currentState!.validate()) {
                     _changePassword(_passwordTextEditingController.text,
                         _changepasswordTextEditingController.text);
-                    Navigator.pop(context);
                   }
                 },
                 child: Text('변경'),
@@ -138,6 +138,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
             content: Text('비밀번호가 변경되었습니다.'),
           ),
         );
+        Navigator.pop(context);
       }).catchError((error) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -145,6 +146,12 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
           ),
         );
       });
-    }).catchError((err) {});
+    }).catchError((err) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('현재 비밀번호가 일치하지 않습니다.'),
+        ),
+      );
+    });
   }
 }

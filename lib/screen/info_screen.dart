@@ -691,14 +691,22 @@ class _InfoScreenState extends State<InfoScreen> with TickerProviderStateMixin {
                   Icons.warning_amber,
                   color: Color.fromARGB(255, 149, 182, 169),
                 ),
-                Text(
-                  '폭염(이)란?',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 27,
-                    // fontWeight: FontWeight.w300,
-                  ),
-                ),
+                RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                        text: _labels[index],
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 27,
+                        )),
+                    TextSpan(
+                        text: '(이)란?',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 27,
+                        )),
+                  ]),
+                )
               ]),
               Container(
                 width: double.infinity,

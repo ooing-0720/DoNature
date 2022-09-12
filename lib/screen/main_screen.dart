@@ -1,14 +1,8 @@
-import 'package:donation_nature/alarm/service/alarm_serivce.dart';
-import 'package:donation_nature/firebase_options.dart';
 import 'package:donation_nature/screen/alarm_screen.dart';
 import 'package:donation_nature/screen/chat/chat_list_screen.dart';
-import 'package:donation_nature/screen/login_screen.dart';
-import 'package:donation_nature/screen/splash_screen.dart';
 import 'package:donation_nature/screen/user_manage.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:donation_nature/screen/info_screen.dart';
 import 'package:donation_nature/screen/board_screen.dart';
 import 'package:donation_nature/screen/mypage/mypage_screen.dart';
 import 'package:donation_nature/screen/home_screen.dart';
@@ -43,26 +37,8 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  // Future alarmIcon(User? user) async {
-  //   if (user != null){
-  //   bool isunreadalarm = await AlarmService.isUnreadAlarm(userUID: user.uid);
-  //   print(isunreadalarm);
-  //   if(isunreadalarm == false){
-  //       //안 읽은 알람 없음
-  //       print('안 읽은 알람 없음');
-  //      // alarmIcon = Icons.notifications as Icons;
-  //     }
-  //     else{
-  //       //안 읽은 알람 있음
-  //       print('안 읽은 알람 있음');
-  //     }
-  //   }
-
-  // }
-
   @override
   Widget build(BuildContext context) {
-    // alarmIcon(user);
     return Scaffold(
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),

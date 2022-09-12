@@ -1,13 +1,7 @@
-import 'dart:developer';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation_nature/alarm/domain/alarm.dart';
 import 'package:donation_nature/alarm/service/alarm_serivce.dart';
-import 'package:donation_nature/models/alarm_model.dart';
-import 'package:donation_nature/models/user_info_model.dart';
-import 'package:donation_nature/screen/user_manage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:donation_nature/screen/login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -200,39 +194,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ],
               ),
-              // SizedBox(
-              //   height: 10,
-              // ),
-              // Row(
-              //   children: [
-              //     Expanded(flex: 1, child: Text("휴대폰")),
-              //     Expanded(
-              //       flex: 3,
-              //       child: Container(
-              //         child: TextFormField(
-              //             controller: _numberTextEditingController,
-              //             validator: (value) {
-              //               if (value!.isEmpty) {
-              //                 return '휴대폰 번호를 입력하세요.';
-              //               } else if (!RegExp(r'^010-?([0-9]{4})-?([0-9]{4})$')
-              //                   .hasMatch(value)) {
-              //                 return '올바른 전화번호 형식이 아닙니다.';
-              //               }
-              //               return null;
-              //             },
-              //             style: TextStyle(
-              //               fontSize: 12,
-              //             ),
-              //             decoration: InputDecoration(
-              //               contentPadding: new EdgeInsets.symmetric(
-              //                   vertical: 10.0, horizontal: 10.0),
-              //               isDense: true,
-              //               hintText: "010-0000-0000",
-              //             )),
-              //       ),
-              //     )
-              //   ],
-              // ),
               SizedBox(
                 height: 30,
               ),
@@ -270,7 +231,6 @@ class SignUpScreenState extends State<SignUpScreen> {
         } else {
           User? user = value.user;
           user?.updateDisplayName(_nicknameTextEditingController.text);
-          // user?.updatePhoneNumber(_numberTextEditingController.text);
           user?.updatePhotoURL('default_profile');
           Navigator.pop(context);
         }
@@ -307,33 +267,4 @@ class SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
-
-  // void createUserInfo() {
-  //   try {
-  //     UserInfoModel userinfoModel = UserInfoModel(
-  //         nickname: _nicknameTextEditingController.text,
-  //         number: _numberTextEditingController.text);
-
-  //     FirebaseFirestore firestore = FirebaseFirestore.instance;
-  //     firestore
-  //         .collection('user/${_emailTextEditingController.text}/userinfo')
-  //         .add(userinfoModel.toMap());
-  //   } catch (ex) {
-  //     log('error)', error: ex.toString(), stackTrace: StackTrace.current);
-  //   }
-  // }
-
-  // void _onPressedJoinButton() {
-  //   try {
-  //     UserInfoModel userinfoModel = UserInfoModel(
-  //         email: _emailTextEditingController.text,
-  //         password: _passwordTextEditingController.text,
-  //         nickname: _nicknameTextEditingController.text,
-  //         number: _numberTextEditingController.text);
-  //     FirebaseFirestore firestore = FirebaseFirestore.instance;
-  //     firestore.collection('/user_info').add(userinfoModel.toMap());
-  //   } catch (ex) {
-  //     log('error)', error: ex.toString(), stackTrace: StackTrace.current);
-  //   }
-  // }
 }

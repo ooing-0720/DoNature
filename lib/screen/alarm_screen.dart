@@ -1,11 +1,9 @@
 import 'package:donation_nature/alarm/service/alarm_serivce.dart';
 import 'package:donation_nature/models/alarm_model.dart';
 import 'package:donation_nature/screen/login_screen.dart';
-import 'package:donation_nature/screen/mypage/mypage_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/screen/user_manage.dart';
-//import 'package:donation_nature/screen/main_screen.dart' as main;
 
 class AlarmScreen extends StatefulWidget {
   const AlarmScreen({Key? key}) : super(key: key);
@@ -25,12 +23,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
     super.initState();
   }
 
-  @override
-  void setState(VoidCallback fn) {
-    // TODO: implement setState
-    super.setState(fn);
-  }
-
+//알람 목록 출력
   @override
   Widget build(BuildContext context) {
     return user != null

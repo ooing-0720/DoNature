@@ -1,9 +1,9 @@
 import 'package:donation_nature/action/action.dart';
 import 'package:donation_nature/firebase_options.dart';
-import 'package:donation_nature/screen/api_info.dart';
+import 'package:donation_nature/screen/home/api_info.dart';
 import 'package:donation_nature/screen/main_screen.dart';
-import 'package:donation_nature/screen/splash_screen.dart';
-import 'package:donation_nature/screen/weather_disaster_api.dart';
+import 'package:donation_nature/screen/home/splash_screen.dart';
+import 'package:donation_nature/screen/home/weather_disaster_api.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';

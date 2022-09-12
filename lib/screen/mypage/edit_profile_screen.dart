@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:donation_nature/screen/mypage/mypage_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:donation_nature/screen/user_manage.dart';
+import 'package:donation_nature/mypage/user_manage.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -55,29 +55,6 @@ class EditProfileScreenState extends State<EditProfileScreen> {
     _image = user?.photoURL;
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   getAndDisplayUserInformation();
-  // }
-
-  // getAndDisplayUserInformation() async {
-  //   setState(() {
-  //     loading = true;
-  //   });
-
-  //   // DB에서 사용자 정보 가져오기
-  //   user = userManage.getUser();
-  //   // profile, bio 입력란에 사용자 정보로 채워주기
-  //   // profileNameTextEditingController.text = user.displayName;
-  //   // bioTextEditingController.text = user.bio;
-
-  //   // 셋팅 끝나면 loading은 false로 바뀌고 화면에 값들이 보임
-  //   setState(() {
-  //     loading = false;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     user = userManage.getUser();
@@ -112,7 +89,6 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                       },
                       child: Stack(
                         children: <Widget>[
-                          //padding: EdgeInsets.only(top: 16, bottom: 7),
                           CircleAvatar(
                             backgroundColor: Color.fromARGB(221, 223, 223, 223),
                             radius: 54,
@@ -171,8 +147,6 @@ class EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future getImageFromGallery(ImageSource source) async {
-    // 접근 권한인데 갤럭시는 필요없다함?
-    // PermissionRequest.getStoragePermission();
 
     var image = await ImagePicker()
         .pickImage(source: source, imageQuality: 100, maxWidth: 150);

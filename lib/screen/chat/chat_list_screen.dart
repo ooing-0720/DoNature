@@ -1,12 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation_nature/chat/domain/chatting_room.dart';
-import 'package:donation_nature/screen/alarm_screen.dart';
-import 'package:donation_nature/screen/login_screen.dart';
+import 'package:donation_nature/screen/mypage/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:donation_nature/models/chat_model.dart';
 import './chat_detail_screen.dart';
 import 'package:donation_nature/chat/service/chat_service.dart';
-import 'package:donation_nature/screen/user_manage.dart';
+import 'package:donation_nature/mypage/user_manage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatListScreen extends StatefulWidget {
@@ -40,13 +37,11 @@ class _ChatListScreenState extends State<ChatListScreen> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     List<ChattingRoom> rooms = snapshot.data!;
-                    // print(rooms.length);
                     return ListView.separated(
                       itemCount: rooms.length,
                       itemBuilder: (BuildContext context, int index) {
                         String userEmail = user!.email!; //현재 유저의 이메일
                         ChattingRoom data = rooms[index]; //각각의 채팅방
-                        // data.user!.first   //sender
                         return Builder(builder: (context) {
                           //채팅하는 상대방 이름 띄우기
                           return userEmail == data.user!.first
@@ -87,9 +82,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text("${data.nickname!.last}"),
-                                              // SizedBox(
-                                              //   height: 2,
-                                              // ),
                                               Text(
                                                 "${data.updatedMsg}",
                                                 maxLines: 3,
@@ -101,7 +93,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                           Spacer(),
                                           Text(
                                             "${data.updatedDate?.toDate().toLocal().toString().substring(5, 16)}",
-                                            //style: TextStyle(fontSize: 10),
                                           ),
                                         ],
                                       )),
@@ -142,9 +133,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text("${data.nickname!.first}"),
-                                              // SizedBox(
-                                              //   height: 2,
-                                              // ),
                                               Text(
                                                 "${data.updatedMsg}",
                                                 maxLines: 3,
@@ -156,7 +144,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                           Spacer(),
                                           Text(
                                             "${data.updatedDate?.toDate().toLocal().toString().substring(5, 16)}",
-                                            //style: TextStyle(fontSize: 10),
                                           ),
                                         ],
                                       )),

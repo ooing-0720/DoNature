@@ -1,5 +1,3 @@
-import 'package:donation_nature/board/domain/post.dart';
-// import 'package:donation_nature/permission/permission_request.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io' as io;
 import 'package:image_picker/image_picker.dart';
@@ -11,7 +9,6 @@ class Media {
       source: source,
 
       imageQuality: 70,
-      // maxWidth: 200
     );
 
     io.File? imageFile = io.File(image!.path);

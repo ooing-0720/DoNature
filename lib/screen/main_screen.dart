@@ -1,11 +1,11 @@
-import 'package:donation_nature/screen/alarm_screen.dart';
+import 'package:donation_nature/screen/alarm/alarm_screen.dart';
 import 'package:donation_nature/screen/chat/chat_list_screen.dart';
-import 'package:donation_nature/screen/user_manage.dart';
+import 'package:donation_nature/mypage/user_manage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:donation_nature/screen/board_screen.dart';
+import 'package:donation_nature/screen/board/board_screen.dart';
 import 'package:donation_nature/screen/mypage/mypage_screen.dart';
-import 'package:donation_nature/screen/home_screen.dart';
+import 'package:donation_nature/screen/home/home_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -15,7 +15,7 @@ class MainScreen extends StatefulWidget {
 }
 
 User? user = UserManage().getUser();
-Icon alarmIcon = Icon(Icons.notifications);
+
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
@@ -29,7 +29,12 @@ class _MainScreenState extends State<MainScreen> {
     MyPageScreen(),
   ];
 
-  void initState() {}
+
+
+void initState(){
+        
+      }
+
 
   void _onItemTapped(int index) {
     setState(() {
@@ -37,8 +42,11 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  @override
+
+
+   @override
   Widget build(BuildContext context) {
+   // alarmIcon(user);
     return Scaffold(
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -50,11 +58,11 @@ class _MainScreenState extends State<MainScreen> {
             label: '홈',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
+            icon: Icon(Icons.chat_outlined),
             label: '채팅',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.library_books),
+            icon: Icon(Icons.library_books_outlined),
             label: '나눔',
           ),
           BottomNavigationBarItem(
@@ -62,13 +70,12 @@ class _MainScreenState extends State<MainScreen> {
             label: '알람',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.person_outline),
             label: '내 정보',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xff416E5C),
-        elevation: 1.0,
+        selectedItemColor: Color(0xff003300),
         onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
       ),

@@ -1,9 +1,9 @@
 import 'dart:io';
-import 'package:donation_nature/screen/login_screen.dart';
+import 'package:donation_nature/screen/mypage/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:donation_nature/screen/mypage/likelist_screen.dart';
 import 'package:donation_nature/screen/mypage/activitylist_screen.dart';
-import 'package:donation_nature/screen/user_manage.dart';
+import 'package:donation_nature/mypage/user_manage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 
@@ -58,25 +58,8 @@ class MyPageHeaderState extends State<MyPageHeader> {
   }
 
   Widget buildMypageHeader(BuildContext context) {
-    // setState(() {
-    //   if (mounted) {
-    //     User? user = userManage.getUser();
-    //     if (user == null) {
-    //       userName = "";
-    //       userEmail = '';
-    //       userPhoto = 'default_profile';
-    //     } else {
-    //       userName = user.displayName! + '님';
-    //       userEmail = user.email!;
-    //       userPhoto = user.photoURL!;
-    //     }
-    //   }
-    // });
 
     return Container(
-        // decoration: BoxDecoration(
-        //   color: Color(0xffFFFFFF),
-        // ),
         child: Column(children: [
       Row(children: [
         CircleAvatar(
@@ -124,17 +107,11 @@ class MyPageHeaderState extends State<MyPageHeader> {
             )
           ],
           Container(
-            // decoration: BoxDecoration(
-            //   borderRadius: BorderRadius.circular(5),
-            //   color: Color(0xff416E5C),
-            // ),
+ 
             child: Text(
               userEmail,
               style:
                   TextStyle(fontSize: 13, color: Color.fromARGB(255, 88, 88, 88)
-                      // decoration: TextDecoration.underline,
-                      // decorationColor: Color(0xff416E5C),
-                      // decorationThickness: 3
                       ),
             ),
           ),
@@ -143,7 +120,6 @@ class MyPageHeaderState extends State<MyPageHeader> {
       ]),
       SizedBox(height: 15),
       Row(
-        // mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           InkWell(
@@ -182,12 +158,7 @@ class MyPageHeaderState extends State<MyPageHeader> {
       children: [
         Container(
           padding: EdgeInsets.all(5),
-          // decoration: BoxDecoration(
-          //     border: Border.all(
-          //       color: Color(0xffbadc58),
-          //       width: 2,
-          //     ),
-          //     borderRadius: BorderRadius.circular(30)),
+
           child: Icon(
             mIcon,
             color: Color(0xff416E5C),
@@ -200,45 +171,9 @@ class MyPageHeaderState extends State<MyPageHeader> {
     );
   }
 
-  // Widget _buildMypageMenu(BuildContext context) {
-  //   return Container(
-  //     margin: EdgeInsets.all(20),
-  //     child: Row(
-  //       //mainAxisSize: MainAxisSize.max,
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         InkWell(
-  //           onTap: () {
-  //             Navigator.push(
-  //                 context,
-  //                 MaterialPageRoute(
-  //                     builder: (context) => ActivitylistScreen()));
-  //           },
-  //           child: _buildMypageMenuItem(Icons.view_list, "활동내역"),
-  //         ),
-  //         InkWell(
-  //           onTap: () {
-  //             Navigator.push(context,
-  //                 MaterialPageRoute(builder: (context) => LikelistScreen()));
-  //           },
-  //           child: _buildMypageMenuItem(Icons.favorite, "관심목록"),
-  //         ),
-  //         InkWell(
-  //           onTap: () {
-  //             Navigator.push(context,
-  //                 MaterialPageRoute(builder: (context) => CertifyScreen()));
-  //           },
-  //           child: _buildMypageMenuItem(Icons.badge, "기관인증"),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
   ImageProvider _imageProvider() {
     if (userPhoto == 'default_profile')
       return AssetImage('assets/images/default_profile.png');
     return Image.file(File(userPhoto)).image;
-    // return Image.file(File(userPhoto)).image;
   }
 }

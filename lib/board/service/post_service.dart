@@ -82,7 +82,7 @@ class PostService {
         }
       }
     } else {
-      if (gugunsi == null) {
+      if (gugunsi == null || gugunsi == '전체') {
         if (disaster == null) {
           if (tagMore == null) {
             querySnapshot = await collectionReference

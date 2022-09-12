@@ -23,8 +23,6 @@ class _AlarmScreenState extends State<AlarmScreen> {
   @override
   void initState() {
     super.initState();
-    
-    
   }
 
   @override
@@ -37,52 +35,50 @@ class _AlarmScreenState extends State<AlarmScreen> {
   Widget build(BuildContext context) {
     return user != null
         ? Scaffold(
-                appBar: AppBar(
-                  title: Text("알람 목록"),
-                ),
-                body: RefreshIndicator(
-                  onRefresh: () {
-                    return Future(() {
-                      setState(() {
-                         
-                      });
-                    });
-                  },
-                  child: FutureBuilder<List<AlarmModel>>(
-                      future: AlarmService.getAlarms(user!.uid),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          List<AlarmModel> alarms = snapshot.data!;
-                          return ListView.builder(
-                            itemCount: alarms.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              AlarmModel data = alarms[index];
+            appBar: AppBar(
+              title: Text("알람 목록"),
+            ),
+            body: RefreshIndicator(
+              onRefresh: () {
+                return Future(() {
+                  setState(() {});
+                });
+              },
+              child: FutureBuilder<List<AlarmModel>>(
+                  future: AlarmService.getAlarms(user!.uid),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<AlarmModel> alarms = snapshot.data!;
+                      return ListView.separated(
+                          itemCount: alarms.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            AlarmModel data = alarms[index];
 
-                              return Card(
-                                child: GestureDetector(
-                                  child: ListTile(
-                                    title: Text(
-                                      "${data.text}",
-                                      style: TextStyle(fontSize: 17.5),
-                                    ),
-                                    subtitle: Text(
-                                      "${data.time.toDate().toLocal().toString().substring(5, 16)}",
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                  ),
+                            return GestureDetector(
+                              child: ListTile(
+                                title: Text(
+                                  "${data.text}",
+                                  style: TextStyle(fontSize: 17.5),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              );
-                            },
-                          );
-                        } else if (snapshot.hasError) {
-                          print('${snapshot.error}');
-                          return Text('${snapshot.error}');
-                        } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                      }),
-                ))
+                                subtitle: Text(
+                                  "${data.time.toDate().toLocal().toString().substring(5, 16)}",
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return Divider(thickness: 1);
+                          });
+                    } else if (snapshot.hasError) {
+                      print('${snapshot.error}');
+                      return Text('${snapshot.error}');
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  }),
+            ))
         : LoginScreen();
     //비회원이면 로그인 페이지로 이동
   }

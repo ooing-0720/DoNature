@@ -9,11 +9,13 @@ import 'package:donation_nature/screen/post/post_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:donation_nature/board/domain/post.dart';
+import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:donation_nature/screen/location_list.dart';
 import '../disaster_list.dart';
+import './custom_inputformatter.dart';
 
 class PostEditScreen extends StatefulWidget {
   final Post post;
@@ -71,7 +73,7 @@ class _PostEditScreenState extends State<PostEditScreen> {
                     children: [
                       Icon(
                         Icons.label,
-                        color: Color(0xff90B1A4),
+                        color: Color(0xff416E5C),
                       ),
                       SizedBox(width: 12),
                       Wrap(
@@ -80,8 +82,8 @@ class _PostEditScreenState extends State<PostEditScreen> {
                           tagMoreList.length,
                           (int index) {
                             return ChoiceChip(
-                              backgroundColor: Color(0xff90B1A4),
-                              selectedColor: Color(0xff416E5C),
+                              backgroundColor: Color(0xff416E5C),
+                              selectedColor: Colors.grey.withOpacity(0.5),
                               label: Text(
                                 tagMoreList[index],
                                 style: TextStyle(color: Colors.white),
@@ -160,7 +162,9 @@ class _PostEditScreenState extends State<PostEditScreen> {
                                     },
                                     child: Row(
                                       children: [
-                                        Icon(Icons.image),
+                                        Icon(
+                                          Icons.image,
+                                        ),
                                         SizedBox(
                                           width: 8,
                                         ),
@@ -180,7 +184,11 @@ class _PostEditScreenState extends State<PostEditScreen> {
                                 BorderRadius.all(Radius.circular(20))),
                         height: 80,
                         width: 80,
-                        child: Center(child: Icon(Icons.add_to_photos)),
+                        child: Center(
+                            child: Icon(
+                          Icons.add_to_photos,
+                          color: Color(0xff416E5C),
+                        )),
                       ),
                     ),
                     Container(
@@ -225,7 +233,7 @@ class _PostEditScreenState extends State<PostEditScreen> {
                       children: [
                         Icon(
                           Icons.place,
-                          color: Color(0xff90B1A4),
+                          color: Color(0xff416E5C),
                         ),
                         SizedBox(
                           width: 15,
@@ -368,6 +376,19 @@ class _PostEditScreenState extends State<PostEditScreen> {
   TextFormField titleEditForm() {
     return TextFormField(
       controller: titleEditingController,
+      onChanged: (nextText) {
+        setState(() {
+          // if(titleEditingController.text.trim() != ""){
+          //   isSelected = true;
+          // }else{
+          //   isSelected = false;
+          // }
+          titleEditingController.text = nextText.substring(0, 24);
+          titleEditingController.selection =
+              TextSelection.fromPosition(TextPosition(offset: 24));
+        });
+      },
+      inputFormatters: [LengthLimitingTextInputFormatter(24)],
       maxLines: 1,
       decoration: InputDecoration(
         hintText: '제목을 입력하세요',
@@ -408,20 +429,20 @@ class _PostEditScreenState extends State<PostEditScreen> {
           } else if (_formkey.currentState!.validate() &&
               selectedDisasterIndex == -1) {
             ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text('재난태그 지정필요')));
+                .showSnackBar(SnackBar(content: Text('재난태그를 지정해주세요.')));
           } else if (_formkey.currentState!.validate() &&
               selectedDisasterIndex != -1 &&
               (widget.post.locationSiDo == '' ||
                   widget.post.locationGuGunSi == '')) {
             ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text('위치태그 지정필요')));
+                .showSnackBar(SnackBar(content: Text('위치태그를 지정해주세요.')));
           } else if (_formkey.currentState!.validate() &&
               selectedTagIndex == -1) {
             ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text('태그 지정필요')));
+                .showSnackBar(SnackBar(content: Text('글 종류를 지정해주세요.')));
           }
         },
-        style: ElevatedButton.styleFrom(primary: Color(0xff90B1A4)),
+        style: ElevatedButton.styleFrom(primary: Color(0xff416E5C)),
         child: Text("글 수정하기"));
   }
 
@@ -431,8 +452,8 @@ class _PostEditScreenState extends State<PostEditScreen> {
       Widget item = Padding(
         padding: const EdgeInsets.only(left: 10, right: 5),
         child: ChoiceChip(
-          backgroundColor: Color(0xff90B1A4),
-          selectedColor: Color(0xff416E5C),
+          backgroundColor: Color(0xff416E5C),
+          selectedColor: Colors.grey.withOpacity(0.5),
           selected: selectedDisasterIndex == i,
           onSelected: (bool value) {
             setState(() {
@@ -461,42 +482,45 @@ class _PostEditScreenState extends State<PostEditScreen> {
         return AlertDialog(
           content: Text("게시글을 수정하시겠습니까?"),
           actions: [
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  minimumSize: Size(40, 40),
-                  primary: Color(0xff9fc3a8),
-                ),
-                onPressed: () {
-                  widget.post.date = Timestamp.now();
-                  DateTime datetime = widget.post.date!.toDate();
-                  widget.post.content = contentEditingController.text;
-                  widget.post.title = titleEditingController.text;
-                  widget.post.date = Timestamp.now();
+            ButtonTheme(
+                minWidth: 20.0,
+                child: FlatButton(
+                    onPressed: () {
+                      widget.post.date = Timestamp.now();
+                      DateTime datetime = widget.post.date!.toDate();
+                      widget.post.content = contentEditingController.text;
+                      widget.post.title = titleEditingController.text;
+                      widget.post.date = Timestamp.now();
 
-                  // Firebase 연동
-                  _postService.updatePost(
-                      reference: widget.post.reference!,
-                      json: widget.post.toJson());
+                      // Firebase 연동
+                      _postService.updatePost(
+                          reference: widget.post.reference!,
+                          json: widget.post.toJson());
 
-                  //저장되었습니다 스낵바 띄우기
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text('저장되었습니다')));
+                      //저장되었습니다 스낵바 띄우기
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text('저장되었습니다')));
 
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PostDetailScreen(widget.post)));
-                },
-                child: Text("예")),
-            OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  minimumSize: Size(40, 40),
-                  primary: Color(0xff9fc3a8),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text("아니오"))
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  PostDetailScreen(widget.post)));
+                    },
+                    child: Text(
+                      "예",
+                      style: TextStyle(color: Color(0xff416E5C)),
+                    ))),
+            ButtonTheme(
+                minWidth: 20.0,
+                child: FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "아니오",
+                      style: TextStyle(color: Color(0xff416E5C)),
+                    )))
           ],
         );
       },

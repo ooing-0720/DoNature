@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/mypage/user_manage.dart';
 import 'package:donation_nature/board/service/post_service.dart';
 import 'package:donation_nature/board/domain/post.dart';
-import '../post/postListTile.dart';
+import 'package:donation_nature/screen/board/post/postListTile.dart';
 
 class LikeListScreen extends StatefulWidget {
   const LikeListScreen({Key? key}) : super(key: key);

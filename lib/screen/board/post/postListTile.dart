@@ -1,12 +1,6 @@
-import 'package:donation_nature/media/media.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'post_add_screen.dart';
 import 'post_detail_screen.dart';
 import 'package:donation_nature/board/domain/post.dart';
-import 'package:flutter/foundation.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:donation_nature/mypage/user_manage.dart';
 
 GestureDetector postListTile(BuildContext context, Post data) {
   return GestureDetector(

@@ -1,10 +1,5 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:donation_nature/alarm/domain/alarm.dart';
 import 'package:donation_nature/models/alarm_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class AlarmService {
   static final AlarmService _alarmService = AlarmService._internal();
@@ -63,7 +58,6 @@ class AlarmService {
     FirebaseFirestore.instance
         .collection('alarm/${writerUID}/alarm_list')
         .add(alarmforWriter.toMap());
-   // isUnreadAlarm(userUID: userUID);
   }
 
   //채팅방에서 메세지가 왔을 시 알람
@@ -73,7 +67,6 @@ class AlarmService {
     FirebaseFirestore.instance
         .collection('alarm/${userUID}/alarm_list')
         .add(alarm.toMap());
-    //isUnreadAlarm(userUID: userUID);
   }
 
   //누군가가 내 글에 하트 눌렀을 시 알람
@@ -83,34 +76,7 @@ class AlarmService {
     FirebaseFirestore.instance
         .collection('alarm/${userUID}/alarm_list')
         .add(alarm.toMap());
-    //isUnreadAlarm(userUID: userUID);
   }
-
-
-
-//  //안 읽은 알람 유무에 따라 알람 아이콘 표시
-//   static Future<String> isUnreadAlarm({required String userUID})async{
-//     CollectionReference<Map<String, dynamic>> collectionReference =
-//         FirebaseFirestore.instance.collection('/alarm/${userUID}/alarm_list');
-
-//     QuerySnapshot<Map<String, dynamic>> querySnapshot = await collectionReference
-//         .where("read", isEqualTo: false)
-//         .get();
-
-//     String alarm = '없음';
-//     //안 읽은 알람이 없을 경우 false
-//     if(querySnapshot.size == 0) {
-//       //alarmIcon = Icon(Icons.notifications);
-//       print(alarm);
-//     }
-//     else{
-//           //안 읽은 알람이 있을 경우 true
-//     //alarmIcon = Icon(Icons.notifications_on);
-//     alarm = '있음';
-//     print(alarm);
-//     }
-//   return alarm;
-// }
 
 }
 

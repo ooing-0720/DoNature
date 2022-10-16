@@ -2,6 +2,7 @@ import 'package:donation_nature/screen/main_screen.dart';
 import 'package:donation_nature/screen/mypage/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -104,6 +105,16 @@ class LoginScreenState extends State<LoginScreen> {
                     MaterialPageRoute(builder: (context) => SignUpScreen()));
               },
               child: Text("회원가입"),
+              style: TextButton.styleFrom(
+                primary: Colors.grey,
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SignUpScreen()));
+              },
+              child: Text("구글 로그인"),
               style: TextButton.styleFrom(
                 primary: Colors.grey,
               ),

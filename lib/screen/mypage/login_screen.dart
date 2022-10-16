@@ -2,7 +2,7 @@ import 'package:donation_nature/screen/main_screen.dart';
 import 'package:donation_nature/screen/mypage/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:donation_nature/mypage/login_platform_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -31,6 +31,7 @@ class LoginScreenState extends State<LoginScreen> {
   final _emailTextEditingController = TextEditingController();
   final _passwordTextEditingController = TextEditingController();
 
+  String url = "";
   void dispose() {
     _emailTextEditingController.dispose();
     _passwordTextEditingController.dispose();
@@ -112,7 +113,7 @@ class LoginScreenState extends State<LoginScreen> {
             TextButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SignUpScreen()));
+                    MaterialPageRoute(builder: (context) =>LoginPlatformScreen()));
               },
               child: Text("구글 로그인"),
               style: TextButton.styleFrom(
@@ -122,6 +123,7 @@ class LoginScreenState extends State<LoginScreen> {
           ],
         ));
   }
+
 
   _login() async {
     //키보드 숨기기

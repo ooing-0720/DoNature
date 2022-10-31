@@ -6,8 +6,20 @@ class WthrWrnList {
   String? HRA; // 호우주의보
   String? HRW; // 호우경보
   String? TYA; // 태풍주의보
+  String? TYW; // 태풍경보
   String? SWA; // 강풍주의보
+  String? SWW; // 강풍경보
   String? STA; // 풍랑주의보
+  String? STW; // 풍랑경보
+
+  String? HSA; // 대설주의보
+  String? HSW; // 대설경보
+  String? DA; // 건조주의보
+  String? DW; // 건조경보
+  String? CWA; // 한파주의보
+  String? CWW; // 한파경보
+  String? DSA; // 황사주의보
+  String? DSW; // 황사경보
 
   // 예비특보 발효현황
   List<Map<String, String>>? FHWA; // 폭염 예비특보 <일시, 장소>
@@ -22,8 +34,19 @@ class WthrWrnList {
     this.HRA,
     this.HRW,
     this.TYA,
+    this.TYW,
     this.SWA,
+    this.SWW,
     this.STA,
+    this.STW,
+    this.HSA,
+    this.HSW,
+    this.DA,
+    this.DW,
+    this.CWA,
+    this.CWW,
+    this.DSA,
+    this.DSW,
     this.FHWA,
     this.FHRA,
     this.FTYA,
@@ -61,8 +84,19 @@ class WthrWrnList {
       HRA: map['호우주의보'],
       HRW: map['호우경보'],
       TYA: map['태풍주의보'],
+      TYW: map['태풍경보'],
       SWA: map['강풍주의보'],
+      SWW: map['강풍경보'],
       STA: map['풍랑주의보'],
+      STW: map['풍랑경보'],
+      HSA: map['대설주의보'],
+      HSW: map['대설경보'],
+      DA: map['건조주의보'],
+      DW: map['건조경보'],
+      CWA: map['한파주의보'],
+      CWW: map['한파경보'],
+      DSA: map['황사주의보'],
+      DSW: map['황사경보'],
       FHWA: listMap['폭염 예비특보'],
       FHRA: listMap['호우 예비특보'],
       FTYA: listMap['태풍 예비특보'],

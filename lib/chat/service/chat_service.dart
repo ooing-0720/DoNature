@@ -23,7 +23,7 @@ class ChatService {
         FirebaseFirestore.instance.collection("chattingroom_list");
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await collectionReference
-            .where('user', arrayContains: user.email)
+            .where('user_uid', arrayContains: user.uid)
             .orderBy('updated_date', descending: true)
             .get();
 

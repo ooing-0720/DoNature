@@ -1,81 +1,63 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:date_format/date_format.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class Post {
+  final DocumentReference? reference;
   String? title;
-  String? userEmail;
-  String? writer;
-  Timestamp? date;
-  bool isDone = false; // 나눔/받기 완료되었는지
-  String? content;
-  String? imageUrl; // firestore에 저장될 이미지 url
-  String? locationSiDo; // 시/도
-  String? locationGuGunSi; // 구/군/시
-  String? tagDisaster; // 재난 태그
-  String? tagMore; // 나눔하기, 나눔받기, 알리기
-  List<dynamic>? likeUsers; // 관심 누른 유저 email 배열
-  Map<dynamic, dynamic>? chatUsers; // 채팅하기 누른 유저 email 배열
-  final DocumentReference? reference; // Firebase에서 document의 위치
   String? writerUID;
+  Timestamp? date;
+  String? imageUrl;
+  String? locationSiDo;
+  String? locationGuGunSi;
+  String? item;
+  String? itemCnt;
+  String? content;
+  String? disaster;
+  List<dynamic>? likeUsers;
+  Map<dynamic, dynamic>? chatUsers;
+  bool isDone = false;
+  int? share; // 0 : inform, 1 : give, 2 : take
 
-  Post(
-      {this.title,
-      this.userEmail,
-      this.writer,
-      this.date,
-      this.content,
-      this.imageUrl,
-      this.locationSiDo,
-      this.locationGuGunSi,
-      this.tagDisaster,
-      this.tagMore,
-      this.reference,
-      this.writerUID});
+  Post({
+    this.reference,
+    this.share,
+  });
 
-  // Firebase -> Dart(Flutter)
-  // READ
   Post.fromJson(dynamic json, this.reference) {
     title = json['title'];
-    userEmail = json['user_email'];
-    writer = json['writer'];
+    writerUID = json['writer_uid'];
     date = json['date'];
-    isDone = json['is_done'];
-    content = json['content'];
     imageUrl = json['image_url'];
     locationSiDo = json['location_sido'];
     locationGuGunSi = json['location_gugunsi'];
-    tagDisaster = json['tag_disaster'];
-    tagMore = json['tag_more'];
+    item = json['item'];
+    itemCnt = json['item_cnt'];
+    content = json['content'];
+    disaster = json['disaster'];
     likeUsers = json['like_users'];
     chatUsers = json['chat_users'];
-    writerUID = json['writer_uid'];
+    isDone = json['is_done'];
+    share = json['share'];
   }
 
   Post.fromQuerySnapshot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot)
       : this.fromJson(snapshot.data(), snapshot.reference);
 
-  Post.fromSnapShot(DocumentSnapshot snapshot)
-      : this.fromJson(snapshot.data(), snapshot.reference);
-
-  // Dart(Flutter) -> Firebase
-  // CREATE
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['title'] = title;
-    map['user_email'] = userEmail;
-    map['writer'] = writer;
+    map['writer_uid'] = writerUID;
     map['date'] = date;
-    map['content'] = content;
-    map['is_done'] = isDone;
     map['image_url'] = imageUrl;
     map['location_sido'] = locationSiDo;
     map['location_gugunsi'] = locationGuGunSi;
-    map['tag_disaster'] = tagDisaster;
-    map['tag_more'] = tagMore;
-    map['like_users'] = likeUsers ?? [];
-    map['chat_users'] = chatUsers ?? {};
-    map['writer_uid'] = writerUID;
+    map['item'] = item;
+    map['item_cnt'] = itemCnt;
+    map['content'] = content;
+    map['disaster'] = disaster;
+    map['like_users'] = likeUsers;
+    map['chat_users'] = chatUsers;
+    map['is_done'] = isDone;
+    map['share'] = share;
 
     return map;
   }

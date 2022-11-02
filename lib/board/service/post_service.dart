@@ -50,33 +50,34 @@ class PostService {
 
   // Select All Matching Tags(위치 태그 구분)
   Future<List<Post>> selectPostsByTag(
-      String? sido, String? gugunsi, String? disaster, String? tagMore) async {
+      String? sido, String? gugunsi, String? disaster, String? share) async {
     CollectionReference<Map<String, dynamic>> collectionReference =
         FirebaseFirestore.instance.collection("bulletin_board");
     QuerySnapshot<Map<String, dynamic>> querySnapshot;
 
     // Filtering
+    // 0: give, 1: take, 2: inform
     if (sido == null) {
       if (disaster == null) {
-        if (tagMore == null) {
+        if (share == null) {
           querySnapshot =
               await collectionReference.orderBy("date", descending: true).get();
         } else {
           querySnapshot = await collectionReference
-              .where('tag_more', isEqualTo: tagMore)
+              .where('share', isEqualTo: share)
               .orderBy('date', descending: true)
               .get();
         }
       } else {
-        if (tagMore == null) {
+        if (share == null) {
           querySnapshot = await collectionReference
-              .where('tag_disaster', isEqualTo: disaster)
+              .where('disaster', isEqualTo: disaster)
               .orderBy('date', descending: true)
               .get();
         } else {
           querySnapshot = await collectionReference
-              .where('tag_disaster', isEqualTo: disaster)
-              .where('tag_more', isEqualTo: tagMore)
+              .where('disaster', isEqualTo: disaster)
+              .where('share', isEqualTo: share)
               .orderBy('date', descending: true)
               .get();
         }
@@ -84,7 +85,7 @@ class PostService {
     } else {
       if (gugunsi == null || gugunsi == '전체') {
         if (disaster == null) {
-          if (tagMore == null) {
+          if (share == null) {
             querySnapshot = await collectionReference
                 .where('location_sido', isEqualTo: sido)
                 .orderBy('date', descending: true)
@@ -92,29 +93,29 @@ class PostService {
           } else {
             querySnapshot = await collectionReference
                 .where('location_sido', isEqualTo: sido)
-                .where('tag_more', isEqualTo: tagMore)
+                .where('share', isEqualTo: share)
                 .orderBy('date', descending: true)
                 .get();
           }
         } else {
-          if (tagMore == null) {
+          if (share == null) {
             querySnapshot = await collectionReference
                 .where('location_sido', isEqualTo: sido)
-                .where('tag_disaster', isEqualTo: disaster)
+                .where('disaster', isEqualTo: disaster)
                 .orderBy('date', descending: true)
                 .get();
           } else {
             querySnapshot = await collectionReference
                 .where('location_sido', isEqualTo: sido)
-                .where('tag_disaster', isEqualTo: disaster)
-                .where('tag_more', isEqualTo: tagMore)
+                .where('disaster', isEqualTo: disaster)
+                .where('share', isEqualTo: share)
                 .orderBy('date', descending: true)
                 .get();
           }
         }
       } else {
         if (disaster == null) {
-          if (tagMore == null) {
+          if (share == null) {
             querySnapshot = await collectionReference
                 .where('location_sido', isEqualTo: sido)
                 .where('location_gugunsi', isEqualTo: gugunsi)
@@ -124,24 +125,24 @@ class PostService {
             querySnapshot = await collectionReference
                 .where('location_sido', isEqualTo: sido)
                 .where('location_gugunsi', isEqualTo: gugunsi)
-                .where('tag_more', isEqualTo: tagMore)
+                .where('share', isEqualTo: share)
                 .orderBy('date', descending: true)
                 .get();
           }
         } else {
-          if (tagMore == null) {
+          if (share == null) {
             querySnapshot = await collectionReference
                 .where('location_sido', isEqualTo: sido)
                 .where('location_gugunsi', isEqualTo: gugunsi)
-                .where('tag_disaster', isEqualTo: disaster)
+                .where('disaster', isEqualTo: disaster)
                 .orderBy('date', descending: true)
                 .get();
           } else {
             querySnapshot = await collectionReference
                 .where('location_sido', isEqualTo: sido)
                 .where('location_gugunsi', isEqualTo: gugunsi)
-                .where('tag_disaster', isEqualTo: disaster)
-                .where('tag_more', isEqualTo: tagMore)
+                .where('disaster', isEqualTo: disaster)
+                .where('share', isEqualTo: share)
                 .orderBy('date', descending: true)
                 .get();
           }
@@ -176,18 +177,18 @@ class PostService {
   Future likePost(Post post, User user) async {
     if (!isLiked(post, user)) {
       // 유저의 관심 목록에 등록
-      post.likeUsers!.add(user.email);
+      post.likeUsers!.add(user.uid);
       AlarmService.newLikeAlarm(user.displayName, post.title!, post.writerUID!);
     } else {
       // 유저의 관심 목록에서 제거
-      post.likeUsers!.remove(user.email);
+      post.likeUsers!.remove(user.uid);
     }
     await post.reference?.set(post.toJson());
   }
 
   // 관심글인지 확인
   bool isLiked(Post post, User user) {
-    if (post.likeUsers == null || !post.likeUsers!.contains(user.email)) {
+    if (post.likeUsers == null || !post.likeUsers!.contains(user.uid)) {
       // 관심있어요 누르지 않은 경우(♡)
       return false;
     } else {
@@ -202,7 +203,7 @@ class PostService {
         FirebaseFirestore.instance.collection("bulletin_board");
     QuerySnapshot<Map<String, dynamic>> querySnapshot;
     querySnapshot = await collectionReference
-        .where("like_users", arrayContains: user.email)
+        .where("like_users", arrayContains: user.uid)
         .orderBy("date", descending: true)
         .get();
 
@@ -221,7 +222,7 @@ class PostService {
         FirebaseFirestore.instance.collection("bulletin_board");
     QuerySnapshot<Map<String, dynamic>> querySnapshot;
     querySnapshot = await collectionReference
-        .where("user_email", isEqualTo: user.email)
+        .where("writer_uid", isEqualTo: user.uid)
         .orderBy("date", descending: true)
         .get();
 
@@ -236,7 +237,7 @@ class PostService {
 
   // 채팅방이 만들어진 적이 있는지 확인
   bool isChatted(Post post, User user) {
-    if (post.chatUsers == null || !post.chatUsers!.keys.contains(user.email)) {
+    if (post.chatUsers == null || !post.chatUsers!.keys.contains(user.uid)) {
       // 처음 채팅하기를 누르는 거라면 -> 채팅방 생성
       return false;
     } else {

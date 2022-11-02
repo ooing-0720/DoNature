@@ -4,6 +4,7 @@ class Post {
   final DocumentReference? reference;
   String? title;
   String? writerUID;
+  String? writer;
   Timestamp? date;
   String? imageUrl;
   String? locationSiDo;
@@ -15,7 +16,7 @@ class Post {
   List<dynamic>? likeUsers;
   Map<dynamic, dynamic>? chatUsers;
   bool isDone = false;
-  int? share; // 0 : inform, 1 : give, 2 : take
+  int? share; // 0: give, 1: take, 2: inform
 
   Post({
     this.reference,
@@ -25,6 +26,7 @@ class Post {
   Post.fromJson(dynamic json, this.reference) {
     title = json['title'];
     writerUID = json['writer_uid'];
+    writer = json['writer'];
     date = json['date'];
     imageUrl = json['image_url'];
     locationSiDo = json['location_sido'];
@@ -46,6 +48,7 @@ class Post {
     final map = <String, dynamic>{};
     map['title'] = title;
     map['writer_uid'] = writerUID;
+    map['writer'] = writer;
     map['date'] = date;
     map['image_url'] = imageUrl;
     map['location_sido'] = locationSiDo;

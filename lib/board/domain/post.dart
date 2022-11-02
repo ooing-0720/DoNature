@@ -5,7 +5,6 @@ class Post {
   String? title;
   String? writerUID;
   String? writer;
-  String? nickname;
   Timestamp? date;
   String? imageUrl;
   String? locationSiDo;

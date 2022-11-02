@@ -4,7 +4,7 @@ import 'package:donation_nature/board/service/post_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ChattingRoom {
-  List<dynamic>? user; // 채팅방에 포함된 유저 2명의 이메일
+  // List<dynamic>? user; // 채팅방에 포함된 유저 2명의 이메일
   List<dynamic>? nickname; // 채팅방에 포함된 유저 2명의 닉네임
   List<dynamic>? userUID; // 채팅방에 포함된 유저 2명의 UID
   List<dynamic>? profileImg; // 채팅방에 포함된 유저 2명의 프로필 사진
@@ -16,7 +16,7 @@ class ChattingRoom {
   DocumentReference? chatReference;
 
   ChattingRoom({
-    this.user,
+    // this.user,
     this.nickname,
     this.userUID,
     this.post,
@@ -24,7 +24,7 @@ class ChattingRoom {
   });
 
   ChattingRoom.fromJson(dynamic json, this.chatReference) {
-    user = json['user'];
+    // user = json['user'];
     nickname = json['nickname'];
     userUID = json['user_uid'];
     profileImg = json['profile_image'];
@@ -43,7 +43,7 @@ class ChattingRoom {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['user'] = user;
+    // map['user'] = user;
     map['nickname'] = nickname;
     map['user_uid'] = userUID;
     map['profile_image'] = profileImg ?? [];

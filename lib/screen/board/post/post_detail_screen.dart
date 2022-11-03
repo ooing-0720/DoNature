@@ -44,71 +44,22 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      widget.post.isDone
-                          ? Container(
-                              padding: EdgeInsets.all(3),
-                              decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(3.0))),
-                              child: Text(
-                                "나눔완료",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 14),
-                              ),
-                            )
-                          : Container(
-                              padding: EdgeInsets.all(3),
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Color(0xff416E5C),
-                                  ),
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Text(
-                                "${tagMoreList[widget.post.share!]}",
-                                maxLines: 1,
-                                softWrap: false,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                    color: Color(0xff416E5C)),
-                              ),
-                            ),
+                      //나눔 완료 됐을 시 나눔완료 표시,
+                      //완료 전에는 글 종류 표시
+                      widget.post.isDone ? isDoneBox() : shareTypeBox(),
+
                       SizedBox(
                         height: 5,
                       ),
-                      Container(
-                        child: Text(
-                          widget.post.title!,
-                          maxLines: 2,
-                          softWrap: true,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
-                          ),
-                        ),
-                      ),
+                      titleWidget(),
                       SizedBox(height: 5),
                       Row(
                         children: [
-                          Text(
-                            "#${widget.post.disaster}",
-                            style: TextStyle(
-                                color: Color(0xff416E5C),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17),
-                          ),
+                          disasterTagWidget(),
                           SizedBox(
                             width: 5,
                           ),
-                          Text(
-                            "#${widget.post.locationSiDo} ${widget.post.locationGuGunSi}",
-                            style: TextStyle(
-                                color: Color(0xff416E5C),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17),
-                          ),
+                          locationTagWidget(),
                           Spacer(),
                           if (isWriter == false && widget.post.isDone == false)
                             //로그인 한 상태에서 글 작성자가 본인이 아니고 나눔완료 전일 때 관심목록 추가 가능
@@ -140,81 +91,32 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       ),
                       Row(
                         children: [
-                          Text("글쓴이: " + widget.post.writer!),
-                          VerticalDivider(
-                            color: Colors.black,
-                            thickness: 1,
-                          ),
-                          Text(dateTime.toLocal().toString().substring(5, 16)),
+                          writerdateWidget(dateTime),
                           Spacer(),
                           if (isWriter == true &&
                               widget.post.isDone ==
                                   false) //글 작성자가 본인이고 나눔 완료 전일 때 수정 삭제 가능
-                            Transform.scale(
-                              scale: 0.8,
-                              child: Row(children: [
-                                deleteButton(context),
-                                editButton(context)
-                              ]),
-                            )
+
+                            Row(children: [
+                              deleteButton(context),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              editButton(context),
+                              SizedBox(
+                                width: 5,
+                              ),
+                            ]),
+                          // )
                         ],
                       ),
                       Divider(
                         height: 20,
                         thickness: 1,
                       ),
-                      widget.post.share != 2
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                  Text("품목: ${widget.post.item}"),
-                                  Text("수량: ${widget.post.itemCnt}")
-                                ])
-                          : Container(),
-                      Expanded(
-                          child: SingleChildScrollView(
-                        child: widget.post.imageUrl != null
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Center(
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: NetworkImage(
-                                                  "${widget.post.imageUrl}"),
-                                              fit: BoxFit.cover)),
-                                      height: 400,
-                                      width: MediaQuery.of(context).size.width,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 10),
-                                    child: Text(
-                                      widget.post.content!,
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        height: 1.4,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : Column(
-                                children: [
-                                  Text(
-                                    widget.post.content!,
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      height: 1.4,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                      ))
+                      widget.post.share != 2 ? itemWidget() : Container(),
+
+                      photoWidget(context)
                     ],
                   ),
                 ),
@@ -246,7 +148,6 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                             List<String> userUIDs = [];
                             userUIDs.add(user.uid);
                             userUIDs.add(widget.post.writerUID!);
-
                             _chattingRoom = ChattingRoom(
                                 // user: users,
                                 nickname: nicknames,
@@ -348,72 +249,23 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  widget.post.isDone
-                      ? Container(
-                          padding: EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(3.0))),
-                          child: Text(
-                            "나눔완료",
-                            style: TextStyle(color: Colors.white, fontSize: 14),
-                          ),
-                        )
-                      : Container(
-                          padding: EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Color(0xff416E5C),
-                              ),
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Text(
-                            "${tagMoreList[widget.post.share!]}",
-                            maxLines: 1,
-                            softWrap: false,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                                color: Color(0xff416E5C)),
-                          ),
-                        ),
+                  //나눔 완료 됐을 시 나눔완료 표시,
+                  //완료 전에는 글 종류 표시
+                  widget.post.isDone ? isDoneBox() : shareTypeBox(),
                   SizedBox(
                     height: 5,
                   ),
-                  Container(
-                    child: Text(
-                      widget.post.title!,
-                      maxLines: 2,
-                      softWrap: true,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
-                      ),
-                    ),
-                  ),
+                  titleWidget(),
                   SizedBox(
                     height: 5,
                   ),
                   Row(
                     children: [
-                      Text(
-                        "#${widget.post.disaster}",
-                        style: TextStyle(
-                            color: Color(0xff416E5C),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ),
+                      disasterTagWidget(),
                       SizedBox(
                         width: 5,
                       ),
-                      Text(
-                        "#${widget.post.locationSiDo} ${widget.post.locationGuGunSi}",
-                        style: TextStyle(
-                            color: Color(0xff416E5C),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ),
+                      locationTagWidget(),
                       Spacer(),
                     ],
                   ),
@@ -421,74 +273,194 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     height: 20,
                     thickness: 1.5,
                   ),
-                  Row(
-                    children: [
-                      Text("글쓴이: " + widget.post.writer!),
-                      VerticalDivider(
-                        color: Colors.black,
-                        thickness: 1,
-                      ),
-                      Text(dateTime.toLocal().toString().substring(5, 16)),
-                    ],
-                  ),
+                  writerdateWidget(dateTime),
                   Divider(
                     height: 20,
                     thickness: 1.5,
                   ),
-                  Expanded(
-                      child: SingleChildScrollView(
-                    child: widget.post.imageUrl != null
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Center(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              "${widget.post.imageUrl}"),
-                                          fit: BoxFit.cover)),
-                                  height: 400,
-                                  width: MediaQuery.of(context).size.width,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: Text(
-                                  widget.post.content!,
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    height: 1.4,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        : Column(
-                            children: [
-                              Text(
-                                widget.post.content!,
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  height: 1.4,
-                                ),
-                              ),
-                            ],
-                          ),
-                  ))
+
+                  widget.post.share != 2 ? itemWidget() : Container(),
+
+                  photoWidget(context),
                 ],
               ),
             ),
           );
   }
 
+  Expanded photoWidget(BuildContext context) {
+    return Expanded(
+        child: SingleChildScrollView(
+      child: widget.post.imageUrl != null
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 10,
+                ),
+                Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                      image: NetworkImage("${widget.post.imageUrl}"),
+                    )),
+                    height: 400,
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    widget.post.content!,
+                    style: TextStyle(
+                      fontSize: 15,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          : Column(
+              children: [
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  widget.post.content!,
+                  style: TextStyle(
+                    fontSize: 15,
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            ),
+    ));
+  }
+
+  Container itemWidget() {
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.grey.shade200, borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Row(
+            children: [
+              Icon(Icons.inventory_2_outlined),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                "${widget.post.item}",
+                style: TextStyle(
+                    fontSize: 17, height: 1.4, fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Icon(Icons.onetwothree_outlined),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                "${widget.post.itemCnt}개",
+                style: TextStyle(
+                    fontSize: 17, height: 1.4, fontWeight: FontWeight.w500),
+              ),
+            ],
+          )
+        ]),
+      ),
+    );
+  }
+
+  Row writerdateWidget(DateTime dateTime) {
+    return Row(
+      children: [
+        Text("글쓴이: " + widget.post.writer!),
+        VerticalDivider(
+          color: Colors.black,
+          thickness: 1,
+        ),
+        Text(dateTime.toLocal().toString().substring(5, 16)),
+      ],
+    );
+  }
+
+  Text locationTagWidget() {
+    return Text(
+      "#${widget.post.locationSiDo} ${widget.post.locationGuGunSi}",
+      style: TextStyle(
+          color: Color(0xff416E5C), fontWeight: FontWeight.bold, fontSize: 17),
+    );
+  }
+
+  Text disasterTagWidget() {
+    return Text(
+      "#${widget.post.disaster}",
+      style: TextStyle(
+          color: Color(0xff416E5C), fontWeight: FontWeight.bold, fontSize: 17),
+    );
+  }
+
+  Container titleWidget() {
+    return Container(
+      child: Text(
+        widget.post.title!,
+        maxLines: 2,
+        softWrap: true,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 30,
+        ),
+      ),
+    );
+  }
+
+  Container shareTypeBox() {
+    return Container(
+      padding: EdgeInsets.all(3),
+      decoration: BoxDecoration(
+          border: Border.all(
+            color: Color(0xff416E5C),
+          ),
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(20)),
+      child: Text(
+        "${tagMoreList[widget.post.share!]}",
+        maxLines: 1,
+        softWrap: false,
+        style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 14,
+            color: Color(0xff416E5C)),
+      ),
+    );
+  }
+
+  Container isDoneBox() {
+    return Container(
+      padding: EdgeInsets.all(3),
+      decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.all(Radius.circular(3.0))),
+      child: Text(
+        "나눔완료",
+        style: TextStyle(color: Colors.white, fontSize: 14),
+      ),
+    );
+  }
+
   TextButton editButton(BuildContext context) {
     return TextButton(
         style: TextButton.styleFrom(
+          minimumSize: Size.zero,
           padding: EdgeInsets.zero,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
         //수정버튼
         onPressed: () {
@@ -516,7 +488,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   TextButton deleteButton(BuildContext context) {
     return TextButton(
         style: TextButton.styleFrom(
+          minimumSize: Size.zero,
           padding: EdgeInsets.zero,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
         //삭제버튼
         onPressed: () {

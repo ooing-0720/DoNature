@@ -22,8 +22,8 @@ class PostAddScreen extends StatefulWidget {
 class _PostAddScreenState extends State<PostAddScreen> {
   TextEditingController titleEditingController = TextEditingController();
   TextEditingController contentEditingController = TextEditingController();
-  TextEditingController itemController = TextEditingController();
-  TextEditingController itemCntController = TextEditingController();
+  TextEditingController itemEditingController = TextEditingController();
+  TextEditingController itemCntEditingController = TextEditingController();
   final GlobalKey<FormState> _formkey = GlobalKey();
 
   Media _media = Media();
@@ -53,7 +53,16 @@ class _PostAddScreenState extends State<PostAddScreen> {
       },
       child: Scaffold(
           appBar: AppBar(
-            title: Text("글쓰기 $getShare"),
+            title: Container(
+              child: Builder(builder: (context) {
+                if (getShare == 0) {
+                  return Text("나눔하기");
+                } else if (getShare == 1)
+                  return Text("나눔받기");
+                else
+                  return Text("알리기");
+              }),
+            ),
           ),
           body: postForm()),
     );
@@ -182,9 +191,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
                                               .toString());
 
                                   setState(() {
-                                    print(_editedPost.imageUrl);
                                     image = true;
-
                                     Navigator.pop(context);
                                   });
                                 },
@@ -267,7 +274,6 @@ class _PostAddScreenState extends State<PostAddScreen> {
                                 onPressed: () {
                                   setState(() {
                                     _editedPost.imageUrl = null;
-                                    print(_editedPost.imageUrl);
                                   });
                                 },
                                 icon: Icon(
@@ -324,7 +330,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
                             children: [
                               Expanded(
                                   child: TextFormField(
-                                controller: itemController,
+                                controller: itemEditingController,
                                 decoration: InputDecoration(
                                   hintText: '품목을 입력하세요',
                                   enabledBorder: OutlineInputBorder(
@@ -356,7 +362,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
                               ),
                               Expanded(
                                   child: TextFormField(
-                                controller: itemCntController,
+                                controller: itemCntEditingController,
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   hintText: '수량을 입력하세요',
@@ -682,8 +688,8 @@ class _PostAddScreenState extends State<PostAddScreen> {
                       _editedPost.writerUID = user?.uid;
                       _editedPost.share = getShare;
                       if (getShare != 2) {
-                        _editedPost.item = itemController.text;
-                        _editedPost.itemCnt = itemCntController.text;
+                        _editedPost.item = itemEditingController.text;
+                        _editedPost.itemCnt = itemCntEditingController.text;
                       }
 
                       // Firebase 연동

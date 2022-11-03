@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   int currentPos = 0;
   String label = '';
-  String background = 'assets/images/background_default.jpg';
+  String background = 'assets/images/positive.png';
   List<bool>? disasterAtUserLocation = [false, false, false, false, false];
   var i_images = List<String>.empty(growable: true);
 
@@ -49,7 +49,7 @@ class HomeScreenState extends State<HomeScreen> {
     }
 
     if (i_images.length == 0) {
-      i_images.add('assets/images/earth.png');
+      i_images.add('assets/images/earthh.png');
     }
 
     if (label == '') {
@@ -60,105 +60,116 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     DateFormat dateFormat = DateFormat("yyyy년 MM월 dd일 HH:mm");
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("DONATURE"),
-        elevation: 0,
-      ),
-      body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(
-                  Color.fromARGB(255, 127, 127, 127), BlendMode.darken),
-              image: AssetImage(background), // 배경 이미지
-            ),
-          ),
-          child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: FadeInUp(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Icon(
-                      Icons.near_me,
-                      color: Color.fromARGB(255, 149, 182, 169),
-                    ),
-                    Text(
-                      Static.userLocation!,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 181, 189, 186),
-                        fontSize: 22,
-                        fontWeight: FontWeight.w300,
+    return Stack(children: <Widget>[
+      Image.asset(background,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          fit: BoxFit.cover,
+          colorBlendMode: BlendMode.modulate,
+          color: Color.fromARGB(255, 161, 161, 161)),
+      Scaffold(
+        // appBar: AppBar(
+        //   title: Text("도네이처"),
+        //   // backgroundColor: Colors.transparent,
+        //   elevation: 0.0,
+        // ),
+        backgroundColor: Colors.transparent,
+        body: Container(
+
+            // decoration: BoxDecoration(
+            //   image: DecorationImage(
+            //     fit: BoxFit.fill,
+            //     colorFilter: ColorFilter.mode(
+            //         Color.fromARGB(255, 127, 127, 127), BlendMode.darken),
+            //     image: AssetImage(background), // 배경 이미지
+            //   ),
+            // ),
+            child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: FadeInUp(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Icon(
+                        Icons.near_me,
+                        color: Color.fromARGB(255, 149, 182, 169),
                       ),
-                    )
-                  ]),
-                  SizedBox(height: 10),
-                  Text(dateFormat.format(DateTime.now()),
-                      style:
-                          TextStyle(color: Color.fromARGB(255, 181, 189, 186))),
-                  Text(
-                      '기온 ${Static.wthrInfoList![0]} 습도 ${Static.wthrInfoList![1]}',
-                      style:
-                          TextStyle(color: Color.fromARGB(255, 181, 189, 186))),
-                  SizedBox(height: 30),
-                  CarouselSlider.builder(
-                    itemCount: i_images.length,
-                    options: CarouselOptions(
-                        viewportFraction: 1,
-                        onPageChanged: (index, reason) {
-                          setState(() {
-                            currentPos = index;
-                          });
-                        }),
-                    itemBuilder: (context, itemIndex, realIndex) {
-                      return Container(
-                          child: Column(
-                        children: [
-                          Flexible(
-                            fit: FlexFit.loose,
-                            // flex: 2,
-                            child: Image.asset(
-                              i_images[itemIndex],
-                            ),
-                          )
-                        ],
-                      ));
-                    },
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: i_images.map((url) {
-                      int index = i_images.indexOf(url);
-                      return Container(
-                        width: 5.0,
-                        height: 5.0,
-                        margin: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 3.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: currentPos == index
-                              ? Color.fromARGB(255, 119, 125, 122)
-                              : Color.fromARGB(255, 181, 189, 186),
+                      Text(
+                        Static.userLocation!,
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 204, 207, 206),
+                          fontSize: 22,
+                          fontWeight: FontWeight.w300,
                         ),
-                      );
-                    }).toList(),
-                  ),
-                  alertBox(),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(CupertinoPageRoute(
-                          builder: (context) => InfoScreen()));
-                    },
-                    child: Text("대처법 알아보기 →"),
-                    style: TextButton.styleFrom(
-                      primary: Color.fromARGB(255, 181, 189, 186),
+                      )
+                    ]),
+                    SizedBox(height: 10),
+                    Text(dateFormat.format(DateTime.now()),
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 181, 189, 186))),
+                    Text(
+                        '기온 ${Static.wthrInfoList![0]} 습도 ${Static.wthrInfoList![1]}',
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 181, 189, 186))),
+                    SizedBox(height: 30),
+                    CarouselSlider.builder(
+                      itemCount: i_images.length,
+                      options: CarouselOptions(
+                          viewportFraction: 1,
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              currentPos = index;
+                            });
+                          }),
+                      itemBuilder: (context, itemIndex, realIndex) {
+                        return Container(
+                            child: Column(
+                          children: [
+                            Flexible(
+                              fit: FlexFit.loose,
+                              // flex: 2,
+                              child: Image.asset(
+                                i_images[itemIndex],
+                              ),
+                            )
+                          ],
+                        ));
+                      },
                     ),
-                  ),
-                ],
-              )))),
-    );
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: i_images.map((url) {
+                        int index = i_images.indexOf(url);
+                        return Container(
+                          width: 5.0,
+                          height: 5.0,
+                          margin: EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 3.0),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: currentPos == index
+                                ? Color.fromARGB(255, 119, 125, 122)
+                                : Color.fromARGB(255, 181, 189, 186),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    alertBox(),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(CupertinoPageRoute(
+                            builder: (context) => InfoScreen()));
+                      },
+                      child: Text("대처법 알아보기 →"),
+                      style: TextButton.styleFrom(
+                        primary: Color.fromARGB(255, 181, 189, 186),
+                      ),
+                    ),
+                  ],
+                )))),
+      )
+    ]);
   }
 
   Widget alertBox() {

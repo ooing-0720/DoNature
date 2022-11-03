@@ -1,8 +1,9 @@
+import 'package:donation_nature/mypage/login_platform.dart';
 import 'package:donation_nature/screen/main_screen.dart';
 import 'package:donation_nature/screen/mypage/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:donation_nature/mypage/user_manage.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -12,6 +13,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenState extends State<LoginScreen> {
+  UserManage? userManage = UserManage();
+  final _formkey = GlobalKey<FormState>();
+  final _emailTextEditingController = TextEditingController();
+  final _passwordTextEditingController = TextEditingController();
+  String url = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,18 +116,65 @@ class LoginScreenState extends State<LoginScreen> {
                 primary: Colors.grey,
               ),
             ),
-            TextButton(
+            ElevatedButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SignUpScreen()));
+                if (_formkey.currentState!.validate()) {
+                  _login();
+                }
               },
-              child: Text("구글 로그인"),
-              style: TextButton.styleFrom(
-                primary: Colors.grey,
+              child: Row(
+                //spaceEvenly: 요소들을 균등하게 배치하는 속성
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Image.asset('assets/images/google.png', fit: BoxFit.cover),
+                  Text(
+                    'Login with Google',
+                    style: TextStyle(color: Colors.black87),
+                  ),
+                  // Opacity(
+                  //   opacity: 0.0,
+                  //   child: Image.asset('assets/images/google.png'),
+                  // ),
+                ],
               ),
+              style: ElevatedButton.styleFrom(
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(30.0),
+                  ),
+                  primary: Colors.white,
+                  minimumSize: const Size.fromHeight(50)),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _loginButton(
+                  'google',
+                  userManage!.signInWithGoogle,
+                )
+              ],
             )
           ],
         ));
+  }
+
+  Widget _loginButton(String path, VoidCallback onTap) {
+    return Card(
+      elevation: 5.0,
+      shape: const CircleBorder(),
+      clipBehavior: Clip.antiAlias,
+      child: Ink.image(
+          image: AssetImage('assets/images/$path.png'),
+          width: 60,
+          height: 60,
+          child: InkWell(
+              borderRadius: const BorderRadius.all(
+                Radius.circular(35.0),
+              ),
+              onTap: onTap)
+          //   userManage!.setLoginPlatForm(LoginPlatform.google);
+          // }),
+          ),
+    );
   }
 
   _login() async {

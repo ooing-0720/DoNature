@@ -1,5 +1,3 @@
-List<String> disasterList = ["폭염", "호우", "태풍", "강풍", "풍랑", "기타"];
-
 List<String> images = [
   'assets/images/heatwave.png',
   'assets/images/heavyrain.png',
@@ -15,8 +13,6 @@ List<String> background_images = [
   'assets/images/background_strongwind.jpg',
   'assets/images/background_windwave.jpg',
 ];
-
-List<String> labels = ['폭염주의보', '호우주의보', '태풍주의보', '강풍주의보', '풍랑주의보'];
 
 List<String> location = [
   '서울',
@@ -37,3 +33,7 @@ List<String> location = [
   '제주도',
   '세종'
 ];
+
+List<String> disasterList = ["폭염", "호우", "태풍", "강풍", "풍랑", "기타"];
+
+List<String> labels = ['폭염주의보', '호우주의보', '태풍주의보', '강풍주의보', '풍랑주의보'];

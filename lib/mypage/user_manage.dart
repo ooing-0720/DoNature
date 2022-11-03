@@ -1,13 +1,64 @@
+import 'package:donation_nature/mypage/login_platform.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class UserManage {
-  void signOut() async {
+  static LoginPlatform? loginPlatform;
+
+  void setLoginPlatForm(LoginPlatform sloginPlatform) {
+    loginPlatform = sloginPlatform;
+  }
+
+  // void signOut() async {
+  //   switch (loginPlatform!) {
+  //     case LoginPlatform.facebook:
+  //       break;
+  //     case LoginPlatform.google:
+  //       await GoogleSignIn().signOut();
+  //       break;
+  //     case LoginPlatform.email:
+  //       await FirebaseAuth.instance.signOut();
+  //       break;
+  //     // case LoginPlatform.kakao:
+  //     //   break;
+  //     // case LoginPlatform.naver:
+  //     //   break;
+  //     // case LoginPlatform.apple:
+  //     //   break;
+  //     case LoginPlatform.none:
+  //       break;
+  //   }
+  // }
+
+  @override
+  Future<void> signOut() async {
+    final googleSignIn = GoogleSignIn();
+    // final facebookLogin = FacebookLogin();
+    await googleSignIn.signOut();
+    // await facebookLogin.logOut();
     await FirebaseAuth.instance.signOut();
   }
 
   /// 회원가입, 로그인시 사용자 영속
   void authPersistence() async {
     await FirebaseAuth.instance.setPersistence(Persistence.NONE);
+  }
+
+  void signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleUser!.authentication;
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+    await FirebaseAuth.instance.signInWithCredential(credential);
+
+    if (googleUser != null) {
+      print('name = ${googleUser.displayName}');
+      print('email = ${googleUser.email}');
+      print('id = ${googleUser.id}');
+    }
   }
 
   /// 유저 삭제

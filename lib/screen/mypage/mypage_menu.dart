@@ -1,3 +1,4 @@
+import 'package:donation_nature/mypage/login_platform.dart';
 import 'package:donation_nature/screen/main_screen.dart';
 import 'package:donation_nature/screen/mypage/change_password_screen.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +71,6 @@ class MyPageMenuState extends State<MyPageMenu> {
                   fontWeight: FontWeight.w400,
                 ),
               )),
-
           onTap: () {
             (user == null)
                 ? Navigator.push(context,
@@ -129,6 +129,7 @@ class MyPageMenuState extends State<MyPageMenu> {
                 child: FlatButton(
                     onPressed: () {
                       userManage.signOut();
+                      userManage.setLoginPlatForm(LoginPlatform.none);
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(

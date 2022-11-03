@@ -58,7 +58,6 @@ class MyPageHeaderState extends State<MyPageHeader> {
   }
 
   Widget buildMypageHeader(BuildContext context) {
-
     return Container(
         child: Column(children: [
       Row(children: [
@@ -107,12 +106,10 @@ class MyPageHeaderState extends State<MyPageHeader> {
             )
           ],
           Container(
- 
             child: Text(
               userEmail,
-              style:
-                  TextStyle(fontSize: 13, color: Color.fromARGB(255, 88, 88, 88)
-                      ),
+              style: TextStyle(
+                  fontSize: 13, color: Color.fromARGB(255, 88, 88, 88)),
             ),
           ),
           SizedBox(height: 30),
@@ -158,7 +155,6 @@ class MyPageHeaderState extends State<MyPageHeader> {
       children: [
         Container(
           padding: EdgeInsets.all(5),
-
           child: Icon(
             mIcon,
             color: Color(0xff416E5C),

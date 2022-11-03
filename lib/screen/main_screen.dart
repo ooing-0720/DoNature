@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/screen/board/board_screen.dart';
 import 'package:donation_nature/screen/mypage/mypage_screen.dart';
 import 'package:donation_nature/screen/home/home_screen.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -15,7 +16,6 @@ class MainScreen extends StatefulWidget {
 }
 
 User? user = UserManage().getUser();
-
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
@@ -29,12 +29,7 @@ class _MainScreenState extends State<MainScreen> {
     MyPageScreen(),
   ];
 
-
-
-void initState(){
-        
-      }
-
+  void initState() {}
 
   void _onItemTapped(int index) {
     setState(() {
@@ -42,11 +37,9 @@ void initState(){
     });
   }
 
-
-
-   @override
+  @override
   Widget build(BuildContext context) {
-   // alarmIcon(user);
+    // alarmIcon(user);
     return Scaffold(
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -54,27 +47,28 @@ void initState(){
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(FontAwesomeIcons.house),
             label: '홈',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat_outlined),
+            icon: Icon(FontAwesomeIcons.message),
             label: '채팅',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.library_books_outlined),
+            icon: Icon(FontAwesomeIcons.noteSticky),
             label: '나눔',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
+            icon: Icon(FontAwesomeIcons.bell),
             label: '알람',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
+            icon: Icon(FontAwesomeIcons.user),
             label: '내 정보',
           ),
         ],
         currentIndex: _selectedIndex,
+        backgroundColor: Colors.white,
         selectedItemColor: Color(0xff003300),
         onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,

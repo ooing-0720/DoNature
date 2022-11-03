@@ -68,6 +68,62 @@ GestureDetector postListTile(BuildContext context, Post data) {
                   "${data.date!.toDate().toLocal().toString().substring(5, 16)}",
                   style: TextStyle(fontSize: 12),
                 ),
+                if (data.share == 0)
+                  Row(
+                    children: [
+                      Text(
+                        "나눔해요",
+                        style: TextStyle(
+                            color: Color(0xff416E5C),
+                            fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "${data.item}",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "${data.itemCnt}개",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  )
+                else if (data.share == 1)
+                  Row(
+                    children: [
+                      Text(
+                        "나눔받아요",
+                        style: TextStyle(
+                            color: Color(0xff416E5C),
+                            fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "${data.item}",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "${data.itemCnt}개",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  )
+                else
+                  Container(),
                 Row(children: [
                   Text(
                     "#${data.disaster}",

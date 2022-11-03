@@ -117,7 +117,7 @@ class _PostEditScreenState extends State<PostEditScreen> {
                               onSelected: (bool selected) {
                                 setState(() {
                                   selectedTagIndex = selected ? index : -1;
-                                  widget.post.tagMore = tagMoreList[index];
+                                  widget.post.share = index;
                                 });
                               },
                             );
@@ -434,7 +434,7 @@ class _PostEditScreenState extends State<PostEditScreen> {
           onSelected: (bool value) {
             setState(() {
               selectedDisasterIndex = i;
-              widget.post.tagDisaster = disasterList[selectedDisasterIndex];
+              widget.post.disaster = disasterList[selectedDisasterIndex];
             });
           },
           label: Text(

@@ -34,6 +34,7 @@ dependencies:
   fluttertoast: ^8.0.8
   flutter_svg: ^1.1.3
   svg_path_parser: ^1.1.1
+  flutter_speed_dial: ^6.2.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -84,6 +85,7 @@ flutter:
   assets:
     - assets/images/
     - assets/map/southkorea.svg
+    - assets/icon/diversity1.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -40,11 +40,12 @@ class _ChatListScreenState extends State<ChatListScreen> {
                     return ListView.separated(
                       itemCount: rooms.length,
                       itemBuilder: (BuildContext context, int index) {
-                        String userEmail = user!.email!; //현재 유저의 이메일
+                        //String userEmail = user!.email!;
+                        String userUID = user!.uid; //현재 유저의 uid
                         ChattingRoom data = rooms[index]; //각각의 채팅방
                         return Builder(builder: (context) {
                           //채팅하는 상대방 이름 띄우기
-                          return userEmail == data.user!.first
+                          return userUID == data.userUID!.first
                               //내가 채팅하기를 눌렀을 때
 
                               ? GestureDetector(

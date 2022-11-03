@@ -3,6 +3,7 @@ import 'post_detail_screen.dart';
 import 'package:donation_nature/board/domain/post.dart';
 
 GestureDetector postListTile(BuildContext context, Post data) {
+  List<String> tagMoreList = ['나눔하기', '나눔받기', '알리기'];
   return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -29,7 +30,7 @@ GestureDetector postListTile(BuildContext context, Post data) {
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(20)),
                       child: Text(
-                        "${data.tagMore}",
+                        "${tagMoreList[data.share!]}",
                         maxLines: 1,
                         softWrap: false,
                         style: TextStyle(
@@ -41,7 +42,6 @@ GestureDetector postListTile(BuildContext context, Post data) {
                     SizedBox(
                       width: 5,
                     ),
-
                     Container(
                       width: MediaQuery.of(context).size.width * 0.75,
                       child: Text(
@@ -70,7 +70,7 @@ GestureDetector postListTile(BuildContext context, Post data) {
                 ),
                 Row(children: [
                   Text(
-                    "#${data.tagDisaster}",
+                    "#${data.disaster}",
                     style: TextStyle(
                         color: Color(0xff416E5C), fontWeight: FontWeight.w500),
                   ),

@@ -34,10 +34,6 @@ class LoginScreenState extends State<LoginScreen> {
         ));
   }
 
-  final _formkey = GlobalKey<FormState>();
-  final _emailTextEditingController = TextEditingController();
-  final _passwordTextEditingController = TextEditingController();
-
   void dispose() {
     _emailTextEditingController.dispose();
     _passwordTextEditingController.dispose();

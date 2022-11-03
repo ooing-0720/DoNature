@@ -63,4 +63,25 @@ class ChatService {
   Future<void> deleteChattingRoom(DocumentReference reference) async {
     await reference.delete();
   }
+
+  Future<void> updateProfileImage(
+      User user, bool first, String imageUrl) async {
+    final collectionReference =
+        FirebaseFirestore.instance.collection("chattingroom_list");
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await collectionReference
+            .where('user_uid', arrayContains: user.uid)
+            .get();
+
+    List<ChattingRoom> rooms = [];
+    for (var doc in querySnapshot.docs) {
+      ChattingRoom room = ChattingRoom.fromQuerySnapshot(doc);
+      if (first) {
+        room.profileImg![0] = imageUrl;
+      } else {
+        room.profileImg![1] = imageUrl;
+      }
+      doc.reference.set(room.toJson());
+    }
+  }
 }

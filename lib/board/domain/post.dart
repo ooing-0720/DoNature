@@ -57,8 +57,8 @@ class Post {
     map['item_cnt'] = itemCnt;
     map['content'] = content;
     map['disaster'] = disaster;
-    map['like_users'] = likeUsers;
-    map['chat_users'] = chatUsers;
+    map['like_users'] = likeUsers ?? [];
+    map['chat_users'] = chatUsers ?? {};
     map['is_done'] = isDone;
     map['share'] = share;
 

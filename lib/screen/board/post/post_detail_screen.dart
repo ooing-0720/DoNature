@@ -8,7 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/mypage/user_manage.dart';
 import 'package:donation_nature/screen/chat/chat_detail_screen.dart';
 import './post_edit_screen.dart';
-
 import 'package:donation_nature/board/domain/post.dart';
 
 class PostDetailScreen extends StatefulWidget {
@@ -24,6 +23,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   PostService postService = PostService();
 
   ChatService chatService = ChatService();
+  List<String> tagMoreList = ['나눔하기', '나눔받기', '알리기'];
 
   Widget build(BuildContext context) {
     User? user = UserManage().getUser();
@@ -32,10 +32,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     return user != null //user가 로그인 해있을 때
         ? Builder(builder: (context) {
             bool isWriter = false;
-            bool isNanum = false;
-            if (user.email == widget.post.userEmail)
+
+            //if (user.email == widget.post.userEmail)
+            if (user.uid == widget.post.writerUID)
               isWriter = true; //로그인 한 유저가 글쓴이일 때
-            if (widget.post.tagMore != '알리기') isNanum = true; //나눔글일 때
+            //if (widget.post.share != 2)  //나눔글일 때
             return Scaffold(
                 appBar: AppBar(),
                 body: Padding(
@@ -65,7 +66,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                   color: Colors.transparent,
                                   borderRadius: BorderRadius.circular(20)),
                               child: Text(
-                                "${widget.post.tagMore}",
+                                "${tagMoreList[widget.post.share!]}",
                                 maxLines: 1,
                                 softWrap: false,
                                 style: TextStyle(
@@ -92,7 +93,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       Row(
                         children: [
                           Text(
-                            "#${widget.post.tagDisaster}",
+                            "#${widget.post.disaster}",
                             style: TextStyle(
                                 color: Color(0xff416E5C),
                                 fontWeight: FontWeight.bold,
@@ -162,6 +163,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         height: 20,
                         thickness: 1,
                       ),
+                      widget.post.share != 2
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                  Text("품목: ${widget.post.item}"),
+                                  Text("수량: ${widget.post.itemCnt}")
+                                ])
+                          : Container(),
                       Expanded(
                           child: SingleChildScrollView(
                         child: widget.post.imageUrl != null
@@ -218,7 +227,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                           ChattingRoom _chattingRoom;
                           if (PostService().isChatted(widget.post, user)) {
                             _chattingRoom = await ChatService().getChattingRoom(
-                                widget.post.chatUsers![user.email]);
+                                widget.post.chatUsers![user.uid]);
                             // 채팅한적 있는 경우 기존 채팅방으로 이동
                             Navigator.push(
                                 context,
@@ -227,23 +236,21 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                         userName: widget.post.writer!,
                                         chattingRoom: _chattingRoom,
                                         reference: widget
-                                            .post.chatUsers![user.email]))));
+                                            .post.chatUsers![user.uid]))));
                           } else {
                             // 채팅한적 없는 경우 새 채팅방 생성
-                            List<String> users = [];
-                            users.add(user.email!);
-                            users.add(widget.post.userEmail!);
+
                             List<String> nicknames = [];
                             nicknames.add(user.displayName!);
                             nicknames.add(widget.post.writer!);
-                            List<String> userUID = [];
-                            userUID.add(user.uid);
-                            userUID.add(widget.post.writerUID!);
+                            List<String> userUIDs = [];
+                            userUIDs.add(user.uid);
+                            userUIDs.add(widget.post.writerUID!);
 
                             _chattingRoom = ChattingRoom(
-                                user: users,
+                                // user: users,
                                 nickname: nicknames,
-                                userUID: userUID,
+                                userUID: userUIDs,
                                 post: widget.post);
 
                             _chattingRoom.chatReference = await chatService
@@ -253,7 +260,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                 widget.post.writerUID,
                                 user.displayName,
                                 widget.post.writer);
-                            widget.post.chatUsers![user.email] =
+                            widget.post.chatUsers![user.uid] =
                                 _chattingRoom.chatReference;
                             PostService().updatePost(
                                 reference: widget.post.reference!,
@@ -275,7 +282,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     :
                     //본인이 작성한 글이고, 나눔 관련 글이고, 나눔완료 전일 때 나눔 종료 가능
                     isWriter == true &&
-                            isNanum == true &&
+                            widget.post.share != 2 &&
                             widget.post.isDone == false
                         //나눔관련 글이 맞고 나눔완료 전일 때
                         ? FloatingActionButton.extended(
@@ -362,7 +369,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                               color: Colors.transparent,
                               borderRadius: BorderRadius.circular(20)),
                           child: Text(
-                            "${widget.post.tagMore}",
+                            "${tagMoreList[widget.post.share!]}",
                             maxLines: 1,
                             softWrap: false,
                             style: TextStyle(
@@ -391,7 +398,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                   Row(
                     children: [
                       Text(
-                        "#${widget.post.tagDisaster}",
+                        "#${widget.post.disaster}",
                         style: TextStyle(
                             color: Color(0xff416E5C),
                             fontWeight: FontWeight.bold,

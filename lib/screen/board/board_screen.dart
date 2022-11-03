@@ -1,13 +1,18 @@
-
 import 'package:donation_nature/board/service/post_service.dart';
 import 'package:donation_nature/screen/alarm/alarm_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:donation_nature/screen/board/post/post_add_screen.dart';
+
+///import 'package:donation_nature/screen/board/post/post_add_share_screen.dart';
+//import 'package:donation_nature/screen/board/post/post_add_inform_screen.dart';
+//import 'package:donation_nature/screen/board/post/post_add_take_screen.dart';
 import 'package:donation_nature/board/domain/post.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/mypage/user_manage.dart';
 import 'package:donation_nature/screen/board/board_search_screen.dart';
 import 'package:donation_nature/screen/board/post/postListTile.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class BoardScreen extends StatefulWidget {
   const BoardScreen({Key? key}) : super(key: key);
@@ -80,14 +85,49 @@ class _BoardScreenState extends State<BoardScreen> {
       ),
       floatingActionButton: Builder(builder: (context) {
         return user != null
-            ? FloatingActionButton.extended(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PostAddScreen()));
-                },
-                label: Text('글쓰기'),
+            ? SpeedDial(
+                icon: Icons.add,
                 backgroundColor: Color(0xff416E5C),
-                icon: Icon(Icons.add),
+                children: [
+                  SpeedDialChild(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PostAddScreen(0)));
+                    },
+                    label: '나눔하기',
+                    backgroundColor: Color(0xff416E5C),
+                    child: const Icon(Icons.volunteer_activism),
+                    foregroundColor: Colors.white,
+                  ),
+                  SpeedDialChild(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PostAddScreen(1)));
+                    },
+                    label: '나눔받기',
+                    backgroundColor: Color(0xff416E5C),
+                    child: SvgPicture.asset(
+                      'assets/icon/diversity1.svg',
+                    ),
+                    foregroundColor: Colors.white,
+                  ),
+                  SpeedDialChild(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PostAddScreen(2)));
+                    },
+                    label: '알리기',
+                    backgroundColor: Color(0xff416E5C),
+                    child: const Icon(Icons.campaign),
+                    foregroundColor: Colors.white,
+                  ),
+                ],
               )
             : Container();
       }),

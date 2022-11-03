@@ -3,6 +3,7 @@ import 'post_detail_screen.dart';
 import 'package:donation_nature/board/domain/post.dart';
 
 GestureDetector postListTile(BuildContext context, Post data) {
+  List<String> tagMoreList = ['나눔하기', '나눔받기', '알리기'];
   return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -29,7 +30,7 @@ GestureDetector postListTile(BuildContext context, Post data) {
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(20)),
                       child: Text(
-                        "${data.tagMore}",
+                        "${tagMoreList[data.share!]}",
                         maxLines: 1,
                         softWrap: false,
                         style: TextStyle(
@@ -41,7 +42,6 @@ GestureDetector postListTile(BuildContext context, Post data) {
                     SizedBox(
                       width: 5,
                     ),
-
                     Container(
                       width: MediaQuery.of(context).size.width * 0.75,
                       child: Text(
@@ -68,9 +68,65 @@ GestureDetector postListTile(BuildContext context, Post data) {
                   "${data.date!.toDate().toLocal().toString().substring(5, 16)}",
                   style: TextStyle(fontSize: 12),
                 ),
+                if (data.share == 0)
+                  Row(
+                    children: [
+                      Text(
+                        "나눔해요",
+                        style: TextStyle(
+                            color: Color(0xff416E5C),
+                            fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "${data.item}",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "${data.itemCnt}개",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  )
+                else if (data.share == 1)
+                  Row(
+                    children: [
+                      Text(
+                        "나눔받아요",
+                        style: TextStyle(
+                            color: Color(0xff416E5C),
+                            fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "${data.item}",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "${data.itemCnt}개",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  )
+                else
+                  Container(),
                 Row(children: [
                   Text(
-                    "#${data.tagDisaster}",
+                    "#${data.disaster}",
                     style: TextStyle(
                         color: Color(0xff416E5C), fontWeight: FontWeight.w500),
                   ),

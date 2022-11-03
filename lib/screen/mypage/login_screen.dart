@@ -4,6 +4,8 @@ import 'package:donation_nature/screen/mypage/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/mypage/user_manage.dart';
+import 'package:donation_nature/mypage/login_platform_screen.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -153,6 +155,7 @@ class LoginScreenState extends State<LoginScreen> {
         ));
   }
 
+
   Widget _loginButton(String path, VoidCallback onTap) {
     return Card(
       elevation: 5.0,
@@ -172,6 +175,7 @@ class LoginScreenState extends State<LoginScreen> {
           ),
     );
   }
+
 
   _login() async {
     //키보드 숨기기

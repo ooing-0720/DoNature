@@ -21,21 +21,27 @@ class PostEditScreen extends StatefulWidget {
 class _PostEditScreenState extends State<PostEditScreen> {
   late TextEditingController titleEditingController;
   late TextEditingController contentEditingController;
+  late TextEditingController itemEditingController;
+  late TextEditingController itemCntEditingController;
+
   List<String> tagMoreList = ['나눔하기', '나눔받기', '알리기'];
 
   int selectedDisasterIndex = -1;
   int selectedTagIndex = -1;
   List<String> locationGuList = [];
   String? _selectedDo = null;
-
+  int? getShare;
   String? _selectedGu = null;
   final GlobalKey<FormState> _formkey = GlobalKey();
   Media _media = Media();
   @override
   void initState() {
     super.initState();
+    getShare = widget.post.share;
     titleEditingController = TextEditingController(text: widget.post.title);
     contentEditingController = TextEditingController(text: widget.post.content);
+    itemEditingController = TextEditingController(text: widget.post.item);
+    itemCntEditingController = TextEditingController(text: widget.post.itemCnt);
   }
 
   @override
@@ -54,6 +60,13 @@ class _PostEditScreenState extends State<PostEditScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  "제목",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
                   controller: titleEditingController,
                   onChanged: (nextText) {
@@ -88,52 +101,24 @@ class _PostEditScreenState extends State<PostEditScreen> {
                     }
                   },
                 ),
-                Divider(
+                // Divider(
+                //   height: 20,
+                //   thickness: 1.5,
+                // ),
+                SizedBox(
                   height: 20,
-                  thickness: 1.5,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 5, right: 5),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.label,
-                        color: Color(0xff416E5C),
-                      ),
-                      SizedBox(width: 12),
-                      Wrap(
-                        spacing: 12,
-                        children: List<Widget>.generate(
-                          tagMoreList.length,
-                          (int index) {
-                            return ChoiceChip(
-                              backgroundColor: Colors.grey.withOpacity(0.5),
-                              selectedColor: Color(0xff416E5C),
-                              label: Text(
-                                tagMoreList[index],
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              selected: selectedTagIndex == index,
-                              onSelected: (bool selected) {
-                                setState(() {
-                                  selectedTagIndex = selected ? index : -1;
-                                  widget.post.tagMore = tagMoreList[index];
-                                });
-                              },
-                            );
-                          },
-                        ).toList(),
-                      ),
-                    ],
-                  ),
-                ),
-                Divider(
-                  height: 20,
-                  thickness: 1.5,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      "사진",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     GestureDetector(
                       onTap: () {
                         showDialog(
@@ -179,7 +164,6 @@ class _PostEditScreenState extends State<PostEditScreen> {
                                                   .toString());
 
                                       setState(() {
-                                        print(widget.post.imageUrl);
                                         Navigator.pop(context);
                                       });
                                     },
@@ -247,9 +231,20 @@ class _PostEditScreenState extends State<PostEditScreen> {
                                 ]),
                               )
                             : Container()),
-                    Divider(
+                    // Divider(
+                    //   height: 20,
+                    //   thickness: 1.5,
+                    // ),
+                    SizedBox(
                       height: 20,
-                      thickness: 1.5,
+                    ),
+                    Text(
+                      "위치",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      height: 5,
                     ),
                     Row(
                       children: [
@@ -262,6 +257,104 @@ class _PostEditScreenState extends State<PostEditScreen> {
                         ),
                         locationDropdown(),
                       ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    getShare != 2
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "품목/수량",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                      child: TextFormField(
+                                    controller: itemEditingController,
+                                    decoration: InputDecoration(
+                                      hintText: '품목을 입력하세요',
+                                      enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 1, color: Colors.grey),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(20),
+                                          )),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 2, color: Colors.grey),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(20),
+                                          )),
+                                      errorBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 1, color: Colors.red),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20))),
+                                    ),
+                                    validator: (String? val) {
+                                      if (val!.isEmpty) {
+                                        return "품목은 비워둘 수 없습니다";
+                                      }
+                                    },
+                                  )),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  Expanded(
+                                      child: TextFormField(
+                                    controller: itemCntEditingController,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                      hintText: '수량을 입력하세요',
+                                      enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 1, color: Colors.grey),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(20),
+                                          )),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 2, color: Colors.grey),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(20),
+                                          )),
+                                      errorBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 1, color: Colors.red),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20))),
+                                    ),
+                                    validator: (String? val) {
+                                      if (val!.isEmpty) {
+                                        return "수량은 비워둘 수 없습니다";
+                                      }
+                                    },
+                                  )),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          )
+                        : SizedBox(
+                            height: 5,
+                          ),
+
+                    Text(
+                      "내용",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      height: 10,
                     ),
                   ],
                 ),
@@ -292,6 +385,13 @@ class _PostEditScreenState extends State<PostEditScreen> {
                 ),
                 SizedBox(
                   height: 20,
+                ),
+                Text(
+                  "재난",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -396,7 +496,7 @@ class _PostEditScreenState extends State<PostEditScreen> {
         onPressed: () {
           if (_formkey.currentState!.validate() &&
               selectedDisasterIndex != -1 &&
-              selectedTagIndex != -1 &&
+              // selectedTagIndex != -1 &&
               (widget.post.locationSiDo != '' &&
                   widget.post.locationGuGunSi != '')) {
             //validation 성공하면 폼 저장하기
@@ -412,11 +512,12 @@ class _PostEditScreenState extends State<PostEditScreen> {
                   widget.post.locationGuGunSi == '')) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text('위치태그를 지정해주세요.')));
-          } else if (_formkey.currentState!.validate() &&
-              selectedTagIndex == -1) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text('글 종류를 지정해주세요.')));
           }
+          // } else if (_formkey.currentState!.validate() &&
+          //     selectedTagIndex == -1) {
+          //   ScaffoldMessenger.of(context)
+          //       .showSnackBar(SnackBar(content: Text('글 종류를 지정해주세요.')));
+          // }
         },
         style: ElevatedButton.styleFrom(primary: Color(0xff416E5C)),
         child: Text("글 수정하기"));
@@ -434,7 +535,7 @@ class _PostEditScreenState extends State<PostEditScreen> {
           onSelected: (bool value) {
             setState(() {
               selectedDisasterIndex = i;
-              widget.post.tagDisaster = disasterList[selectedDisasterIndex];
+              widget.post.disaster = disasterList[selectedDisasterIndex];
             });
           },
           label: Text(

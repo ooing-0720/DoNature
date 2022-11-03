@@ -7,13 +7,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:donation_nature/board/domain/post.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:donation_nature/screen/board/post/location_list.dart';
 import 'package:donation_nature/screen/home/disaster_list.dart';
 
 class PostAddScreen extends StatefulWidget {
-  const PostAddScreen({Key? key}) : super(key: key);
-
+  const PostAddScreen(this.share);
+  final int share;
   @override
   State<PostAddScreen> createState() => _PostAddScreenState();
 }
@@ -21,31 +22,27 @@ class PostAddScreen extends StatefulWidget {
 class _PostAddScreenState extends State<PostAddScreen> {
   TextEditingController titleEditingController = TextEditingController();
   TextEditingController contentEditingController = TextEditingController();
+  TextEditingController itemEditingController = TextEditingController();
+  TextEditingController itemCntEditingController = TextEditingController();
   final GlobalKey<FormState> _formkey = GlobalKey();
 
   Media _media = Media();
   User? user = UserManage().getUser();
-  List<String> tagMoreList = ['나눔하기', '나눔받기', '알리기'];
+  //List<String> tagMoreList = ['나눔하기', '나눔받기', '알리기'];
   List<String> locationGuList = [];
   String? _selectedDo = null;
   String? _selectedGu = null;
   bool image = false;
   int selectedDisasterIndex = -1;
-  int selectedTagIndex = -1;
-  var _editedPost = Post(
-    title: '',
-    userEmail: '',
-    writer: '',
-    date: null,
-    content: '',
-    locationSiDo: '',
-    locationGuGunSi: '',
-    tagDisaster: '', // 재난 태그
-    tagMore: '', // 그 외 태그
-  );
+  int? getShare;
+  // int selectedTagIndex = -1;
+  var _editedPost;
+
   @override
   void initState() {
     super.initState();
+    getShare = widget.share;
+    _editedPost = Post(share: getShare);
   }
 
   @override
@@ -56,7 +53,16 @@ class _PostAddScreenState extends State<PostAddScreen> {
       },
       child: Scaffold(
           appBar: AppBar(
-            title: Text("글쓰기"),
+            title: Container(
+              child: Builder(builder: (context) {
+                if (getShare == 0) {
+                  return Text("나눔하기");
+                } else if (getShare == 1)
+                  return Text("나눔받기");
+                else
+                  return Text("알리기");
+              }),
+            ),
           ),
           body: postForm()),
     );
@@ -71,6 +77,13 @@ class _PostAddScreenState extends State<PostAddScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(
+              "제목",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+            ),
+            SizedBox(
+              height: 10,
+            ),
             TextFormField(
               controller: titleEditingController,
               onChanged: (nextText) {
@@ -105,52 +118,62 @@ class _PostAddScreenState extends State<PostAddScreen> {
                 }
               },
             ),
-            Divider(
+            // Divider(
+            //   height: 20,
+            //   thickness: 1.5,
+            // ),
+            SizedBox(
               height: 20,
-              thickness: 1.5,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 5, right: 5),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.label,
-                    color: Color(0xff416E5C),
-                  ),
-                  SizedBox(width: 12),
-                  Wrap(
-                    spacing: 12,
-                    children: List<Widget>.generate(
-                      tagMoreList.length,
-                      (int index) {
-                        return ChoiceChip(
-                          backgroundColor: Colors.grey.withOpacity(0.5),
-                          selectedColor: Color(0xff416E5C),
-                          label: Text(
-                            tagMoreList[index],
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          selected: selectedTagIndex == index,
-                          onSelected: (bool selected) {
-                            setState(() {
-                              selectedTagIndex = selected ? index : -1;
-                              _editedPost.tagMore = tagMoreList[index];
-                            });
-                          },
-                        );
-                      },
-                    ).toList(),
-                  ),
-                ],
-              ),
-            ),
-            Divider(
-              height: 20,
-              thickness: 1.5,
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 5, right: 5),
+            //   child: Row(
+            //     children: [
+            //       Icon(
+            //         Icons.label,
+            //         color: Color(0xff416E5C),
+            //       ),
+            //       SizedBox(width: 12),
+            //       Wrap(
+            //         spacing: 12,
+            //         children: List<Widget>.generate(
+            //           tagMoreList.length,
+            //           (int index) {
+            //             return ChoiceChip(
+            //               backgroundColor: Colors.grey.withOpacity(0.5),
+            //               selectedColor: Color(0xff416E5C),
+            //               label: Text(
+            //                 tagMoreList[index],
+            //                 style: TextStyle(color: Colors.white),
+            //               ),
+            //               selected: selectedTagIndex == index,
+            //               onSelected: (bool selected) {
+            //                 setState(() {
+            //                   selectedTagIndex = selected ? index : -1;
+            //                   _editedPost.tagMore = tagMoreList[index];
+            //                 });
+            //               },
+            //             );
+            //           },
+            //         ).toList(),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // Divider(
+            //   height: 20,
+            //   thickness: 1.5,
+            // ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  "사진",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 GestureDetector(
                   onTap: () {
                     showDialog(
@@ -168,9 +191,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
                                               .toString());
 
                                   setState(() {
-                                    print(_editedPost.imageUrl);
                                     image = true;
-
                                     Navigator.pop(context);
                                   });
                                 },
@@ -253,7 +274,6 @@ class _PostAddScreenState extends State<PostAddScreen> {
                                 onPressed: () {
                                   setState(() {
                                     _editedPost.imageUrl = null;
-                                    print(_editedPost.imageUrl);
                                   });
                                 },
                                 icon: Icon(
@@ -265,9 +285,19 @@ class _PostAddScreenState extends State<PostAddScreen> {
                             ]),
                           )
                         : Container()),
-                Divider(
+                // Divider(
+                //   height: 20,
+                //   thickness: 1.5,
+                // ),
+                SizedBox(
                   height: 20,
-                  thickness: 1.5,
+                ),
+                Text(
+                  "위치",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 5,
                 ),
                 Row(
                   children: [
@@ -280,6 +310,103 @@ class _PostAddScreenState extends State<PostAddScreen> {
                     ),
                     locationDropdown(),
                   ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                getShare != 2
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "품목/수량",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w600),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: TextFormField(
+                                controller: itemEditingController,
+                                decoration: InputDecoration(
+                                  hintText: '품목을 입력하세요',
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.grey),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(20),
+                                      )),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 2, color: Colors.grey),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(20),
+                                      )),
+                                  errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.red),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                ),
+                                validator: (String? val) {
+                                  if (val!.isEmpty) {
+                                    return "품목은 비워둘 수 없습니다";
+                                  }
+                                },
+                              )),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Expanded(
+                                  child: TextFormField(
+                                controller: itemCntEditingController,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  hintText: '수량을 입력하세요',
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.grey),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(20),
+                                      )),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 2, color: Colors.grey),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(20),
+                                      )),
+                                  errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.red),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                ),
+                                validator: (String? val) {
+                                  if (val!.isEmpty) {
+                                    return "수량은 비워둘 수 없습니다";
+                                  }
+                                },
+                              )),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      )
+                    : SizedBox(
+                        height: 5,
+                      ),
+
+                Text(
+                  "내용",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
               ],
             ),
@@ -310,6 +437,13 @@ class _PostAddScreenState extends State<PostAddScreen> {
             ),
             SizedBox(
               height: 20,
+            ),
+            Text(
+              "재난",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+            ),
+            SizedBox(
+              height: 10,
             ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -477,7 +611,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
         onPressed: () {
           if (_formkey.currentState!.validate() &&
               selectedDisasterIndex != -1 &&
-              selectedTagIndex != -1 &&
+              //   selectedTagIndex != -1 &&
               (_editedPost.locationSiDo != '' &&
                   _editedPost.locationGuGunSi != '')) {
             //validation 성공하면 폼 저장하기
@@ -493,11 +627,12 @@ class _PostAddScreenState extends State<PostAddScreen> {
                   _editedPost.locationGuGunSi == '')) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text('위치태그를 지정해주세요.')));
-          } else if (_formkey.currentState!.validate() &&
-              selectedTagIndex == -1) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text('글 종류를 지정해주세요.')));
           }
+          // else if (_formkey.currentState!.validate() &&
+          //     selectedTagIndex == -1) {
+          //   ScaffoldMessenger.of(context)
+          //       .showSnackBar(SnackBar(content: Text('글 종류를 지정해주세요.')));
+          // }
         },
         style: ElevatedButton.styleFrom(primary: Color(0xff416E5C)),
         child: Text("글쓰기"));
@@ -515,7 +650,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
           onSelected: (bool value) {
             setState(() {
               selectedDisasterIndex = i;
-              _editedPost.tagDisaster = disasterList[selectedDisasterIndex];
+              _editedPost.disaster = disasterList[selectedDisasterIndex];
             });
           },
           label: Text(
@@ -547,10 +682,15 @@ class _PostAddScreenState extends State<PostAddScreen> {
                       DateTime datetime = _editedPost.date!.toDate();
                       _editedPost.content = contentEditingController.text;
                       _editedPost.title = titleEditingController.text;
-                      _editedPost.userEmail = user?.email;
+
                       _editedPost.writer = user?.displayName;
                       _editedPost.date = Timestamp.now();
                       _editedPost.writerUID = user?.uid;
+                      _editedPost.share = getShare;
+                      if (getShare != 2) {
+                        _editedPost.item = itemEditingController.text;
+                        _editedPost.itemCnt = itemCntEditingController.text;
+                      }
 
                       // Firebase 연동
                       _postService.createPost(_editedPost.toJson());

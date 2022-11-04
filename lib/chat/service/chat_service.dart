@@ -76,7 +76,7 @@ class ChatService {
     List<ChattingRoom> rooms = [];
     for (var doc in querySnapshot.docs) {
       ChattingRoom room = ChattingRoom.fromQuerySnapshot(doc);
-      if (first) {
+      if (user.uid == room.userUID?[0]) {
         room.profileImg![0] = imageUrl;
       } else {
         room.profileImg![1] = imageUrl;

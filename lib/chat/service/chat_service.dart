@@ -64,8 +64,7 @@ class ChatService {
     await reference.delete();
   }
 
-  Future<void> updateProfileImage(
-      User user, bool first, String imageUrl) async {
+  Future<void> updateProfileImg(User user, String imageUrl) async {
     final collectionReference =
         FirebaseFirestore.instance.collection("chattingroom_list");
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
@@ -80,6 +79,25 @@ class ChatService {
         room.profileImg![0] = imageUrl;
       } else {
         room.profileImg![1] = imageUrl;
+      }
+      doc.reference.set(room.toJson());
+    }
+  }
+
+  Future<void> updateNickname(User user) async {
+    final collectionReference =
+        FirebaseFirestore.instance.collection("chattingroom_list");
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await collectionReference
+            .where('user_uid', arrayContains: user.uid)
+            .get();
+    List<ChattingRoom> rooms = [];
+    for (var doc in querySnapshot.docs) {
+      ChattingRoom room = ChattingRoom.fromQuerySnapshot(doc);
+      if (user.uid == room.userUID?[0]) {
+        room.nickname![0] = user.displayName;
+      } else {
+        room.nickname![1] = user.displayName;
       }
       doc.reference.set(room.toJson());
     }

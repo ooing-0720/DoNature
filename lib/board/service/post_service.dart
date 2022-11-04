@@ -253,4 +253,19 @@ class PostService {
       await post.reference!.set(post.toJson());
     }
   }
+
+  Future<void> updateNickname(User user) async {
+    final collectionReference =
+        FirebaseFirestore.instance.collection("chattingroom_list");
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await collectionReference
+            .where('user_uid', arrayContains: user.uid)
+            .get();
+    List<Post> rooms = [];
+    for (var doc in querySnapshot.docs) {
+      Post post = Post.fromQuerySnapshot(doc);
+      post.writer = user.displayName;
+      doc.reference.set(post.toJson());
+    }
+  }
 }

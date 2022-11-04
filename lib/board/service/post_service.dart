@@ -265,7 +265,7 @@ class PostService {
     for (var doc in querySnapshot.docs) {
       Post post = Post.fromQuerySnapshot(doc);
       post.writer = user.displayName;
-      await doc.reference.set(post.toJson());
+      await post.reference?.set(post.toJson());
     }
   }
 }

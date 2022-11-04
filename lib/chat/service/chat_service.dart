@@ -72,7 +72,6 @@ class ChatService {
             .where('user_uid', arrayContains: user.uid)
             .get();
 
-    List<ChattingRoom> rooms = [];
     for (var doc in querySnapshot.docs) {
       ChattingRoom room = ChattingRoom.fromQuerySnapshot(doc);
       if (user.uid == room.userUID?[0]) {
@@ -80,7 +79,7 @@ class ChatService {
       } else {
         room.profileImg![1] = imageUrl;
       }
-      doc.reference.set(room.toJson());
+      await doc.reference.set(room.toJson());
     }
   }
 
@@ -91,7 +90,7 @@ class ChatService {
         await collectionReference
             .where('user_uid', arrayContains: user.uid)
             .get();
-    List<ChattingRoom> rooms = [];
+
     for (var doc in querySnapshot.docs) {
       ChattingRoom room = ChattingRoom.fromQuerySnapshot(doc);
       if (user.uid == room.userUID?[0]) {
@@ -99,7 +98,7 @@ class ChatService {
       } else {
         room.nickname![1] = user.displayName;
       }
-      doc.reference.set(room.toJson());
+      await doc.reference.set(room.toJson());
     }
   }
 }

@@ -1,4 +1,6 @@
+//import 'dart:html';
 import 'package:donation_nature/chat/domain/chatting_room.dart';
+import 'package:donation_nature/screen/home/disaster_list.dart';
 import 'package:donation_nature/screen/mypage/login_screen.dart';
 import 'package:flutter/material.dart';
 import './chat_detail_screen.dart';
@@ -15,7 +17,7 @@ class ChatListScreen extends StatefulWidget {
 
 class _ChatListScreenState extends State<ChatListScreen> {
   User? user = UserManage().getUser(); //현재 유저정보
-
+  String? _image;
   @override
   Widget build(BuildContext context) {
     return user != null
@@ -40,7 +42,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
                     return ListView.separated(
                       itemCount: rooms.length,
                       itemBuilder: (BuildContext context, int index) {
-                        //String userEmail = user!.email!;
                         String userUID = user!.uid; //현재 유저의 uid
                         ChattingRoom data = rooms[index]; //각각의 채팅방
                         return Builder(builder: (context) {
@@ -67,7 +68,17 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                       dense: false,
                                       visualDensity: VisualDensity(
                                           horizontal: -4, vertical: -4),
-                                      leading: circleAvartar(),
+                                      leading: CircleAvatar(
+                                        backgroundImage:
+                                            NetworkImage("${data.profileImg}"),
+                                        backgroundColor: Colors.transparent,
+                                        // backgroundColor: Color(0xff416E5C),
+                                        radius: 24,
+                                        // child: Icon(
+                                        //   Icons.person,
+                                        //   color: Colors.white,
+                                        // ),
+                                      ),
                                       title: Padding(
                                         padding:
                                             const EdgeInsets.only(bottom: 3.0),
@@ -118,7 +129,17 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                       dense: false,
                                       visualDensity: VisualDensity(
                                           horizontal: -4, vertical: -4),
-                                      leading: circleAvartar(),
+                                      leading: CircleAvatar(
+                                        backgroundImage:
+                                            NetworkImage("${data.profileImg}"),
+                                        backgroundColor: Colors.transparent,
+                                        // backgroundColor: Color(0xff416E5C),
+                                        radius: 24,
+                                        // child: Icon(
+                                        //   Icons.person,
+                                        //   color: Colors.white,
+                                        // ),
+                                      ),
                                       title: Padding(
                                         padding:
                                             const EdgeInsets.only(bottom: 3.0),
@@ -166,16 +187,5 @@ class _ChatListScreenState extends State<ChatListScreen> {
         :
         //비회원이면 로그인 페이지로 이동
         LoginScreen();
-  }
-
-  CircleAvatar circleAvartar() {
-    return CircleAvatar(
-      backgroundColor: Color(0xff416E5C),
-      radius: 24,
-      child: Icon(
-        Icons.person,
-        color: Colors.white,
-      ),
-    );
   }
 }

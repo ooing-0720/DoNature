@@ -65,6 +65,8 @@ class ChatService {
   }
 
   Future<void> updateProfileImg(User user, String imageUrl) async {
+    print("********updatePorfileImage");
+    print(user.photoURL);
     final collectionReference =
         FirebaseFirestore.instance.collection("chattingroom_list");
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
@@ -72,14 +74,21 @@ class ChatService {
             .where('user_uid', arrayContains: user.uid)
             .get();
 
+    print("****querysnapshot" + "${querySnapshot}");
     for (var doc in querySnapshot.docs) {
       ChattingRoom room = ChattingRoom.fromQuerySnapshot(doc);
+      print(room);
       if (user.uid == room.userUID?[0]) {
-        room.profileImg![0] = imageUrl;
+        room.profileImg![0] = user.photoURL;
+        //room.profileImg![0]=imageUrl;
+        print("**********profileimge0");
+        print(room.profileImg![0]);
       } else {
-        room.profileImg![1] = imageUrl;
+        room.profileImg![1] = user.photoURL;
+        print("**********profileimge1");
+        print(room.profileImg![1]);
       }
-      await doc.reference.set(room.toJson());
+      await room.chatReference?.update({"profile_image": room.profileImg});
     }
   }
 
@@ -93,12 +102,15 @@ class ChatService {
 
     for (var doc in querySnapshot.docs) {
       ChattingRoom room = ChattingRoom.fromQuerySnapshot(doc);
+
       if (user.uid == room.userUID?[0]) {
         room.nickname![0] = user.displayName;
       } else {
         room.nickname![1] = user.displayName;
+
+        //await room.chatReference?.set(room.toJson());
       }
-      await doc.reference.set(room.toJson());
+      await room.chatReference?.update({"nickname": room.nickname});
     }
   }
 }

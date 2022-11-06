@@ -20,6 +20,7 @@ class MyPageHeaderState extends State<MyPageHeader> {
   String userEmail = '';
   String userPhoto = '';
   bool loading = false;
+  User? user;
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +41,15 @@ class MyPageHeaderState extends State<MyPageHeader> {
       loading = true;
     });
 
-    User? user = userManage.getUser();
+    user = userManage.getUser();
     if (user == null) {
       userName = '';
       userEmail = '';
       userPhoto = 'default_profile';
     } else {
-      userName = user.displayName! + '님';
-      userEmail = user.email!;
-      userPhoto = user.photoURL!;
+      userName = user!.displayName! + '님';
+      userEmail = user!.email!;
+      userPhoto = user!.photoURL!;
     }
 
     // 셋팅 끝나면 loading은 false로 바뀌고 화면에 값들이 보임

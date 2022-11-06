@@ -255,16 +255,19 @@ class PostService {
   }
 
   Future<void> updateNickname(User user) async {
+    print(user.uid);
     final collectionReference =
         FirebaseFirestore.instance.collection("bulletin_board");
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await collectionReference
-            .where('writer_uid', arrayContains: user.uid)
+            .where('writer_uid', isEqualTo: user.uid)
             .get();
 
     for (var doc in querySnapshot.docs) {
       Post post = Post.fromQuerySnapshot(doc);
       post.writer = user.displayName;
+      print("******************************");
+      print(post.reference);
       await post.reference?.set(post.toJson());
     }
   }

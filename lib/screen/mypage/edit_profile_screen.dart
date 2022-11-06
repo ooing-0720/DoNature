@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:donation_nature/board/service/post_service.dart';
+import 'package:donation_nature/chat/service/chat_service.dart';
 import 'package:donation_nature/screen/mypage/mypage_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,10 +38,19 @@ class EditProfileScreenState extends State<EditProfileScreen> {
 
     if (_profileNameValid) {
       user?.updateDisplayName(nicknameTextEditingController.text);
+      // print("profilename ${user!.displayName}");
+      PostService().updateNickname(user!);
+      ChatService().updateNickname(user!);
+//      print(user!.displayName);
+
       if (_image == null) {
         _image = user!.photoURL;
       }
       user?.updatePhotoURL(_image);
+      print("********profile image*******");
+      print(_image);
+      ChatService().updateProfileImg(user!, _image!);
+
       Navigator.pop(context);
       SnackBar successSnackBar = SnackBar(
         content: Text('Profile has been updated successfully.'),
@@ -70,6 +81,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
             TextButton(
                 onPressed: () {
                   updateUserData();
+                  //print(user!.displayName);
                 },
                 child: Text('변경'),
                 style: TextButton.styleFrom(
@@ -147,7 +159,6 @@ class EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future getImageFromGallery(ImageSource source) async {
-
     var image = await ImagePicker()
         .pickImage(source: source, imageQuality: 100, maxWidth: 150);
 

@@ -29,43 +29,19 @@ class _LoginPlatformScreenState extends State<LoginPlatformScreen> {
     }
   }
 
-  void signOut() async {
-    switch (_loginPlatform) {
-      case LoginPlatform.facebook:
-        break;
-      case LoginPlatform.google:
-        await GoogleSignIn().signOut();
-        break;
-      // case LoginPlatform.kakao:
-      //   break;
-      // case LoginPlatform.naver:
-      //   break;
-      // case LoginPlatform.apple:
-      //   break;
-      case LoginPlatform.none:
-        break;
-    }
-
-    setState(() {
-      _loginPlatform = LoginPlatform.none;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: _loginPlatform != LoginPlatform.none
-              ? _logoutButton()
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _loginButton(
-                      'google',
-                      signInWithGoogle,
-                    )
-                  ],
-                )),
+          child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _loginButton(
+            'google',
+            signInWithGoogle,
+          )
+        ],
+      )),
     );
   }
 
@@ -85,18 +61,6 @@ class _LoginPlatformScreenState extends State<LoginPlatformScreen> {
           onTap: onTap,
         ),
       ),
-    );
-  }
-
-  Widget _logoutButton() {
-    return ElevatedButton(
-      onPressed: signOut,
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(
-          const Color(0xff0165E1),
-        ),
-      ),
-      child: const Text('로그아웃'),
     );
   }
 }

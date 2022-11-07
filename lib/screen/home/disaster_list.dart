@@ -4,6 +4,10 @@ List<String> images = [
   'assets/images/tornado.png',
   'assets/images/wind.png',
   'assets/images/windwave.png',
+  'assets/images/heavysnow.png',
+  'assets/images/dry.png',
+  'assets/images/coldwave.png',
+  'assets/images/sandstorm.png',
 ];
 
 List<String> background_images = [
@@ -36,4 +40,14 @@ List<String> location = [
 
 List<String> disasterList = ["폭염", "호우", "태풍", "강풍", "풍랑", "기타"];
 
-List<String> labels = ['폭염주의보', '호우주의보', '태풍주의보', '강풍주의보', '풍랑주의보'];
+List<String> labels = [
+  '폭염주의보',
+  '호우주의보',
+  '태풍주의보',
+  '강풍주의보',
+  '풍랑주의보',
+  '대설주의보',
+  '건조주의보',
+  '한파주의보',
+  '황사주의보'
+];

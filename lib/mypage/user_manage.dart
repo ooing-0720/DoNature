@@ -3,33 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class UserManage {
-  static LoginPlatform? loginPlatform;
-
-  void setLoginPlatForm(LoginPlatform sloginPlatform) {
-    loginPlatform = sloginPlatform;
-  }
-
-  // void signOut() async {
-  //   switch (loginPlatform!) {
-  //     case LoginPlatform.facebook:
-  //       break;
-  //     case LoginPlatform.google:
-  //       await GoogleSignIn().signOut();
-  //       break;
-  //     case LoginPlatform.email:
-  //       await FirebaseAuth.instance.signOut();
-  //       break;
-  //     // case LoginPlatform.kakao:
-  //     //   break;
-  //     // case LoginPlatform.naver:
-  //     //   break;
-  //     // case LoginPlatform.apple:
-  //     //   break;
-  //     case LoginPlatform.none:
-  //       break;
-  //   }
-  // }
-
   @override
   Future<void> signOut() async {
     final googleSignIn = GoogleSignIn();

@@ -35,7 +35,17 @@ class _InfoScreenState extends State<InfoScreen> with TickerProviderStateMixin {
     FontAwesomeIcons.houseTsunami,
   ];
 
-  List _labels = [' 폭염', ' 호우', ' 태풍', ' 강풍', ' 풍랑'];
+  List _labels = [
+    ' 폭염',
+    ' 호우',
+    ' 태풍',
+    ' 강풍',
+    ' 풍랑',
+    ' 대설',
+    ' 건조',
+    ' 한파',
+    ' 황사'
+  ];
 
   Color _foregroundOn = Colors.white;
   Color _foregroundOff = Colors.grey;

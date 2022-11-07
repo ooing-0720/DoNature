@@ -19,8 +19,18 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   int currentPos = 0;
   String label = '';
-  String background = 'assets/images/positive.png';
-  List<bool>? disasterAtUserLocation = [false, false, false, false, false];
+  String background = 'assets/images/positive_background.png';
+  List<bool>? disasterAtUserLocation = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
   var i_images = List<String>.empty(growable: true);
 
   @override
@@ -68,11 +78,14 @@ class HomeScreenState extends State<HomeScreen> {
           colorBlendMode: BlendMode.modulate,
           color: Color.fromARGB(255, 161, 161, 161)),
       Scaffold(
-        // appBar: AppBar(
-        //   title: Text("도네이처"),
-        //   // backgroundColor: Colors.transparent,
-        //   elevation: 0.0,
-        // ),
+        appBar: AppBar(
+          title: Text("도네이처",
+              style: TextStyle(
+                color: Color.fromARGB(255, 59, 59, 59),
+              )),
+          // backgroundColor: Colors.transparent,
+          elevation: 0.0,
+        ),
         backgroundColor: Colors.transparent,
         body: Container(
 
@@ -93,25 +106,27 @@ class HomeScreenState extends State<HomeScreen> {
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       Icon(
                         Icons.near_me,
-                        color: Color.fromARGB(255, 149, 182, 169),
+                        color: Color.fromARGB(255, 224, 224, 224),
                       ),
                       Text(
                         Static.userLocation!,
                         style: TextStyle(
-                          color: Color.fromARGB(255, 204, 207, 206),
-                          fontSize: 22,
-                          fontWeight: FontWeight.w300,
+                          color: Color.fromARGB(255, 224, 224, 224),
+                          fontSize: 27,
+                          fontWeight: FontWeight.w200,
                         ),
                       )
                     ]),
                     SizedBox(height: 10),
                     Text(dateFormat.format(DateTime.now()),
                         style: TextStyle(
-                            color: Color.fromARGB(255, 181, 189, 186))),
+                            color: Color.fromARGB(255, 224, 224, 224),
+                            fontWeight: FontWeight.w200)),
                     Text(
                         '기온 ${Static.wthrInfoList![0]} 습도 ${Static.wthrInfoList![1]}',
                         style: TextStyle(
-                            color: Color.fromARGB(255, 181, 189, 186))),
+                            color: Color.fromARGB(255, 224, 224, 224),
+                            fontWeight: FontWeight.w200)),
                     SizedBox(height: 30),
                     CarouselSlider.builder(
                       itemCount: i_images.length,
@@ -163,7 +178,7 @@ class HomeScreenState extends State<HomeScreen> {
                       },
                       child: Text("대처법 알아보기 →"),
                       style: TextButton.styleFrom(
-                        primary: Color.fromARGB(255, 181, 189, 186),
+                        primary: Color.fromARGB(255, 224, 224, 224),
                       ),
                     ),
                   ],
@@ -188,12 +203,12 @@ class HomeScreenState extends State<HomeScreen> {
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Icon(
                 Icons.warning_amber,
-                color: Color.fromARGB(255, 149, 182, 169),
+                color: Color.fromARGB(255, 224, 224, 224),
               ),
               Text(
                 label,
                 style: TextStyle(
-                  color: Color.fromARGB(255, 181, 189, 186),
+                  color: Color.fromARGB(255, 224, 224, 224),
                   fontSize: 20,
                   fontWeight: FontWeight.w300,
                 ),

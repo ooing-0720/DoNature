@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donation_nature/mypage/user_manage.dart';
 import 'package:donation_nature/mypage/login_platform_screen.dart';
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -87,8 +86,7 @@ class LoginScreenState extends State<LoginScreen> {
               ),
               obscureText: true,
             ),
-            SizedBox(height: 30.0),
-            SizedBox(height: 20.0),
+            SizedBox(height: 50.0),
             ElevatedButton(
               onPressed: () {
                 if (_formkey.currentState!.validate()) {
@@ -104,6 +102,35 @@ class LoginScreenState extends State<LoginScreen> {
                   minimumSize: const Size.fromHeight(50)),
             ),
             SizedBox(height: 10.0),
+            ElevatedButton(
+              onPressed: userManage!.signInWithGoogle,
+              child: Row(
+                //spaceEvenly: 요소들을 균등하게 배치하는 속성
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Image.asset('assets/images/google.png',
+                      width: 40, height: 40),
+                  Text(
+                    '구글로 계속하기',
+                    style: TextStyle(color: Colors.black87),
+                  ),
+                  Opacity(
+                    opacity: 0.0,
+                    child: Icon(
+                      Icons.mail,
+                      //color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              style: ElevatedButton.styleFrom(
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(30.0),
+                  ),
+                  primary: Colors.white,
+                  minimumSize: const Size.fromHeight(50)),
+            ),
+            SizedBox(height: 10.0),
             TextButton(
               onPressed: () {
                 Navigator.push(context,
@@ -114,68 +141,29 @@ class LoginScreenState extends State<LoginScreen> {
                 primary: Colors.grey,
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                if (_formkey.currentState!.validate()) {
-                  _login();
-                }
-              },
-              child: Row(
-                //spaceEvenly: 요소들을 균등하게 배치하는 속성
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Image.asset('assets/images/google.png', fit: BoxFit.cover),
-                  Text(
-                    'Login with Google',
-                    style: TextStyle(color: Colors.black87),
-                  ),
-                  // Opacity(
-                  //   opacity: 0.0,
-                  //   child: Image.asset('assets/images/google.png'),
-                  // ),
-                ],
-              ),
-              style: ElevatedButton.styleFrom(
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0),
-                  ),
-                  primary: Colors.white,
-                  minimumSize: const Size.fromHeight(50)),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _loginButton(
-                  'google',
-                  userManage!.signInWithGoogle,
-                )
-              ],
-            )
           ],
         ));
   }
 
-
-  Widget _loginButton(String path, VoidCallback onTap) {
-    return Card(
-      elevation: 5.0,
-      shape: const CircleBorder(),
-      clipBehavior: Clip.antiAlias,
-      child: Ink.image(
-          image: AssetImage('assets/images/$path.png'),
-          width: 60,
-          height: 60,
-          child: InkWell(
-              borderRadius: const BorderRadius.all(
-                Radius.circular(35.0),
-              ),
-              onTap: onTap)
-          //   userManage!.setLoginPlatForm(LoginPlatform.google);
-          // }),
-          ),
-    );
-  }
-
+  // Widget _loginButton(String path, VoidCallback onTap) {
+  //   return Card(
+  //     elevation: 5.0,
+  //     shape: const CircleBorder(),
+  //     clipBehavior: Clip.antiAlias,
+  //     child: Ink.image(
+  //         image: AssetImage('assets/images/$path.png'),
+  //         width: 60,
+  //         height: 60,
+  //         child: InkWell(
+  //             borderRadius: const BorderRadius.all(
+  //               Radius.circular(35.0),
+  //             ),
+  //             onTap: onTap)
+  //         //   userManage!.setLoginPlatForm(LoginPlatform.google);
+  //         // }),
+  //         ),
+  //   );
+  // }
 
   _login() async {
     //키보드 숨기기

@@ -19,7 +19,7 @@ class WthrReport {
     return WthrInfoList;
   }
 
-// 기상 특보 리스트(폭염, 호우, 태풍, 강풍, 풍랑)
+// 기상 특보 리스트(폭염, 호우, 태풍, 강풍, 풍랑, 대설, 건조, 한파, 황사)
   Future<List<String>> getWeatherReport() async {
     WthrWrnListRepository wthrWrnListRepository = WthrWrnListRepository();
     var wthrWrnList = await wthrWrnListRepository.loadWthrWrnList();
@@ -28,8 +28,12 @@ class WthrReport {
       '${wthrWrnList?[0].FHWA} ${wthrWrnList?[0].HWA} ${wthrWrnList?[0].HWW}',
       '${wthrWrnList?[0].FHRA} ${wthrWrnList?[0].HRA}',
       '${wthrWrnList?[0].FTYA} ${wthrWrnList?[0].TYA}',
-      '${wthrWrnList?[0].FSWA}  ${wthrWrnList?[0].SWA}',
-      '${wthrWrnList?[0].FSTA}  ${wthrWrnList?[0].STA}'
+      '${wthrWrnList?[0].FSWA} ${wthrWrnList?[0].SWA}',
+      '${wthrWrnList?[0].FSTA} ${wthrWrnList?[0].STA}',
+      '${wthrWrnList?[0].HSA} ${wthrWrnList?[0].HSW}',
+      '${wthrWrnList?[0].DA} ${wthrWrnList?[0].DW}',
+      '${wthrWrnList?[0].CWA} ${wthrWrnList?[0].CWW}',
+      '${wthrWrnList?[0].DSA} ${wthrWrnList?[0].DSW}'
     ];
 
     return reportList;

@@ -41,13 +41,14 @@ class MyApp extends StatelessWidget {
                   fontFamily: 'Pretendard',
                   scaffoldBackgroundColor: Colors.white,
                   appBarTheme: AppBarTheme(
-                      elevation: 1.0,
+                      elevation: 0.7,
                       color: Colors.white,
+                      // centerTitle: true,
                       iconTheme: IconThemeData(color: Colors.black),
                       titleTextStyle: TextStyle(
                           color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18))),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w200))),
               title: _title,
               home: snapshot.data!,
             );
@@ -70,7 +71,8 @@ class Init {
     String? result = await _mainAction.getAddress(position);
     var location = result.split(' ');
     Static.userLocation = location[1] + ' ' + location[2] + ' ' + location[3];
-    Static.reportList = await wthrReport.getWeatherReport();
+    // Static.reportList = await wthrReport.getWeatherReport();
+    Static.reportList = [' ', ' ', ' ', ' ', ' ', ' 서울', ' 서울', ' 서울', ' '];
 
     return MainScreen();
   }

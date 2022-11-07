@@ -129,7 +129,6 @@ class MyPageMenuState extends State<MyPageMenu> {
                 child: FlatButton(
                     onPressed: () {
                       userManage.signOut();
-                      userManage.setLoginPlatForm(LoginPlatform.none);
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(

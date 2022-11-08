@@ -38,7 +38,18 @@ List<String> location = [
   '세종'
 ];
 
-List<String> disasterList = ["폭염", "호우", "태풍", "강풍", "풍랑", "기타"];
+List<String> disasterList = [
+  "폭염",
+  "호우",
+  "태풍",
+  "강풍",
+  "풍랑",
+  "대설",
+  "건조",
+  "한파",
+  "황사",
+  "기타"
+];
 
 List<String> labels = [
   '폭염주의보',

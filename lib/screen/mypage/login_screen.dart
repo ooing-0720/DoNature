@@ -103,7 +103,7 @@ class LoginScreenState extends State<LoginScreen> {
             ),
             SizedBox(height: 10.0),
             ElevatedButton(
-              onPressed: userManage!.signInWithGoogle,
+              onPressed: () => userManage!.signInWithGoogle(context),
               child: Row(
                 //spaceEvenly: 요소들을 균등하게 배치하는 속성
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -111,15 +111,13 @@ class LoginScreenState extends State<LoginScreen> {
                   Image.asset('assets/images/google.png',
                       width: 40, height: 40),
                   Text(
-                    '구글로 계속하기',
+                    '구글로 로그인',
                     style: TextStyle(color: Colors.black87),
                   ),
                   Opacity(
                     opacity: 0.0,
-                    child: Icon(
-                      Icons.mail,
-                      //color: Colors.white,
-                    ),
+                    child: Image.asset('assets/images/google.png',
+                        width: 40, height: 40),
                   ),
                 ],
               ),

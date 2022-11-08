@@ -1,5 +1,8 @@
 import 'package:donation_nature/mypage/login_platform.dart';
+import 'package:donation_nature/screen/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class UserManage {
@@ -17,7 +20,7 @@ class UserManage {
     await FirebaseAuth.instance.setPersistence(Persistence.NONE);
   }
 
-  void signInWithGoogle() async {
+  void signInWithGoogle(BuildContext context) async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleUser!.authentication;
@@ -32,6 +35,11 @@ class UserManage {
       print('email = ${googleUser.email}');
       print('id = ${googleUser.id}');
     }
+
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (BuildContext context) => MainScreen()),
+        (route) => false);
   }
 
   /// 유저 삭제

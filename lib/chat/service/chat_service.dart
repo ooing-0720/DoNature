@@ -92,7 +92,7 @@ class ChatService {
     }
   }
 
-  Future<void> updateNickname(User user) async {
+  Future<void> updateNickname(User user, String name) async {
     final collectionReference =
         FirebaseFirestore.instance.collection("chattingroom_list");
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
@@ -104,9 +104,9 @@ class ChatService {
       ChattingRoom room = ChattingRoom.fromQuerySnapshot(doc);
 
       if (user.uid == room.userUID?[0]) {
-        room.nickname![0] = user.displayName;
+        room.nickname![0] = name;
       } else {
-        room.nickname![1] = user.displayName;
+        room.nickname![1] = name;
 
         //await room.chatReference?.set(room.toJson());
       }

@@ -38,9 +38,10 @@ class EditProfileScreenState extends State<EditProfileScreen> {
 
     if (_profileNameValid) {
       user?.updateDisplayName(nicknameTextEditingController.text);
+
       // print("profilename ${user!.displayName}");
-      PostService().updateNickname(user!);
-      ChatService().updateNickname(user!);
+      PostService().updateNickname(user!, nicknameTextEditingController.text);
+      ChatService().updateNickname(user!, nicknameTextEditingController.text);
 //      print(user!.displayName);
 
       if (_image == null) {

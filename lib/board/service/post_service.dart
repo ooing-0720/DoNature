@@ -254,7 +254,7 @@ class PostService {
     }
   }
 
-  Future<void> updateNickname(User user) async {
+  Future<void> updateNickname(User user, String name) async {
     print(user.uid);
     final collectionReference =
         FirebaseFirestore.instance.collection("bulletin_board");
@@ -265,7 +265,7 @@ class PostService {
 
     for (var doc in querySnapshot.docs) {
       Post post = Post.fromQuerySnapshot(doc);
-      post.writer = user.displayName;
+      post.writer = name;
       print("******************************");
       print(post.reference);
       await post.reference?.set(post.toJson());

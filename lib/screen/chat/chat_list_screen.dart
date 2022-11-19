@@ -69,15 +69,15 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                       visualDensity: VisualDensity(
                                           horizontal: -4, vertical: -4),
                                       leading: CircleAvatar(
-                                        backgroundImage:
-                                            NetworkImage("${data.profileImg}"),
-                                        backgroundColor: Colors.transparent,
-                                        // backgroundColor: Color(0xff416E5C),
+                                        // backgroundImage:
+                                        //     NetworkImage("${data.profileImg}"),
+                                        // backgroundColor: Colors.transparent,
+                                        backgroundColor: Color(0xff416E5C),
                                         radius: 24,
-                                        // child: Icon(
-                                        //   Icons.person,
-                                        //   color: Colors.white,
-                                        // ),
+                                        child: Icon(
+                                          Icons.person,
+                                          color: Colors.white,
+                                        ),
                                       ),
                                       title: Padding(
                                         padding:
@@ -130,15 +130,15 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                       visualDensity: VisualDensity(
                                           horizontal: -4, vertical: -4),
                                       leading: CircleAvatar(
-                                        backgroundImage:
-                                            NetworkImage("${data.profileImg}"),
-                                        backgroundColor: Colors.transparent,
-                                        // backgroundColor: Color(0xff416E5C),
+                                        // backgroundImage:
+                                        //     NetworkImage("${data.profileImg}"),
+                                        // backgroundColor: Colors.transparent,
+                                        backgroundColor: Color(0xff416E5C),
                                         radius: 24,
-                                        // child: Icon(
-                                        //   Icons.person,
-                                        //   color: Colors.white,
-                                        // ),
+                                        child: Icon(
+                                          Icons.person,
+                                          color: Colors.white,
+                                        ),
                                       ),
                                       title: Padding(
                                         padding:

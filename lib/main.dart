@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
                       titleTextStyle: TextStyle(
                           color: Colors.black,
                           fontSize: 18,
-                          fontWeight: FontWeight.w200))),
+                          fontWeight: FontWeight.w400))),
               title: _title,
               home: snapshot.data!,
             );

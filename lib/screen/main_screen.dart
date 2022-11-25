@@ -47,23 +47,23 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.house),
+            icon: Icon(Icons.home_outlined),
             label: '홈',
           ),
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.message),
+            icon: Icon(Icons.chat_outlined),
             label: '채팅',
           ),
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.noteSticky),
+            icon: Icon(Icons.library_books_outlined),
             label: '나눔',
           ),
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.bell),
+            icon: Icon(Icons.notifications_outlined),
             label: '알람',
           ),
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.user),
+            icon: Icon(Icons.person_outline),
             label: '내 정보',
           ),
         ],

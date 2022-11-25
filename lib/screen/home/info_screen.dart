@@ -33,6 +33,10 @@ class _InfoScreenState extends State<InfoScreen> with TickerProviderStateMixin {
     FontAwesomeIcons.hurricane,
     FontAwesomeIcons.wind,
     FontAwesomeIcons.houseTsunami,
+    FontAwesomeIcons.snowflake,
+    FontAwesomeIcons.dropletSlash,
+    FontAwesomeIcons.temperatureLow,
+    FontAwesomeIcons.wind,
   ];
 
   List _labels = [
@@ -156,6 +160,10 @@ class _InfoScreenState extends State<InfoScreen> with TickerProviderStateMixin {
               drawMap(2),
               drawMap(3),
               drawMap(4),
+              drawMap(5),
+              drawMap(6),
+              drawMap(7),
+              drawMap(8),
             ],
           )),
         ]));
